@@ -239,6 +239,10 @@
         $("#tableDownloads").find("tbody").find("tr").dblclick(function (e) {
             e.preventDefault();
             $("#modalDLInfo").modal('toggle');
+        });
+
+        $(document).keydown(function (e) {
+            console.log(e);
         })
     }
 
