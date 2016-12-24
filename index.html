@@ -38,9 +38,9 @@
         </div>
         <div class="container">
             <ul class="nav navbar-nav">
-                <li data-page-highlight="passwords"><a href="#" data-to-page="passwords"><i class="material-icons">file_download</i>
+                <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i class="material-icons">lock_outline</i>
                     Passwords <span class="sr-only">(current)</span></a></li>
-                <li data-page-highlight="groups"><a href="#" data-to-page="groups"><i
+                <li data-page-highlight="groups"><a href="#!p=groups" data-to-page="groups"><i
                         class="material-icons">group</i> Groups</a></li>
             </ul>
         </div>
@@ -66,45 +66,30 @@
             <div class="row row-margin">
                 <div class="col-xs-12">
                     <div class="table-responsive">
-                        <table id="tableDownloads" class="table table-bordered table-striped table-hover">
+                        <table id="tablePasswords" class="table table-bordered table-striped table-hover">
                             <thead>
                             <tr>
-                                <th>URL</th>
-                                <th>Type</th>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Website</th>
                                 <th>Date added</th>
                                 <th>Added by</th>
-                                <th>Status</th>
                             </tr>
                             </thead>
                             <tbody>
-                            <tr data-download-id="1">
-                                <td>https://test.me/ddos.html</td>
-                                <td>text/html</td>
-                                <td>8.8.1988</td>
-                                <td>Scrumplex</td>
-                                <th>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-striped active" role="progressbar"
-                                             aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
-                                            <span class="sr-only">60% Complete</span>
-                                        </div>
-                                    </div>
-                                </th>
+                            <tr data-password-id="234324324">
+                                <td>dummyname</td>
+                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a></td>
+                                <td><a href="https://pornhub.com/">https://dummy.me/</a></td>
+                                <td>12.3.2016</td>
+                                <td>admin</td>
                             </tr>
-                            <tr data-download-id="1">
-                                <td>profiles/Scrumplex/test.torrent</td>
-                                <td>Torrent</td>
-                                <td>8.8.1988</td>
-                                <td>Scrumplex</td>
-                                <th>
-                                    <div class="progress">
-                                        <div class="progress-bar progress-bar-success progress-bar-striped"
-                                             role="progressbar"
-                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%;">
-                                            <span class="sr-only">100% Complete</span>
-                                        </div>
-                                    </div>
-                                </th>
+                            <tr data-password-id="4353453455">
+                                <td>tux@scrumplex.net</td>
+                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a></td>
+                                <td><a href="https://pornhub.com/">https://git.scrumplex.net/</a></td>
+                                <td>12.4.2016</td>
+                                <td>admin</td>
                             </tr>
                             </tbody>
                         </table>
@@ -114,9 +99,13 @@
         </div>
     </div>
 
-    <div id="page_groups" class="jumbotron" style="display: none">
+    <div id="page_groups" class="jumbotron depth-1" style="display: none">
         <div class="container">
-            <h1>TEST</h1>
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="text-center">Groups</h2>
+                </div>
+            </div>
         </div>
     </div>
 </div>
@@ -195,8 +184,8 @@
 
     function applyCurrentPage() {
         var anchor = window.location.href.substring(window.location.href.indexOf("#"));
-        if (anchor.substring(0, 1) === "#" && anchor.length > 1) {
-            currentPage = anchor.substring(3);
+        if (anchor.substring(0, 4) === "#!p=" && anchor.length > 1) {
+            currentPage = anchor.substring(4);
         }
     }
 
