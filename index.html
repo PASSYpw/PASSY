@@ -27,7 +27,7 @@
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="material-icons">more_vert</i></a>
+                       aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
                     <ul class="dropdown-menu">
                         <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
                         <li role="separator" class="divider"></li>
@@ -38,7 +38,8 @@
         </div>
         <div class="container">
             <ul class="nav navbar-nav">
-                <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i class="material-icons">lock_outline</i>
+                <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i
+                        class="material-icons">lock_outline</i>
                     Passwords <span class="sr-only">(current)</span></a></li>
                 <li data-page-highlight="groups"><a href="#!p=groups" data-to-page="groups"><i
                         class="material-icons">group</i> Groups</a></li>
@@ -79,14 +80,16 @@
                             <tbody>
                             <tr data-password-id="234324324">
                                 <td>dummyname</td>
-                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a></td>
+                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a>
+                                </td>
                                 <td><a href="https://pornhub.com/">https://dummy.me/</a></td>
                                 <td>12.3.2016</td>
                                 <td>admin</td>
                             </tr>
                             <tr data-password-id="4353453455">
                                 <td>tux@scrumplex.net</td>
-                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a></td>
+                                <td><a href="#" class="btn btn-default btn-white btn-block"><i class="material-icons">lock</i></a>
+                                </td>
                                 <td><a href="https://pornhub.com/">https://git.scrumplex.net/</a></td>
                                 <td>12.4.2016</td>
                                 <td>admin</td>
@@ -190,7 +193,7 @@
     }
 
     function loadPage(page) {
-        if(switchingPage)
+        if (switchingPage)
             return;
         switchingPage = true;
         var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page);
@@ -241,8 +244,19 @@
             $("#modalDLInfo").modal('toggle');
         });
 
+        var word = "";
+
         $(document).keydown(function (e) {
-            console.log(e);
+            word += e.key;
+            if (e.key == "r") {
+                $("#btnRefresh").click();
+            }
+            if (e.key == "+") {
+                $("#btnAdd").click();
+            }
+            if (word == "helloworld") {
+                alert("hello too! :)");
+            }
         })
     }
 
