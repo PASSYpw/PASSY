@@ -42,8 +42,9 @@ function registerListeners() {
     });
 
     var contextMenu = $("#dropdownContextMenu");
-    $(document).click(function () {
-        contextMenu.removeClass("open");
+    $(document).mousedown(function (e) {
+        if (e.which == 1)
+            contextMenu.removeClass("open");
     });
 
     $(this).bind("contextmenu", function (e) {
