@@ -22,7 +22,7 @@
     <nav class="navbar navbar-default depth-2">
         <div class="container">
             <div class="navbar-header">
-                <span class="navbar-brand" href="#!p=login">Passy<small>.pw</small></span>
+                <a class="navbar-brand" href="#!p=login">Passy<small>.pw</small></a>
             </div>
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
