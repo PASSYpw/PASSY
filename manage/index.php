@@ -7,10 +7,10 @@
     <meta name="theme-color" content="#ff5722">
     <title>Passy.pw</title>
 
-    <link href="../css/bootstrap.min.css" rel="stylesheet">
+    <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="../css/ripple.min.css" rel="stylesheet">
-    <link href="../css/theme.min.css" rel="stylesheet">
+    <link href="../assets/css/ripple.min.css" rel="stylesheet">
+    <link href="../assets/css/theme.min.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -167,8 +167,8 @@
 </div>
 
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
-<script src="../js/bootstrap.min.js"></script>
-<script src="../js/ripple.min.js"></script>
+<script src="../assets/js/bootstrap.min.js"></script>
+<script src="../assets/js/ripple.min.js"></script>
 <script>
 
     var currentPage = "passwords", switchingPage = false;
