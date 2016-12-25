@@ -31,7 +31,7 @@
                     <ul class="dropdown-menu">
                         <li><a href="#!p=register" data-to-page="register"><i class="material-icons">info_outline</i> Not registered?</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#!p=forgotpass" data-to-page="register"><i class="material-icons">track_changes</i> Forgot password?</a></li>
+                        <li><a href="#!p=forgotpass" data-to-page="forgotpass"><i class="material-icons">track_changes</i> Forgot password?</a></li>
                     </ul>
                 </li>
             </ul>
