@@ -36,16 +36,6 @@
                 </li>
             </ul>
         </div>
-        <div class="container">
-            <ul class="nav navbar-nav">
-                <li data-page-highlight="login"><a href="#!p=login" data-to-page="login"><i
-                            class="material-icons">lock_open</i>
-                        Login</a></li>
-                <li data-page-highlight="register"><a href="#!p=register" data-to-page="register"><i
-                            class="material-icons">fiber_new</i>
-                        Register</a></li>
-            </ul>
-        </div>
     </nav>
     <div id="page_login" class="container" style="display: none">
         <div class="jumbotron depth-1">
