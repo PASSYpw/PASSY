@@ -29,9 +29,11 @@
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                        aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
                     <ul class="dropdown-menu">
-                        <li><a href="#!p=register" data-to-page="register"><i class="material-icons">info_outline</i> Not registered?</a></li>
+                        <li><a href="#!p=register" data-to-page="register"><i class="material-icons">info_outline</i>
+                                Not registered?</a></li>
                         <li role="separator" class="divider"></li>
-                        <li><a href="#!p=forgotpass" data-to-page="forgotpass"><i class="material-icons">track_changes</i> Forgot password?</a></li>
+                        <li><a href="#!p=forgotpass" data-to-page="forgotpass"><i
+                                        class="material-icons">track_changes</i> Forgot password?</a></li>
                     </ul>
                 </li>
             </ul>
@@ -60,7 +62,16 @@
             </div>
             <div class="row row-margin">
                 <div class="col-xs-12">
-
+                    <div class="form-group">
+                        <div class="text">
+                            <input type="text" class="form-control" title="Username" required/>
+                            <label>Username</label>
+                        </div>
+                        <div class="text">
+                            <input type="text" class="form-control" title="Password" required/>
+                            <label>Password</label>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
