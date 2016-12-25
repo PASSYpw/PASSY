@@ -55,4 +55,19 @@ function registerListeners() {
             contextMenu.addClass("open");
         }, 10);
     });
+
+    var lastHeight = 0;
+
+    $(window).scroll(function (e) {
+        var navbar = $(".navbar-fixed-top"),
+            scrollTop = $(document).scrollTop(),
+            firstHeight = navbar.children().first().outerHeight();
+        if (scrollTop < firstHeight) {
+            navbar.css({transform: "translateY(-" + scrollTop + "px)"});
+            lastHeight = scrollTop;
+        }
+        if (scrollTop >= firstHeight) {
+            navbar.css({transform: "translateY(-" + firstHeight + "px)"});
+        }
+    });
 }

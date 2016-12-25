@@ -2,7 +2,7 @@
 
 //Theme settings
 $colorBackground: #EEEEEE;
-$colorForeground: #FAFAFA;
+$colorForeground: #FFFFFF;
 $colorText: #000000;
 $colorSecondaryText: #757575;
 $colorDivider: rgba(0, 0, 0, 0.06);
@@ -38,7 +38,11 @@ body {
 .jumbotron {
   background-color: $colorForeground;
   border-radius: 0 !important;
+  @extend .depth-1;
+}
 
+.content {
+  padding-top: 120px;
 }
 
 /* Buttons */
@@ -286,6 +290,8 @@ body {
 
 .modal-content {
   border-radius: 0;
+  border: none;
+  @extend .depth-4;
 }
 
 .modal-content .nav-tabs {
@@ -320,6 +326,7 @@ body {
   background-color: $colorTheme;
   border: none;
   border-radius: 0;
+  @extend .depth-2;
 }
 
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover,
@@ -399,8 +406,6 @@ body {
   border: none;
   top: 2px;
   right: 2px;
-  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
-  box-shadow: 0 6px 12px rgba(0, 0, 0, .175);
 }
 
 .dropdown.open > .dropdown-menu {
@@ -412,6 +417,10 @@ body {
 }
 
 /* INPUTS */
+
+.text {
+  padding-top: 15px;
+}
 
 .text > .form-control {
   height: 30px;
@@ -432,7 +441,7 @@ body {
   font-weight: normal;
   position: absolute;
   pointer-events: none;
-  transform: translate(5px, -23px);
+  transform: translate(10px, -27px);
   transition: 0.2s ease all;
   -moz-transition: 0.2s ease all;
   -webkit-transition: 0.2s ease all;
@@ -458,52 +467,45 @@ body {
   color: $colorTheme;
 }
 
+// MODALS
+.modal.fade .modal-dialog, .modal.in .modal-dialog {
+  opacity: 1;
+  transform: translate(0, 0);
+}
+
+.modal.fade {
+  transform: translateY(100vh);
+  -webkit-transition: all 100ms cubic-bezier(0.4, 0.0, 1, 1);
+  -o-transition: all 100ms cubic-bezier(0.4, 0.0, 1, 1);
+  transition: all 100ms cubic-bezier(0.4, 0.0, 1, 1);
+}
+
+.modal.in {
+  transform: translateY(0);
+  -webkit-transition: all 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  -o-transition: all 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+  transition: all 150ms cubic-bezier(0.0, 0.0, 0.2, 1);
+}
+
+.modal-backdrop.in {
+  filter: alpha(opacity=20);
+  opacity: 0.2;
+}
+
 /* MISC */
 .material-icons {
   vertical-align: middle;
 }
 
 .contextmenu {
-  position: absolute;
+  position: fixed;
+  z-index: 9000;
   top: 0;
   left: 0;
 }
 
 .contextmenu.open > .dropdown-menu {
   animation: contextmenuIn ease 200ms;
-}
-
-.modal.fade .modal-dialog {
-  -webkit-transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  -o-transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  opacity: 0;
-}
-
-.modal.in .modal-dialog {
-  opacity: 1;
-}
-
-.modal.fade {
-  -webkit-transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  -o-transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transition: all 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transform: translateY(100vh);
-}
-
-.modal.in {
-  transform: translateY(0);
-}
-
-.content {
-  -webkit-transition: filter 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  -o-transition: filter 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  transition: filter 300ms cubic-bezier(0.19, 1, 0.22, 1);
-  filter: blur(0);
-}
-
-.modal-open > .content {
-  filter: blur(3px);
 }
 
 .spin {
@@ -520,6 +522,14 @@ body {
 
 .table > thead > tr {
   height: 56px;
+}
+
+.dropdown-menu {
+  @extend .depth-3;
+}
+
+.contextmenu > .dropdown-menu {
+  @extend .depth-5;
 }
 
 @media screen and (max-width: 767px) {

@@ -18,37 +18,36 @@
     <![endif]-->
 </head>
 <body>
-<div class="content">
-    <nav class="navbar navbar-default depth-2">
-        <div class="container">
-            <div class="navbar-header">
-                <span class="navbar-brand" href="#">Passy<small>.pw</small></span>
-            </div>
-            <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
-                       aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
-                    <ul class="dropdown-menu">
-                        <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
-                        <li role="separator" class="divider"></li>
-                        <li><a href="#"><i class="material-icons">exit_to_app</i> Logout</a></li>
-                    </ul>
-                </li>
-            </ul>
+<nav class="navbar navbar-default navbar-fixed-top">
+    <div class="container">
+        <div class="navbar-header">
+            <span class="navbar-brand" href="#">Passy<small>.pw</small></span>
         </div>
-        <div class="container">
-            <ul class="nav navbar-nav">
-                <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i
-                        class="material-icons">lock_outline</i>
+        <ul class="nav navbar-nav navbar-right">
+            <li class="dropdown">
+                <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
+                   aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="#"><i class="material-icons">exit_to_app</i> Logout</a></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+    <div class="container">
+        <ul class="nav navbar-nav" style="position: static">
+            <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i
+                            class="material-icons">lock_outline</i>
                     Passwords <span class="sr-only">(current)</span></a></li>
-                <li data-page-highlight="groups"><a href="#!p=groups" data-to-page="groups"><i
-                        class="material-icons">group</i> Groups</a></li>
-            </ul>
-        </div>
-    </nav>
-
+            <li data-page-highlight="groups"><a href="#!p=groups" data-to-page="groups"><i
+                            class="material-icons">group</i> Groups</a></li>
+        </ul>
+    </div>
+</nav>
+<div class="content">
     <div id="page_passwords" class="container" style="display: none">
-        <div class="jumbotron depth-1">
+        <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Downloads</h2>
@@ -58,10 +57,10 @@
                 <div class="col-xs-12">
                     <div class="btn-group" role="group" aria-label="...">
                         <button type="button" class="btn btn-success" id="btnAdd" title="Add download..."><i
-                                class="material-icons">add</i> Add
+                                    class="material-icons">add</i> Add
                         </button>
                         <button type="button" class="btn btn-primary" id="btnRefresh" title="Refresh..."><i
-                                class="material-icons">refresh</i> Refresh
+                                    class="material-icons">refresh</i> Refresh
                         </button>
                     </div>
                 </div>
@@ -69,7 +68,7 @@
             <div class="row row-margin">
                 <div class="col-xs-12">
                     <div class="table-responsive">
-                        <table id="tablePasswords" class="table table-striped table-hover">
+                        <table id="tablePasswords" class="table table-hover">
                             <thead>
                             <tr>
                                 <th>Username</th>
@@ -104,7 +103,7 @@
         </div>
     </div>
     <div id="page_groups" class="container" style="display: none">
-        <div class="jumbotron depth-1">
+        <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Groups</h2>
@@ -126,7 +125,7 @@
 
 <!-- MODALS -->
 <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog">
-    <div class="modal-dialog" role="document">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content depth-5">
             <div class="modal-header">
                 <h4 class="modal-title">Add Download...</h4>
