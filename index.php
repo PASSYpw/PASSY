@@ -111,8 +111,8 @@
 <!-- CONTEXTMENU -->
 <div class="dropdown contextmenu" id="dropdownContextMenu">
     <ul class="dropdown-menu">
-        <li><a href="#"><i class="material-icons">refresh</i> Reload</a></li>
-        <li><a href="#"><i class="material-icons">help</i> Help</a></li>
+        <li><a href="#">Reload</a></li>
+        <li><a href="#">Help</a></li>
     </ul>
 </div>
 
