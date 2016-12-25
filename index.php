@@ -41,18 +41,26 @@
                 <li data-page-highlight="login"><a href="#!p=login" data-to-page="login"><i
                             class="material-icons">lock_open</i>
                         Login</a></li>
-                <li data-page-highlight="login"><a href="#!p=login" data-to-page="login"><i
+                <li data-page-highlight="register"><a href="#!p=register" data-to-page="register"><i
                             class="material-icons">fiber_new</i>
                         Register</a></li>
             </ul>
         </div>
     </nav>
-
     <div id="page_login" class="container" style="display: none">
         <div class="jumbotron depth-1">
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Login</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div id="page_register" class="container" style="display: none">
+        <div class="jumbotron depth-1">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="text-center">Register</h2>
                 </div>
             </div>
             <div class="row">
@@ -101,7 +109,7 @@
         <div class="jumbotron depth-1">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="text-center">Groups</h2>
+                    <h2 class="text-center">Forgot password ?</h2>
                 </div>
             </div>
         </div>
