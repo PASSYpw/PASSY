@@ -62,7 +62,7 @@
             </div>
             <div class="row row-margin">
                 <div class="col-xs-12">
-                    <div class="form-group">
+                    <!-- //TODO: Update Inputfield-CSS (contains bugs) <div class="form-group">
                         <div class="text">
                             <input type="text" class="form-control" title="Username" required/>
                             <label>Username</label>
@@ -71,7 +71,7 @@
                             <input type="text" class="form-control" title="Password" required/>
                             <label>Password</label>
                         </div>
-                    </div>
+                    </div> -->
                 </div>
             </div>
         </div>
