@@ -60,37 +60,7 @@
             </div>
             <div class="row row-margin">
                 <div class="col-xs-12">
-                    <div class="table-responsive">
-                        <table id="tablePasswords" class="table table-striped table-hover">
-                            <thead>
-                            <tr>
-                                <th>Username</th>
-                                <th>Password</th>
-                                <th>Website</th>
-                                <th>Date added</th>
-                                <th>Added by</th>
-                            </tr>
-                            </thead>
-                            <tbody>
-                            <tr data-password-id="234324324">
-                                <td>dummyname</td>
-                                <td><a href="#" class="btn btn-default btn-flat btn-block"><i class="material-icons">lock</i></a>
-                                </td>
-                                <td><a href="https://dummy.me/">https://dummy.me/</a></td>
-                                <td>12.3.2016</td>
-                                <td>admin</td>
-                            </tr>
-                            <tr data-password-id="4353453455">
-                                <td>tux@scrumplex.net</td>
-                                <td><a href="#" class="btn btn-default btn-flat btn-block"><i class="material-icons">lock</i></a>
-                                </td>
-                                <td><a href="https://git.scrumplex.net/">https://git.scrumplex.net/</a></td>
-                                <td>12.4.2016</td>
-                                <td>admin</td>
-                            </tr>
-                            </tbody>
-                        </table>
-                    </div>
+
                 </div>
             </div>
         </div>
