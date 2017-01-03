@@ -1,25 +1,11 @@
 var currentPage = "login", switchingPage = false;
 
 $(document).ready(function () {
-    var rippleSettings = {
-        debug: false,
-        on: 'mousedown',
-        opacity: 0.41,
-        color: "auto",
-        multi: true,
-        duration: 0.4,
-        rate: function (pxPerSecond) {
-            return pxPerSecond;
-        },
-        easing: 'linear'
-    };
-
-    $.ripple(".nav > li > a", rippleSettings);
-    $.ripple(".btn-flat", rippleSettings);
 
     applyCurrentPage();
     loadPage(currentPage);
     registerListeners();
+    registerPageListeners();
 });
 
 function applyCurrentPage() {
@@ -45,9 +31,41 @@ function loadPage(page) {
         }
     });
 
-
     oldPage.fadeOut(300, function () {
         newPage.fadeIn(300);
         switchingPage = false;
     });
+}
+
+function registerPageListeners() {
+    $("#loginForm").submit(function (e) {
+        var me = $(this);
+        e.preventDefault();
+        $.ajax({
+            url: me.attr("action"),
+            method: me.attr("method"),
+            data: me.serialize(),
+            success: function (data) {
+                if (data == "success") {
+                    location.replace("/manage/");
+                }
+            }
+        })
+    });
+    $("#registerForm").submit(function (e) {
+        var me = $(this);
+        e.preventDefault();
+        $.ajax({
+            url: me.attr("action"),
+            method: me.attr("method"),
+            data: me.serialize(),
+            success: function (data) {
+                if (data == "success") {
+                    loadPage("login");
+                } else if(data == "already_exists") {
+
+                }
+            }
+        })
+    })
 }

@@ -1,3 +1,10 @@
+<?php
+include __DIR__ . "/../include/user.inc.php";
+if(isLoggedIn() != 1) {
+    header("Location: /");
+    die();
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -50,13 +57,13 @@
         <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="text-center">Downloads</h2>
+                    <h2 class="text-center">Passwords</h2>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
                     <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-success" id="btnAdd" title="Add download..."><i
+                        <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
                                     class="material-icons">add</i> Add
                         </button>
                         <button type="button" class="btn btn-primary" id="btnRefresh" title="Refresh..."><i
@@ -128,20 +135,19 @@
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content depth-5">
             <div class="modal-header">
-                <h4 class="modal-title">Add Download...</h4>
+                <h4 class="modal-title">Add password...</h4>
             </div>
             <div class="modal-body">
                 <ul class="nav nav-tabs nav-justified depth-2" role="tablist">
                     <li role="presentation" class="active">
-                        <a href="#tabFromURL" aria-controls="tabFromURL" role="tab" data-toggle="tab">From URL</a>
+                        <a href="#tabPrivate" aria-controls="tabPrivate" role="tab" data-toggle="tab">Private password</a>
                     </li>
                     <li role="presentation">
-                        <a href="#tabFromTorrentFile" aria-controls="tabFromTorrentFile" role="tab" data-toggle="tab">From
-                            torrent file</a>
+                        <a href="#tabShared" aria-controls="tabShared" role="tab" data-toggle="tab">Shared password</a>
                     </li>
                 </ul>
                 <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="tabFromURL">
+                    <div role="tabpanel" class="tab-pane fade in active" id="tabPrivate">
                         <div class="form-group">
                             <div class="text">
                                 <input id="inputURL" type="text" class="form-control" title="URL" required/>
@@ -149,7 +155,7 @@
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tabFromTorrentFile">
+                    <div role="tabpanel" class="tab-pane fade" id="tabShared">
                         <div class="form-group">
                             <span>File</span>
                             <input id="inputFileUpload" type="file" accept="application/x-bittorrent" required/>

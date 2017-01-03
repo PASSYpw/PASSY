@@ -1,4 +1,20 @@
 function registerListeners() {
+    var rippleSettings = {
+        debug: false,
+        on: 'mousedown',
+        opacity: 0.3,
+        color: "auto",
+        multi: true,
+        duration: 0.3,
+        rate: function (pxPerSecond) {
+            return pxPerSecond;
+        },
+        easing: 'linear'
+    };
+
+    $.ripple(".nav > li > a", rippleSettings);
+    $.ripple(".btn", rippleSettings);
+
     $("#btnAdd").click(function (e) {
         e.preventDefault();
         $("#modalAdd").modal('toggle');

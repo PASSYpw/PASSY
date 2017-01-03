@@ -47,85 +47,31 @@ body {
 
 /* Buttons */
 
-.btn-default, .btn-default:focus {
+.btn-default, .btn-default:focus, .btn-default:hover, .btn-default:active, .btn-default:hover:active {
   background: $colorDefault;
-  background: -moz-linear-gradient(right, $colorDefault 50%, darken($colorDefault, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorDefault 50%, darken($colorDefault, 10%) 50%);
-  background: linear-gradient(to left, r $colorDefault 50%, darken($colorDefault, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-default:hover {
-  background-position-x: 0;
-}
-
-.btn-primary, .btn-primary:focus {
+.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary:hover:active {
   background: $colorPrimary;
-  background: -moz-linear-gradient(right, $colorPrimary 50%, darken($colorPrimary, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorPrimary 50%, darken($colorPrimary, 10%) 50%);
-  background: linear-gradient(to left, $colorPrimary 50%, darken($colorPrimary, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-primary:hover {
-  background-position-x: 0;
-}
-
-.btn-success, .btn-success:focus {
+.btn-success, .btn-success:focus, .btn-success:hover, .btn-success:active, .btn-success:hover:active {
   background: $colorSuccess;
-  background: -moz-linear-gradient(right, $colorSuccess 50%, darken($colorSuccess, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorSuccess 50%, darken($colorSuccess, 10%) 50%);
-  background: linear-gradient(to left, $colorSuccess 50%, darken($colorSuccess, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-success:hover {
-  background-position-x: 0;
-}
-
-.btn-info, .btn-info:focus {
+.btn-info, .btn-info:focus, .btn-info:hover, .btn-info:active, .btn-info:hover:active {
   background: $colorInfo;
-  background: -moz-linear-gradient(right, $colorInfo 50%, darken($colorInfo, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorInfo 50%, darken($colorInfo, 10%) 50%);
-  background: linear-gradient(to left, $colorInfo 50%, darken($colorInfo, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-info:hover {
-  background-position-x: 0;
-}
-
-.btn-warning, .btn-warning:focus {
+.btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:active, .btn-warning:hover:active {
   background: $colorWarning;
-  background: -moz-linear-gradient(right, $colorWarning 50%, darken($colorWarning, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorWarning 50%, darken($colorWarning, 10%) 50%);
-  background: linear-gradient(to left, $colorWarning 50%, darken($colorWarning, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-warning:hover {
-  background-position-x: 0;
-}
-
-.btn-danger, .btn-danger:focus {
+.btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:active, .btn-danger:hover:active {
   background: $colorDanger;
-  background: -moz-linear-gradient(right, $colorDanger 50%, darken($colorDanger, 10%) 50%);
-  background: -webkit-linear-gradient(right, $colorDanger 50%, darken($colorDanger, 10%) 50%);
-  background: linear-gradient(to left, $colorDanger 50%, darken($colorDanger, 10%) 50%);
-  background-size: 210%;
-  background-position-x: 99%;
 }
 
-.btn-danger:hover {
-  background-position-x: 0;
-}
-
-.btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:active:hover {
+.btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:hover:active {
   background: transparent;
   outline: none !important;
   box-shadow: none;
@@ -166,6 +112,9 @@ body {
   text-transform: uppercase;
   font-size: 14px;
   transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.btn:focus, .btn:active, .btn:focus:active {
+  outline: none;
 }
 
 .btn:not(.btn-flat) {
@@ -416,8 +365,12 @@ body {
   animation: dropdownItemsIn ease 400ms;
 }
 
-/* INPUTS */
+/* FOOTER */
+.footer {
+  background-color: darken($colorBackground, 10%);
+}
 
+/* INPUTS */
 .text {
   padding-top: 15px;
 }
@@ -425,7 +378,7 @@ body {
 .text > .form-control {
   height: 30px;
   display: block;
-  padding: 10px 10px 10px 5px;
+  padding: 0 10px;
   border: none;
   border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
   border-radius: 0;
