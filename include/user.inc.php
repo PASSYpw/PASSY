@@ -2,16 +2,17 @@
 session_start();
 require_once __DIR__ . "/mysql.inc.php";
 
-function loginUser($email, $passwordHash)
+function loginUser($email, $password)
 {
+    $passwordHash = hash("SHA256", $password);
     $conn = getMYSQL();
     $user = userExists($conn, $email);
     $conn->close();
     if ($user != null) {
         if ($passwordHash == $user['PASSWORD']) {
             $_SESSION["email"] = $email;
-            $_SESSION["passwordHash"] = $passwordHash;
-            $_SESSION["fullName"] = $user["FULLNAME"];
+            $_SESSION["masterPassword"] = hash("SHA256", $password . $user['USERID']);
+            $_SESSION["userid"] = $user['USERID'];
             $_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
             return true;
         }
@@ -34,14 +35,15 @@ function userExists($conn, $email)
     return false;
 }
 
-function registerUser($email, $passwordHash)
+function registerUser($email, $password)
 {
+    $passwordHash = hash("SHA256", $password);
     $conn = getMYSQL();
     if (!userExists($conn, $email)) {
-        $ps = $conn->prepare("INSERT INTO `users` (`EMAIL`, `PASSWORD`) VALUES (?,?)");
-        $ps->bind_param("ss", $email, $passwordHash);
+        $userid = uniqid("user_");
+        $ps = $conn->prepare("INSERT INTO `users` (`EMAIL`, `USERID`, `PASSWORD`) VALUES (?,?,?)");
+        $ps->bind_param("sss", $email, $userid, $passwordHash);
         $succeeded = $ps->execute();
-        $result = $ps->get_result();
         $ps->close();
         $conn->close();
         if ($succeeded) {
@@ -58,7 +60,7 @@ function logoutUser()
 
 function isLoggedIn()
 {
-    if (!isset($_SESSION["email"]) || !isset($_SESSION["passwordHash"]) || !isset($_SESSION["ip"])) {
+    if (!isset($_SESSION["email"]) || !isset($_SESSION["masterPassword"]) || !isset($_SESSION["ip"]) || !isset($_SESSION["userid"])) {
         return 0;
     }
     if ($_SESSION["ip"] != $_SERVER["REMOTE_ADDR"]) {

@@ -56,9 +56,9 @@ if (isLoggedIn() == 1) {
                     <form id="loginForm" method="POST" action="manage/backend/login.php">
                         <div class="form-group">
                             <div class="text">
-                                <input type="text" class="form-control" title="Username" name="login_email"
+                                <input type="text" class="form-control" title="E-Mail" name="login_email"
                                        required/>
-                                <label>Username</label>
+                                <label>E-Mail</label>
                             </div>
                             <div class="text">
                                 <input type="password" class="form-control" title="Password" name="login_password"
@@ -71,6 +71,22 @@ if (isLoggedIn() == 1) {
                             <a data-to-page="forgotpass" class="btn btn-default btn-flat btn-sm">Forgot password</a>
                         </div>
                     </form>
+                    <div class="alert alert-success" id="successAccountCreated" style="display: none">
+                        <strong>Success!</strong> You can now login.
+                    </div>
+                    <div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
+                        <strong>Error!</strong> Invalid Credentials!
+                    </div>
+                    <div class="alert alert-danger" id="errorEmailInvalid" style="display: none">
+                        <strong>Error!</strong> The specified email is invalid!
+                    </div>
+                    <div class="alert alert-danger" id="errorFormInvalid" style="display: none">
+                        <strong>Error!</strong>
+                    </div>
+                    <div class="alert alert-danger" id="errorLoginDatabase" style="display: none">
+                        <!--TODO: implement in JS-->
+                        <strong>Error!</strong> There was a problem with the database connection.
+                    </div>
                 </div>
             </div>
         </div>
@@ -87,20 +103,39 @@ if (isLoggedIn() == 1) {
                     <form id="registerForm" method="POST" action="manage/backend/register.php">
                         <div class="form-group">
                             <div class="text">
-                                <input type="text" class="form-control" title="Username" name="register_email"
+                                <input type="text" class="form-control" title="E-Mail" name="register_email"
                                        required/>
-                                <label>Username</label>
+                                <label>E-Mail</label>
                             </div>
                             <div class="text">
-                                <input type="text" class="form-control" title="Password" name="register_password"
+                                <input type="password" class="form-control" title="Password" name="register_password"
                                        required/>
                                 <label>Password</label>
                             </div>
+                            <div class="text">
+                                <input type="password" class="form-control" title="Password" name="register_password2"
+                                       required/>
+                                <label>Password (again)</label>
+                            </div>
+                            <div class="g-recaptcha" data-sitekey="6LfpohAUAAAAAOdx7snpLzl6hc5zdYpFfC5YttPV"></div>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-default">Register</button>
                         </div>
                     </form>
+                    <div class="alert alert-danger" id="errorAccountRegistered" style="display: none">
+                        <strong>Error!</strong> There is an account registered with that email!
+                    </div>
+                    <div class="alert alert-danger" id="errorEmailInvalid" style="display: none">
+                        <strong>Error!</strong> The specified email is invalid!
+                    </div>
+                    <div class="alert alert-danger" id="errorFormInvalid" style="display: none">
+                        <strong>Error!</strong>
+                    </div>
+                    <div class="alert alert-danger" id="errorDatabase" style="display: none">
+                        <!--TODO: implement in JS-->
+                        <strong>Error!</strong> There was a problem with the database connection.
+                    </div>
                 </div>
             </div>
         </div>
@@ -130,6 +165,7 @@ if (isLoggedIn() == 1) {
 </div>
 
 <script src="assets/js/jquery.min.js"></script>
+<script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/ripple.min.js"></script>
 <script src="assets/js/app.login.js"></script>

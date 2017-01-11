@@ -15,46 +15,18 @@ function registerListeners() {
     $.ripple(".nav > li > a", rippleSettings);
     $.ripple(".btn", rippleSettings);
 
-    $("#btnAdd").click(function (e) {
-        e.preventDefault();
-        $("#modalAdd").modal('toggle');
+    $(".text > input").on("input", function () {
+        var me = $(this);
+        if(me.val().length > 0)
+            me.addClass("hastext");
+        else
+            me.removeClass("hastext");
     });
 
-    $("#btnRefresh").click(function (e) {
-        e.preventDefault();
-        var me = $(this), icon = me.find(".material-icons");
-        icon.addClass("spin");
-        me.addClass("disabled");
-        me.attr("disabled", "");
-        setTimeout(function () {
-            icon.removeClass("spin");
-            me.removeClass("disabled");
-            me.attr("disabled", null);
-        }, 3300);
-    });
     $("a[data-to-page]").click(function (e) {
         var me = $(this);
         e.preventDefault();
         loadPage(me.attr("data-to-page"));
-    });
-    $("#tableDownloads").find("tbody").find("tr").dblclick(function (e) {
-        e.preventDefault();
-        $("#modalDLInfo").modal('toggle');
-    });
-
-    var word = "";
-
-    $(document).keydown(function (e) {
-        word += e.key;
-        if (e.key == "r") {
-            $("#btnRefresh").click();
-        }
-        if (e.key == "+") {
-            $("#btnAdd").click();
-        }
-        if (word == "helloworld") {
-            alert("hello too! :)");
-        }
     });
 
     var contextMenu = $("#dropdownContextMenu");
@@ -64,6 +36,8 @@ function registerListeners() {
     });
 
     $(this).bind("contextmenu", function (e) {
+        if(e.shiftKey)
+            return;
         e.preventDefault();
         var x = e.clientX, y = e.clientY;
         contextMenu.removeClass("open");
@@ -87,4 +61,18 @@ function registerListeners() {
             navbar.css({transform: "translateY(-" + firstHeight + "px)"});
         }
     });
+}
+
+function showAlert(object, timeout) {
+    object.fadeIn(200, function () {
+        var me = $(this);
+        setTimeout(function () {
+            me.fadeOut(200);
+        }, timeout)
+    });
+}
+
+function hideAllAlerts() {
+    $("#errorAccountRegistered").fadeOut(200);
+    $("#successAccountCreated").fadeOut(200);
 }

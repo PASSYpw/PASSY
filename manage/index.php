@@ -1,6 +1,6 @@
 <?php
 include __DIR__ . "/../include/user.inc.php";
-if(isLoggedIn() != 1) {
+if (isLoggedIn() != 1) {
     header("Location: /");
     die();
 }
@@ -37,7 +37,7 @@ if(isLoggedIn() != 1) {
                 <ul class="dropdown-menu">
                     <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#"><i class="material-icons">exit_to_app</i> Logout</a></li>
+                    <li><a href="backend/logout.php"><i class="material-icons">exit_to_app</i> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -85,23 +85,7 @@ if(isLoggedIn() != 1) {
                                 <th>Added by</th>
                             </tr>
                             </thead>
-                            <tbody>
-                            <tr data-password-id="234324324">
-                                <td>dummyname</td>
-                                <td><a href="#" class="btn btn-default btn-flat btn-block"><i class="material-icons">lock</i></a>
-                                </td>
-                                <td><a href="https://dummy.me/">https://dummy.me/</a></td>
-                                <td>12.3.2016</td>
-                                <td>admin</td>
-                            </tr>
-                            <tr data-password-id="4353453455">
-                                <td>tux@scrumplex.net</td>
-                                <td><a href="#" class="btn btn-default btn-flat btn-block"><i class="material-icons">lock</i></a>
-                                </td>
-                                <td><a href="https://git.scrumplex.net/">https://git.scrumplex.net/</a></td>
-                                <td>12.4.2016</td>
-                                <td>admin</td>
-                            </tr>
+                            <tbody id="tbodyPasswords">
                             </tbody>
                         </table>
                     </div>
@@ -126,7 +110,7 @@ if(isLoggedIn() != 1) {
         <li><a href="#">This context menu</a></li>
         <li><a href="#">is supposed to</a></li>
         <li><a href="#">have a function</a></li>
-        <li><a href="#">but hasnt one</a></li>
+        <li><a href="#">but does not have one</a></li>
     </ul>
 </div>
 
@@ -137,36 +121,54 @@ if(isLoggedIn() != 1) {
             <div class="modal-header">
                 <h4 class="modal-title">Add password...</h4>
             </div>
-            <div class="modal-body">
-                <ul class="nav nav-tabs nav-justified depth-2" role="tablist">
-                    <li role="presentation" class="active">
-                        <a href="#tabPrivate" aria-controls="tabPrivate" role="tab" data-toggle="tab">Private password</a>
-                    </li>
-                    <li role="presentation">
-                        <a href="#tabShared" aria-controls="tabShared" role="tab" data-toggle="tab">Shared password</a>
-                    </li>
-                </ul>
-                <div class="tab-content">
-                    <div role="tabpanel" class="tab-pane fade in active" id="tabPrivate">
-                        <div class="form-group">
-                            <div class="text">
-                                <input id="inputURL" type="text" class="form-control" title="URL" required/>
-                                <label>URL</label>
+            <form method="post" action="backend/addPassword.php" id="formAddPassword">
+                <div class="modal-body">
+                    <ul class="nav nav-tabs nav-justified depth-2" role="tablist">
+                        <li role="presentation" class="active">
+                            <a href="#tabPrivate" aria-controls="tabPrivate" role="tab" data-toggle="tab">Private
+                                password</a>
+                        </li>
+                        <li role="presentation">
+                            <a href="#tabShared" aria-controls="tabShared" role="tab" data-toggle="tab">Shared
+                                password</a>
+                        </li>
+                    </ul>
+                    <div class="tab-content">
+                        <div role="tabpanel" class="tab-pane fade in active" id="tabPrivate">
+                            <div class="form-group">
+                                <div class="text">
+                                    <input type="text" class="form-control" title="Username" name="username" autocomplete="off"/>
+                                    <label>Username (optional)</label>
+                                </div>
+                                <div class="text">
+                                    <input type="password" class="form-control" title="Password" name="password"
+                                           required autocomplete="off"/>
+                                    <label>Password</label>
+                                </div>
+                                <div class="text">
+                                    <input type="url" class="form-control" title="Password" name="website" autocomplete="off"/>
+                                    <label>Website (optional)</label>
+                                </div>
+                            </div>
+                            <div class="alert alert-danger" id="errorDatabase" style="display: none">
+                                <strong>Error!</strong> There was a problem with the database connection.
+                            </div>
+                            <div class="alert alert-danger" id="errorUnknown" style="display: none">
+                                <strong>Error!</strong> An unknown error occurred!
+                            </div>
+                        </div>
+                        <div role="tabpanel" class="tab-pane fade" id="tabShared">
+                            <div class="form-group">
+
                             </div>
                         </div>
                     </div>
-                    <div role="tabpanel" class="tab-pane fade" id="tabShared">
-                        <div class="form-group">
-                            <span>File</span>
-                            <input id="inputFileUpload" type="file" accept="application/x-bittorrent" required/>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-flat btn-primary">Add</button>
-            </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-flat btn-primary">Add</button>
+                </div>
+            </form>
         </div>
     </div>
 </div>

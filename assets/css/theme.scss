@@ -113,6 +113,7 @@ body {
   font-size: 14px;
   transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
+
 .btn:focus, .btn:active, .btn:focus:active {
   outline: none;
 }
@@ -400,7 +401,7 @@ body {
   -webkit-transition: 0.2s ease all;
 }
 
-.text > input:focus ~ label, .text > input:valid ~ label {
+.text > input:focus ~ label, .text > input.hastext ~ label {
   transform: translate(5px, -44px);
   font-size: 14px;
   color: $colorTheme;
@@ -483,6 +484,10 @@ body {
 
 .contextmenu > .dropdown-menu {
   @extend .depth-5;
+}
+
+.g-recaptcha {
+  padding-top: 15px;
 }
 
 @media screen and (max-width: 767px) {

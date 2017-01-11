@@ -48,13 +48,17 @@ function registerPageListeners() {
             success: function (data) {
                 if (data == "success") {
                     location.replace("/manage/");
+                } else if(data == "logged_in") {
+                    location.replace("/manage/");
                 }
             }
         })
     });
+
     $("#registerForm").submit(function (e) {
         var me = $(this);
         e.preventDefault();
+        hideAllAlerts();
         $.ajax({
             url: me.attr("action"),
             method: me.attr("method"),
@@ -62,8 +66,15 @@ function registerPageListeners() {
             success: function (data) {
                 if (data == "success") {
                     loadPage("login");
-                } else if(data == "already_exists") {
-
+                    showAlert($("#successAccountCreated"), 2000);
+                } else if (data == "already_exists") {
+                    showAlert($("#errorAccountRegistered"), 2000);
+                } else if(data == "invalid_email") {
+                    showAlert($("#errorEmailInvalid"), 2000);
+                } else if(data == "logged_in") {
+                    location.replace("/manage/");
+                } else {
+                    showAlert($("#errorFormInvalid"), 2000);
                 }
             }
         })
