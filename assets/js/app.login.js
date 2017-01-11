@@ -48,8 +48,16 @@ function registerPageListeners() {
             success: function (data) {
                 if (data == "success") {
                     location.replace("/manage/");
-                } else if(data == "logged_in") {
+                } else if (data == "logged_in") {
                     location.replace("/manage/");
+                } else if (data == "invalid_email") {
+                    showAlert($("#errorLoginEmailInvalid"), 2000);
+                } else if (data == "invalid_form") {
+                    showAlert($("#errorLoginFormInvalid"), 2000);
+                } else if (startsWith(data, "database_error")) {
+                    showAlert($("#errorLoginDatabase"), 2000);
+                } else if (data == "userpass_wrong") {
+                    showAlert($("#errorInvalidCredentials"), 2000);
                 }
             }
         })
@@ -69,12 +77,18 @@ function registerPageListeners() {
                     showAlert($("#successAccountCreated"), 2000);
                 } else if (data == "already_exists") {
                     showAlert($("#errorAccountRegistered"), 2000);
+                    grecaptcha.reset();
                 } else if(data == "invalid_email") {
                     showAlert($("#errorEmailInvalid"), 2000);
+                    grecaptcha.reset();
+                } else if(startsWith(data, "database_error")) {
+                    showAlert($("#errorDatabase"), 2000);
+                    grecaptcha.reset();
                 } else if(data == "logged_in") {
                     location.replace("/manage/");
                 } else {
                     showAlert($("#errorFormInvalid"), 2000);
+                    grecaptcha.reset();
                 }
             }
         })

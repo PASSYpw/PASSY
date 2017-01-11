@@ -23,10 +23,12 @@ function registerListeners() {
             me.removeClass("hastext");
     });
 
-    $("a[data-to-page]").click(function (e) {
-        var me = $(this);
+    $("*[data-to-page]").click(function (e) {
+        var me = $(this), toPage = me.attr("data-to-page");
         e.preventDefault();
-        loadPage(me.attr("data-to-page"));
+        if(toPage == "refresh")
+            toPage = currentPage;
+        loadPage(toPage);
     });
 
     var contextMenu = $("#dropdownContextMenu");
@@ -75,4 +77,12 @@ function showAlert(object, timeout) {
 function hideAllAlerts() {
     $("#errorAccountRegistered").fadeOut(200);
     $("#successAccountCreated").fadeOut(200);
+}
+
+function startsWith(haystack, needle) {
+    return haystack.substr(0, needle.length) == needle;
+}
+
+function endsWith(haystack, needle) {
+    return haystack.substr(needle.length, haystack.length) == needle;
 }

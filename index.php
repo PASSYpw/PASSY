@@ -68,7 +68,7 @@ if (isLoggedIn() == 1) {
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Login</button>
-                            <a data-to-page="forgotpass" class="btn btn-default btn-flat btn-sm">Forgot password</a>
+                            <button type="button" class="btn btn-default btn-flat" data-to-page="forgotpass">Forgot password</button>
                         </div>
                     </form>
                     <div class="alert alert-success" id="successAccountCreated" style="display: none">
@@ -77,14 +77,13 @@ if (isLoggedIn() == 1) {
                     <div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
                         <strong>Error!</strong> Invalid Credentials!
                     </div>
-                    <div class="alert alert-danger" id="errorEmailInvalid" style="display: none">
+                    <div class="alert alert-danger" id="errorLoginEmailInvalid" style="display: none">
                         <strong>Error!</strong> The specified email is invalid!
                     </div>
-                    <div class="alert alert-danger" id="errorFormInvalid" style="display: none">
+                    <div class="alert alert-danger" id="errorLoginFormInvalid" style="display: none">
                         <strong>Error!</strong>
                     </div>
                     <div class="alert alert-danger" id="errorLoginDatabase" style="display: none">
-                        <!--TODO: implement in JS-->
                         <strong>Error!</strong> There was a problem with the database connection.
                     </div>
                 </div>
@@ -149,18 +148,13 @@ if (isLoggedIn() == 1) {
             </div>
         </div>
     </div>
-    <div class="footer">
-        <div class="container">
-            <h1>foootererere</h1>
-        </div>
-    </div>
 </div>
 
 <!-- CONTEXTMENU -->
 <div class="dropdown contextmenu" id="dropdownContextMenu">
     <ul class="dropdown-menu">
-        <li><a onclick="location.reload();"><i class="material-icons">refresh</i> Reload</a></li>
-        <li><a><i class="material-icons">help</i> Help</a></li> <!-- //TODO: Add Help-Function -->
+        <li><a href="#" data-to-page="refresh"><i class="material-icons">refresh</i> Reload</a></li>
+        <li><a><i class="material-icons">help</i> Help</a></li> <!-- TODO: Add Help-Function -->
     </ul>
 </div>
 

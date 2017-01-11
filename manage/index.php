@@ -129,8 +129,7 @@ if (isLoggedIn() != 1) {
                                 password</a>
                         </li>
                         <li role="presentation">
-                            <a href="#tabShared" aria-controls="tabShared" role="tab" data-toggle="tab">Shared
-                                password</a>
+                            <a href="#tabShared" aria-controls="tabShare" role="tab" data-toggle="tab">Share</a>
                         </li>
                     </ul>
                     <div class="tab-content">
@@ -157,7 +156,7 @@ if (isLoggedIn() != 1) {
                                 <strong>Error!</strong> An unknown error occurred!
                             </div>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tabShared">
+                        <div role="tabpanel" class="tab-pane fade" id="tabShare">
                             <div class="form-group">
 
                             </div>

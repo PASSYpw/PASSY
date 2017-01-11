@@ -121,11 +121,3 @@ function loadPage(page, callback) {
             callback();
     });
 }
-
-function startsWith(haystack, needle) {
-    return haystack.substr(0, needle.length) == needle;
-}
-
-function endsWith(haystack, needle) {
-    return haystack.substr(needle.length, haystack.length) == needle;
-}

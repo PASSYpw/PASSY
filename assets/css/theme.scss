@@ -47,27 +47,27 @@ body {
 
 /* Buttons */
 
-.btn-default, .btn-default:focus, .btn-default:hover, .btn-default:active, .btn-default:hover:active {
+.btn-default, .btn-default:focus, .btn-default:hover, .btn-default:active, .btn-default:hover:active, .btn-default:focus:active {
   background: $colorDefault;
 }
 
-.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary:hover:active {
+.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary:hover:active, .btn-primary:focus:active {
   background: $colorPrimary;
 }
 
-.btn-success, .btn-success:focus, .btn-success:hover, .btn-success:active, .btn-success:hover:active {
+.btn-success, .btn-success:focus, .btn-success:hover, .btn-success:active, .btn-success:hover:active, .btn-success:focus:active {
   background: $colorSuccess;
 }
 
-.btn-info, .btn-info:focus, .btn-info:hover, .btn-info:active, .btn-info:hover:active {
+.btn-info, .btn-info:focus, .btn-info:hover, .btn-info:active, .btn-info:hover:active, .btn-info:focus:active {
   background: $colorInfo;
 }
 
-.btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:active, .btn-warning:hover:active {
+.btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:active, .btn-warning:hover:active, .btn-warning:focus:active {
   background: $colorWarning;
 }
 
-.btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:active, .btn-danger:hover:active {
+.btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:active, .btn-danger:hover:active, .btn-danger:focus:active {
   background: $colorDanger;
 }
 
@@ -105,7 +105,8 @@ body {
 .btn {
   height: 36px;
   min-width: 64px;
-  padding: auto 16px;
+  padding-left: 16px;
+  padding-right: 16px;
   margin: 5px !important;
   border: none;
   border-radius: 2px;
