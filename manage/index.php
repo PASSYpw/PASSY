@@ -82,7 +82,7 @@ if (isLoggedIn() != 1) {
                                 <th>Password</th>
                                 <th>Website</th>
                                 <th>Date added</th>
-                                <th>Added by</th>
+                                <th>Actions</th>
                             </tr>
                             </thead>
                             <tbody id="tbodyPasswords">

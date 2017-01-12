@@ -6,9 +6,9 @@ function getMYSQL()
     $config = array(
         "mysql" => array(
             "host" => "localhost",
-            "db" => "root",
-            "user" => "root",
-            "pass" => ""
+            "db" => "passy",
+            "user" => "passy",
+            "pass" => "5JMdQuopENRMVRSz"
         )
     );
 

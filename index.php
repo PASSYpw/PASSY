@@ -116,7 +116,7 @@ if (isLoggedIn() == 1) {
                                        required/>
                                 <label>Password (again)</label>
                             </div>
-                            <div class="g-recaptcha" data-sitekey="6LfpohAUAAAAAOdx7snpLzl6hc5zdYpFfC5YttPV"></div>
+                            <div class="g-recaptcha" data-sitekey="6LeUfBEUAAAAAG7h_NoKmOx1FzP3gPpDs_lwhlcE"></div>
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-default">Register</button>

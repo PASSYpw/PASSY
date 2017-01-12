@@ -1,3 +1,6 @@
+var spinnerSVG = '<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>';
+var spinnerSVGSmall = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>';
+
 function registerListeners() {
     var rippleSettings = {
         debug: false,
@@ -17,7 +20,7 @@ function registerListeners() {
 
     $(".text > input").on("input", function () {
         var me = $(this);
-        if(me.val().length > 0)
+        if (me.val().length > 0)
             me.addClass("hastext");
         else
             me.removeClass("hastext");
@@ -26,7 +29,7 @@ function registerListeners() {
     $("*[data-to-page]").click(function (e) {
         var me = $(this), toPage = me.attr("data-to-page");
         e.preventDefault();
-        if(toPage == "refresh")
+        if (toPage == "refresh")
             toPage = currentPage;
         loadPage(toPage);
     });
@@ -38,7 +41,7 @@ function registerListeners() {
     });
 
     $(this).bind("contextmenu", function (e) {
-        if(e.shiftKey)
+        if (e.shiftKey)
             return;
         e.preventDefault();
         var x = e.clientX, y = e.clientY;

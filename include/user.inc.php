@@ -1,6 +1,7 @@
 <?php
 session_start();
 require_once __DIR__ . "/mysql.inc.php";
+require_once __DIR__ . "/json.inc.php";
 
 function loginUser($email, $password)
 {

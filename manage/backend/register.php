@@ -7,7 +7,7 @@ if (!isLoggedIn()) {
     if (!isset($_POST["register_email"]) || !isset($_POST["register_password"]) || !isset($_POST["g-recaptcha-response"]))
         die("invalid_form");
 
-    $recaptcha = new \ReCaptcha\ReCaptcha("6LfpohAUAAAAAL44mMYrNplS-X4RVTbKUo9uWIvz");
+    $recaptcha = new \ReCaptcha\ReCaptcha("6LeUfBEUAAAAANw4SOK1QTk6fTLqeqYbiIJneFfD");
 
     $gRecaptchaResponse = $_POST["g-recaptcha-response"];
     $remoteIp = $_SERVER["REMOTE_ADDR"];

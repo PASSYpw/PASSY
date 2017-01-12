@@ -46,13 +46,17 @@ function registerPageListeners() {
             data: me.serialize(),
             success: function (data) {
                 btn.attr("disabled", null);
-                if (startsWith(data, "pass_")) {
+                if (data.success) {
+                    me.find("input").val("");
+                    me.find("input.hastext").removeClass("hastext");
                     refresh();
                     $(".modal.fade.in").modal("hide");
-                } else if(startsWith(data, "database_error")) {
-                    showAlert($("#errorDatabase"), 3000)
                 } else {
-                    showAlert($("#errorUnknown"), 3000)
+                    if (startsWith(data.msg, "database_")) {
+                        showAlert($("#errorDatabase"), 3000)
+                    } else {
+                        showAlert($("#errorUnknown"), 3000)
+                    }
                 }
             }
         })
@@ -61,15 +65,62 @@ function registerPageListeners() {
         e.preventDefault();
         refresh();
     });
-    $('#tbodyPasswords').on('click', '*[data-password-id]', function (e) {
-        var me = $(this), passwordId = me.data("password-id");
+
+    var passwordTable = $('#tbodyPasswords');
+
+    passwordTable.on('click', '*[data-password-action="show"]', function (e) {
+        var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
         e.preventDefault();
+        me.attr("disabled", "");
+        me.html(spinnerSVGSmall);
         $.ajax({
             url: "backend/getPassword.php",
             method: "post",
             data: "id=" + encodeURIComponent(passwordId),
             success: function (data) {
-                alert(data);
+                if (data.success) {
+                    parent.html("<span class='selectable'>" + data.data.password + "</span>")
+                } else {
+                    me.html("<i class='material-icons'>error</i>")
+                }
+            }
+        })
+    });
+    passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
+        /*TODO: Implement editing
+        var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
+         e.preventDefault();
+         me.attr("disabled", "");
+         me.html(spinnerSVGSmall);
+         $.ajax({
+         url: "backend/getPassword.php",
+         method: "post",
+         data: "id=" + encodeURIComponent(passwordId),
+         success: function (data) {
+         if (data.success) {
+         parent.html("<span class='selectable'>" + data.data.password + "</span>")
+         } else {
+         me.html("<i class='material-icons'>error</i>")
+         }
+         }
+         })*/
+        alert("Not implemented yet!");
+    });
+    passwordTable.on('click', '*[data-password-action="delete"]', function (e) {
+        var me = $(this), passwordId = me.data("password-id");
+        e.preventDefault();
+        me.attr("disabled", "");
+        me.html(spinnerSVGSmall);
+        $.ajax({
+            url: "backend/deletePassword.php",
+            method: "post",
+            data: "id=" + encodeURIComponent(passwordId),
+            success: function (data) {
+                if (data.success) {
+                    refresh();
+                } else {
+                    me.html("<i class='material-icons'>error</i>")
+                }
             }
         })
     });
@@ -96,28 +147,50 @@ function loadPage(page, callback) {
     var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page);
     currentPage = page;
 
-    if (page == "passwords") {
-        $.ajax({
-            url: "backend/getPasswords.php",
-            success: function (data) {
-                $("#tbodyPasswords").html(data);
-            }
-        })
-    }
-
-    $("*[data-page-highlight]").each(function (index, elem) {
-        elem = $(elem);
-        if (elem.attr("data-page-highlight") == page) {
-            elem.addClass("active");
-        } else {
-            elem.removeClass("active");
-        }
-    });
 
     oldPage.fadeOut(300, function () {
-        newPage.fadeIn(300);
-        switchingPage = false;
-        if (callback != null)
-            callback();
+        if (page == "passwords") {
+            $.ajax({
+                url: "backend/getPasswords.php",
+                success: function (data) {
+                    var tableBody = $("#tbodyPasswords");
+                    if (data.success) {
+                        var jsonData = data.data, tbody = "";
+                        $.each(jsonData, function (index, item) {
+                            var website = "";
+                            if (item.website == null) {
+                                website = "<i>None</i>";
+                            } else {
+                                website = "<a href='" + item.website + "'>" + item.website + "</a>";
+                            }
+
+                            var row = "<tr>";
+                            row += "<td>" + item.username + "</td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
+                            row += "<td>" + website + "</td>";
+                            row += "<td>" + item.date_added_nice + "</td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
+                            row += "</tr>";
+                            tbody += row;
+                        });
+                        tableBody.html(tbody);
+                    }
+
+
+                    $("*[data-page-highlight]").each(function (index, elem) {
+                        elem = $(elem);
+                        if (elem.attr("data-page-highlight") == page) {
+                            elem.addClass("active");
+                        } else {
+                            elem.removeClass("active");
+                        }
+                    });
+                    newPage.fadeIn(300);
+                    switchingPage = false;
+                    if (callback != null)
+                        callback();
+                }
+            })
+        }
     });
 }

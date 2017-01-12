@@ -17,6 +17,10 @@ $colorInfo: #00BCD4;
 $colorWarning: #FFC107;
 $colorDanger: #f44336;
 
+//Spinner
+$offsetSpinnerStroke: 187;
+$durationSpinner: 1.6s;
+
 //Styling
 * {
   -webkit-touch-callout: none;
@@ -26,6 +30,16 @@ $colorDanger: #f44336;
   -ms-user-select: none;
   user-select: none;
   cursor: default;
+}
+
+.selectable {
+  -webkit-touch-callout: default;
+  -webkit-user-select: auto;
+  -khtml-user-select: all;
+  -moz-user-select: all;
+  -ms-user-select: all;
+  user-select: all;
+  cursor: auto;
 }
 
 body {
@@ -46,6 +60,10 @@ body {
 }
 
 /* Buttons */
+
+.btn > * {
+  cursor: pointer;
+}
 
 .btn-default, .btn-default:focus, .btn-default:hover, .btn-default:active, .btn-default:hover:active, .btn-default:focus:active {
   background: $colorDefault;
@@ -71,8 +89,8 @@ body {
   background: $colorDanger;
 }
 
-.btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:hover:active {
-  background: transparent;
+.btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:hover:active, .btn-flat[disabled], .btn-flat[disabled]:focus, .btn-flat[disabled]:hover, .btn-flat[disabled]:active, .btn-flat[disabled]:hover:active {
+  background: transparent !important;
   outline: none !important;
   box-shadow: none;
   text-transform: uppercase;
@@ -447,6 +465,23 @@ body {
   opacity: 0.2;
 }
 
+// SPINNER
+.spinner {
+  animation: rotator $durationSpinner linear infinite;
+}
+
+.spinner .path {
+  stroke-dasharray: $offsetSpinnerStroke;
+  stroke-dashoffset: 0;
+  transform-origin: center;
+  stroke: $colorText;
+  animation: dash $durationSpinner cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+}
+
+.spinner.primary .path {
+  stroke: $colorTheme;
+}
+
 /* MISC */
 .material-icons {
   vertical-align: middle;
@@ -467,12 +502,26 @@ body {
   animation: infinite spin 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 
-.table > tbody > tr > td, .table > tbody > tr > th,
-.table > tfoot > tr > td, .table > tfoot > tr > th,
-.table > thead > tr > td, .table > thead > tr > th {
-  vertical-align: middle;
-  border-top: 1px solid $colorDivider;
-  font-weight: normal;
+.table > tbody > tr:after {
+  content: '';
+  display: inline-block;
+  height: 64px;
+  width: 0;
+}
+
+.table td, .table th {
+  vertical-align: middle !important;
+  border-top: 1px solid $colorDivider !important;
+  font-weight: normal !important;
+}
+
+.table th {
+  text-align: center;
+  color: rgba($colorText, .75);
+}
+
+.table td.number {
+  text-align: right;
 }
 
 .table > thead > tr {
@@ -544,5 +593,28 @@ body {
   100% {
     transform: translate(0, 0) scale(1, 1);
     opacity: 1;
+  }
+}
+
+@keyframes rotator {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(270deg);
+  }
+}
+
+@keyframes dash {
+  0% {
+    stroke-dashoffset: $offsetSpinnerStroke;
+  }
+  50% {
+    stroke-dashoffset: $offsetSpinnerStroke/4;
+    transform: rotate(135deg);
+  }
+  100% {
+    stroke-dashoffset: $offsetSpinnerStroke;
+    transform: rotate(450deg);
   }
 }

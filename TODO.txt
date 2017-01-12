@@ -1,4 +1,4 @@
-Delete passwords
 Share passwords
-Nice show password dialog
 edit user
+edit password
+password archive (delete after 14 days)
