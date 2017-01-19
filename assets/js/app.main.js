@@ -35,6 +35,11 @@ function registerPageListeners() {
         $("#modalAdd").modal('toggle');
     });
 
+    $("#btnLogout").click(function (e) {
+        e.preventDefault();
+        logout();
+    });
+
     $("#formAddPassword").submit(function (e) {
         var me = $(this);
         e.preventDefault();
@@ -79,7 +84,7 @@ function registerPageListeners() {
             data: "id=" + encodeURIComponent(passwordId),
             success: function (data) {
                 if (data.success) {
-                    parent.html("<span class='selectable'>" + data.data.password + "</span>")
+                    parent.html("<span class='selectable no-contextmenu'>" + data.data.password + "</span>")
                 } else {
                     me.html("<i class='material-icons'>error</i>")
                 }
@@ -87,23 +92,6 @@ function registerPageListeners() {
         })
     });
     passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
-        /*TODO: Implement editing
-        var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
-         e.preventDefault();
-         me.attr("disabled", "");
-         me.html(spinnerSVGSmall);
-         $.ajax({
-         url: "backend/getPassword.php",
-         method: "post",
-         data: "id=" + encodeURIComponent(passwordId),
-         success: function (data) {
-         if (data.success) {
-         parent.html("<span class='selectable'>" + data.data.password + "</span>")
-         } else {
-         me.html("<i class='material-icons'>error</i>")
-         }
-         }
-         })*/
         alert("Not implemented yet!");
     });
     passwordTable.on('click', '*[data-password-action="delete"]', function (e) {
@@ -144,9 +132,10 @@ function loadPage(page, callback) {
     if (switchingPage)
         return;
     switchingPage = true;
-    var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page);
+    var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
     currentPage = page;
 
+    spinner.addClass("shown");
 
     oldPage.fadeOut(300, function () {
         if (page == "passwords") {
@@ -161,11 +150,11 @@ function loadPage(page, callback) {
                             if (item.website == null) {
                                 website = "<i>None</i>";
                             } else {
-                                website = "<a href='" + item.website + "'>" + item.website + "</a>";
+                                website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
                             }
 
                             var row = "<tr>";
-                            row += "<td>" + item.username + "</td>";
+                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
                             row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
                             row += "<td>" + website + "</td>";
                             row += "<td>" + item.date_added_nice + "</td>";
@@ -174,23 +163,45 @@ function loadPage(page, callback) {
                             tbody += row;
                         });
                         tableBody.html(tbody);
+                        $("*[data-page-highlight]").each(function (index, elem) {
+                            elem = $(elem);
+                            if (elem.attr("data-page-highlight") == page) {
+                                elem.addClass("active");
+                            } else {
+                                elem.removeClass("active");
+                            }
+                        });
+                        spinner.removeClass("shown");
+                        newPage.fadeIn(300);
+                        switchingPage = false;
+                        if (callback != null)
+                            callback();
                     }
-
-
-                    $("*[data-page-highlight]").each(function (index, elem) {
-                        elem = $(elem);
-                        if (elem.attr("data-page-highlight") == page) {
-                            elem.addClass("active");
-                        } else {
-                            elem.removeClass("active");
-                        }
-                    });
-                    newPage.fadeIn(300);
-                    switchingPage = false;
-                    if (callback != null)
-                        callback();
                 }
             })
+        } else {
+            $("*[data-page-highlight]").each(function (index, elem) {
+                elem = $(elem);
+                if (elem.attr("data-page-highlight") == page) {
+                    elem.addClass("active");
+                } else {
+                    elem.removeClass("active");
+                }
+            });
+            spinner.removeClass("shown");
+            newPage.fadeIn(300);
+            switchingPage = false;
+            if (callback != null)
+                callback();
         }
     });
+}
+
+function logout() {
+    $.ajax({
+        url: "backend/logout.php",
+        success: function () {
+            location.replace("../");
+        }
+    })
 }

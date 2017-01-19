@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . "/include/user.inc.php";
-if (isLoggedIn() == 1) {
-    header("Location: /manage/");
+if (isLoggedIn()) {
+    header("Location: manage/");
     die();
 }
 ?>
@@ -28,9 +28,9 @@ if (isLoggedIn() == 1) {
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a class="navbar-brand" href="#!p=login" data-to-page="login">Passy
-                <small>.pw</small>
-            </a>
+            <!-- @formatter:off -->
+            <span class="navbar-brand">Passy<small>.pw</small></span>
+            <!-- @formatter:on -->
         </div>
     </div>
     <div class="container">
@@ -68,7 +68,9 @@ if (isLoggedIn() == 1) {
                         </div>
                         <div class="form-group">
                             <button type="submit" class="btn btn-success">Login</button>
-                            <button type="button" class="btn btn-default btn-flat" data-to-page="forgotpass">Forgot password</button>
+                            <button type="button" class="btn btn-default btn-flat" data-to-page="forgotpass">Forgot
+                                password
+                            </button>
                         </div>
                     </form>
                     <div class="alert alert-success" id="successAccountCreated" style="display: none">

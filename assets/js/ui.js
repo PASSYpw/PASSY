@@ -43,8 +43,11 @@ function registerListeners() {
     $(this).bind("contextmenu", function (e) {
         if (e.shiftKey)
             return;
-        e.preventDefault();
         var x = e.clientX, y = e.clientY;
+        var hoverObject = $(document.elementFromPoint(x, y));
+        if (hoverObject.hasClass("no-contextmenu") || hoverObject.parents(".no-contextmenu").length > 0)
+            return;
+        e.preventDefault();
         contextMenu.removeClass("open");
         setTimeout(function () {
             contextMenu.css({transform: "translate(" + x + "px, " + y + "px)"});
@@ -54,7 +57,7 @@ function registerListeners() {
 
     var lastHeight = 0;
 
-    $(window).scroll(function (e) {
+    $(window).scroll(function () {
         var navbar = $(".navbar-fixed-top"),
             scrollTop = $(document).scrollTop(),
             firstHeight = navbar.children().first().outerHeight();

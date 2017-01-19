@@ -7,22 +7,6 @@ function loginUser($email, $password)
 {
     $passwordHash = hash("SHA256", $password);
     $conn = getMYSQL();
-    $user = userExists($conn, $email);
-    $conn->close();
-    if ($user != null) {
-        if ($passwordHash == $user['PASSWORD']) {
-            $_SESSION["email"] = $email;
-            $_SESSION["masterPassword"] = hash("SHA256", $password . $user['USERID']);
-            $_SESSION["userid"] = $user['USERID'];
-            $_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
-            return true;
-        }
-    }
-    return false;
-}
-
-function userExists($conn, $email)
-{
     $ps = $conn->prepare("SELECT * FROM `users` WHERE `EMAIL` = (?)");
     $ps->bind_param("s", $email);
     $succeeded = $ps->execute();
@@ -30,28 +14,44 @@ function userExists($conn, $email)
     $ps->close();
     if ($succeeded) {
         if ($result->num_rows == 1) {
-            return $result->fetch_assoc();
+            $row = $result->fetch_assoc();
+            if ($passwordHash == $row['PASSWORD']) {
+                $_SESSION["email"] = $email;
+                $_SESSION["masterPassword"] = hash("SHA256", $password . $row['USERID']);
+                $_SESSION["userid"] = $row['USERID'];
+                $_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
+                return getSuccess(null, "login_user");
+            }
         }
+        return getError("invalid_credentials", "login_user");
     }
-    return false;
+    return getError("database_" . $ps->errno, "login_user");
 }
 
 function registerUser($email, $password)
 {
     $passwordHash = hash("SHA256", $password);
     $conn = getMYSQL();
-    if (!userExists($conn, $email)) {
-        $userid = uniqid("user_");
-        $ps = $conn->prepare("INSERT INTO `users` (`EMAIL`, `USERID`, `PASSWORD`) VALUES (?,?,?)");
-        $ps->bind_param("sss", $email, $userid, $passwordHash);
-        $succeeded = $ps->execute();
-        $ps->close();
-        $conn->close();
-        if ($succeeded) {
-            return true;
+    $ps = $conn->prepare("SELECT * FROM `users` WHERE `EMAIL` = (?)");
+    $ps->bind_param("s", $email);
+    $succeeded = $ps->execute();
+    $result = $ps->get_result();
+    $ps->close();
+    if ($succeeded) {
+        if($result->num_rows == 0) {
+            $userId = uniqid("user_");
+            $ps = $conn->prepare("INSERT INTO `users` (`EMAIL`, `USERID`, `PASSWORD`) VALUES (?,?,?)");
+            $ps->bind_param("sss", $email, $userId, $passwordHash);
+            $succeeded = $ps->execute();
+            $ps->close();
+            if ($succeeded) {
+                return getSuccess(null, "register_user");
+            }
+            return getError("database_" . $ps->errno, "register_user");
         }
+        return getError("already_registered", "register_user");
     }
-    return false;
+    return getError("database_" . $ps->errno, "register_user");
 }
 
 function logoutUser()
@@ -62,10 +62,11 @@ function logoutUser()
 function isLoggedIn()
 {
     if (!isset($_SESSION["email"]) || !isset($_SESSION["masterPassword"]) || !isset($_SESSION["ip"]) || !isset($_SESSION["userid"])) {
-        return 0;
+        return false;
     }
     if ($_SESSION["ip"] != $_SERVER["REMOTE_ADDR"]) {
-        return -1;
+        logoutUser();
+        return false;
     }
-    return 1;
+    return true;
 }

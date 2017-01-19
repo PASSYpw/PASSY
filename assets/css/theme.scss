@@ -42,8 +42,12 @@ $durationSpinner: 1.6s;
   cursor: auto;
 }
 
+html {
+  overflow-y: scroll;
+}
+
 body {
-  font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+  font-family: "Roboto", 'Helvetica Neue', Helvetica, Arial, sans-serif;
   overflow-x: hidden;
   background-color: $colorBackground;
   color: $colorText;
@@ -301,12 +305,12 @@ body {
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
-  color: #ffffff;
+  color: $colorThemeText;
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
   background-color: transparent;
-  border-bottom: solid 2px #fff;
+  border-bottom: solid 2px $colorThemeText;
 }
 
 .navbar-default .navbar-nav > li > a {
@@ -318,14 +322,14 @@ body {
 .navbar-default .navbar-nav > .active > a, .modal-content .nav-tabs.nav-justified > .active > a:focus,
 .navbar-default .navbar-nav > .active > a:hover, .modal-content .nav > li > a:focus,
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-  color: #ffffff;
+  color: $colorThemeText;
   background-color: transparent;
-  border-bottom: solid 2px #ffffff;
+  border-bottom: solid 2px $colorThemeText;
 }
 
 .navbar-nav > .dropdown > a, .navbar-nav > .dropdown > a:focus, .navbar-nav > .dropdown > a:hover,
 .navbar-nav > .open > a, .navbar-nav > .open > a:focus, .navbar-nav > .open > a:hover {
-  color: #ffffff !important;
+  color: $colorThemeText !important;
   background-color: transparent !important;
   border-radius: 100%;
   border-bottom: none !important;
@@ -370,7 +374,7 @@ body {
   float: left;
   width: 200px;
   margin-top: 0;
-  background-color: #ffffff;
+  background-color: $colorForeground;
   border-radius: 0;
   border: none;
   top: 2px;
@@ -467,7 +471,7 @@ body {
 
 // SPINNER
 .spinner {
-  animation: rotator $durationSpinner linear infinite;
+  animation: spinnerRotate $durationSpinner linear infinite;
 }
 
 .spinner .path {
@@ -475,11 +479,28 @@ body {
   stroke-dashoffset: 0;
   transform-origin: center;
   stroke: $colorText;
-  animation: dash $durationSpinner cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+  animation: spinnerDash $durationSpinner cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
 }
 
 .spinner.primary .path {
   stroke: $colorTheme;
+}
+
+.load-spinner {
+  position: fixed;
+  left: 50%;
+  color: $colorForeground;
+  border-radius: 100%;
+  transform: translate(-50%, -100%) scale(0);
+  height: 40px;
+  width: 40px;
+  transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  padding: 10px;
+  @extend .depth-2;
+}
+
+.load-spinner.shown {
+  transform: translate(-50%, 0) scale(1);
 }
 
 /* MISC */
@@ -495,7 +516,7 @@ body {
 }
 
 .contextmenu.open > .dropdown-menu {
-  animation: contextmenuIn ease 200ms;
+  animation: contextMenuIn ease 200ms;
 }
 
 .spin {
@@ -584,7 +605,7 @@ body {
   }
 }
 
-@keyframes contextmenuIn {
+@keyframes contextMenuIn {
   0% {
     transform: translate(-50%, -50%) scale(0, 0);
     opacity: 0;
@@ -596,7 +617,7 @@ body {
   }
 }
 
-@keyframes rotator {
+@keyframes spinnerRotate {
   0% {
     transform: rotate(0deg);
   }
@@ -605,7 +626,7 @@ body {
   }
 }
 
-@keyframes dash {
+@keyframes spinnerDash {
   0% {
     stroke-dashoffset: $offsetSpinnerStroke;
   }

@@ -1,7 +1,7 @@
 <?php
 include __DIR__ . "/../include/user.inc.php";
-if (isLoggedIn() != 1) {
-    header("Location: /");
+if (!isLoggedIn()) {
+    header("Location: ../");
     die();
 }
 ?>
@@ -28,7 +28,9 @@ if (isLoggedIn() != 1) {
 <nav class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <span class="navbar-brand" href="#">Passy<small>.pw</small></span>
+            <!-- @formatter:off -->
+            <span class="navbar-brand">Passy<small>.pw</small></span>
+            <!-- @formatter:on -->
         </div>
         <ul class="nav navbar-nav navbar-right">
             <li class="dropdown">
@@ -37,7 +39,7 @@ if (isLoggedIn() != 1) {
                 <ul class="dropdown-menu">
                     <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="backend/logout.php"><i class="material-icons">exit_to_app</i> Logout</a></li>
+                    <li><a href="#" id="btnLogout"><i class="material-icons">exit_to_app</i> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -53,6 +55,12 @@ if (isLoggedIn() != 1) {
     </div>
 </nav>
 <div class="content">
+    <div class="load-spinner">
+        <svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">
+            <circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle>
+        </svg>
+    </div>
+
     <div id="page_passwords" class="container" style="display: none">
         <div class="jumbotron">
             <div class="row">
@@ -136,7 +144,8 @@ if (isLoggedIn() != 1) {
                         <div role="tabpanel" class="tab-pane fade in active" id="tabPrivate">
                             <div class="form-group">
                                 <div class="text">
-                                    <input type="text" class="form-control" title="Username" name="username" autocomplete="off"/>
+                                    <input type="text" class="form-control" title="Username" name="username"
+                                           autocomplete="off"/>
                                     <label>Username (optional)</label>
                                 </div>
                                 <div class="text">
@@ -145,7 +154,8 @@ if (isLoggedIn() != 1) {
                                     <label>Password</label>
                                 </div>
                                 <div class="text">
-                                    <input type="url" class="form-control" title="Password" name="website" autocomplete="off"/>
+                                    <input type="url" class="form-control" title="Password" name="website"
+                                           autocomplete="off"/>
                                     <label>Website (optional)</label>
                                 </div>
                             </div>

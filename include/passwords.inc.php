@@ -18,7 +18,6 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     $ps->bind_param("ssssss", $id, $userId, $base64, $username, $website, $date);
     $succeeded = $ps->execute();
     $ps->close();
-    $conn->close();
     if ($succeeded)
         return getSuccess(array("password_id" => $id), "add_password");
 
@@ -36,7 +35,6 @@ function getPassword($userId, $id, $masterPassword)
     $succeeded = $ps->execute();
     $result = $ps->get_result();
     $ps->close();
-    $conn->close();
     if ($succeeded) {
         if ($result->num_rows == 1) {
             $row = $result->fetch_assoc();
@@ -57,7 +55,6 @@ function deletePassword($userId, $id) {
     $ps->bind_param("ss", $userId, $id);
     $succeeded = $ps->execute();
     $ps->close();
-    $conn->close();
     if ($succeeded) {
         return getSuccess(null, "delete_password");
     }
@@ -72,7 +69,6 @@ function getPasswordList($userId)
     $succeeded = $ps->execute();
     $result = $ps->get_result();
     $ps->close();
-    $conn->close();
     if ($succeeded) {
         $data = array();
         if ($result->num_rows > 0) {
