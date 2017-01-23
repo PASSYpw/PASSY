@@ -52,13 +52,15 @@ function registerPageListeners() {
                     if(data.msg == "already_logged_in") {
                         location.replace("manage/");
                     } else if(data.msg == "missing_arguments") {
-                        showAlert($("#errorLoginFormInvalid"), 2000);
+                        showAlert($("#errorLoginFormInvalid"), 3000);
+                    } else if(data.msg == "account_locked") {
+                        showAlert($("#errorAccountLocked"), 3000);
                     } else if(data.msg == "invalid_email") {
-                        showAlert($("#errorLoginEmailInvalid"), 2000);
+                        showAlert($("#errorLoginEmailInvalid"), 3000);
                     } else if(data.msg == "invalid_credentials") {
-                        showAlert($("#errorInvalidCredentials"), 2000);
+                        showAlert($("#errorInvalidCredentials"), 3000);
                     } else if(startsWith(data.msg, "database_")) {
-                        showAlert($("#errorLoginDatabase"), 2000);
+                        showAlert($("#errorLoginDatabase"), 3000);
                     }
                 }
             }
@@ -76,21 +78,21 @@ function registerPageListeners() {
             success: function (data) {
                 if(data.success) {
                     loadPage("login");
-                    showAlert($("#successAccountCreated"), 2000);
+                    showAlert($("#successAccountCreated"), 3000);
                 } else {
                     if (data.msg == "already_logged_in") {
                         location.replace("manage/");
                         return;
                     } else if (data.msg == "missing_arguments") {
-                        showAlert($("#errorFormInvalid"), 2000);
+                        showAlert($("#errorFormInvalid"), 3000);
                     } else if (data.msg == "verification_failed") {
-                        showAlert($("#errorVerificationFailed"), 2000);
+                        showAlert($("#errorVerificationFailed"), 3000);
                     } else if (data.msg == "invalid_email") {
-                        showAlert($("#errorEmailInvalid"), 2000);
+                        showAlert($("#errorEmailInvalid"), 3000);
                     } else if (data.msg == "already_registered") {
-                        showAlert($("#errorAccountRegistered"), 2000);
+                        showAlert($("#errorAccountRegistered"), 3000);
                     } else if (startsWith(data.msg, "database_")) {
-                        showAlert($("#errorDatabase"), 2000);
+                        showAlert($("#errorDatabase"), 3000);
                     }
                     grecaptcha.reset();
                 }

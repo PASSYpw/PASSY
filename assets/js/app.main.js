@@ -92,6 +92,11 @@ function registerPageListeners() {
         })
     });
     passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
+        e.preventDefault();
+        alert("Not implemented yet!");
+    });
+    passwordTable.on('click', '*[data-password-action="share"]', function (e) {
+        e.preventDefault();
         alert("Not implemented yet!");
     });
     passwordTable.on('click', '*[data-password-action="delete"]', function (e) {
@@ -137,49 +142,7 @@ function loadPage(page, callback) {
 
     spinner.addClass("shown");
 
-    oldPage.fadeOut(300, function () {
-        if (page == "passwords") {
-            $.ajax({
-                url: "backend/getPasswords.php",
-                success: function (data) {
-                    var tableBody = $("#tbodyPasswords");
-                    if (data.success) {
-                        var jsonData = data.data, tbody = "";
-                        $.each(jsonData, function (index, item) {
-                            var website = "";
-                            if (item.website == null) {
-                                website = "<i>None</i>";
-                            } else {
-                                website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
-                            }
-
-                            var row = "<tr>";
-                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
-                            row += "<td>" + website + "</td>";
-                            row += "<td>" + item.date_added_nice + "</td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
-                            row += "</tr>";
-                            tbody += row;
-                        });
-                        tableBody.html(tbody);
-                        $("*[data-page-highlight]").each(function (index, elem) {
-                            elem = $(elem);
-                            if (elem.attr("data-page-highlight") == page) {
-                                elem.addClass("active");
-                            } else {
-                                elem.removeClass("active");
-                            }
-                        });
-                        spinner.removeClass("shown");
-                        newPage.fadeIn(300);
-                        switchingPage = false;
-                        if (callback != null)
-                            callback();
-                    }
-                }
-            })
-        } else {
+    var show = function () {
             $("*[data-page-highlight]").each(function (index, elem) {
                 elem = $(elem);
                 if (elem.attr("data-page-highlight") == page) {
@@ -193,6 +156,13 @@ function loadPage(page, callback) {
             switchingPage = false;
             if (callback != null)
                 callback();
+    };
+
+    oldPage.fadeOut(300, function () {
+        if (page == "passwords") {
+            fetchPasswords(show);
+        } else {
+            show();
         }
     });
 }
@@ -202,6 +172,38 @@ function logout() {
         url: "backend/logout.php",
         success: function () {
             location.replace("../");
+        }
+    })
+}
+
+function fetchPasswords(callback) {
+    $.ajax({
+        url: "backend/getPasswords.php",
+        success: function (data) {
+            var tableBody = $("#tbodyPasswords");
+            if (data.success) {
+                var jsonData = data.data, tbody = "";
+                $.each(jsonData, function (index, item) {
+                    var website = "";
+                    if (item.website == null) {
+                        website = "<i>None</i>";
+                    } else {
+                        website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
+                    }
+
+                    var row = "<tr>";
+                    row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
+                    row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
+                    row += "<td>" + website + "</td>";
+                    row += "<td>" + item.date_added_nice + "</td>";
+                    row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='share' data-password-id='" + item.password_id + "'><i class='material-icons'>share</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
+                    row += "</tr>";
+                    tbody += row;
+                });
+                tableBody.html(tbody);
+                if (callback != null)
+                    callback();
+            }
         }
     })
 }

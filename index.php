@@ -79,6 +79,10 @@ if (isLoggedIn()) {
                     <div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
                         <strong>Error!</strong> Invalid Credentials!
                     </div>
+                    <div class="alert alert-danger" id="errorAccountLocked" style="display: none">
+                        <strong>Error!</strong> The account you are trying to access has been locked! Please contact
+                        support.
+                    </div>
                     <div class="alert alert-danger" id="errorLoginEmailInvalid" style="display: none">
                         <strong>Error!</strong> The specified email is invalid!
                     </div>
@@ -134,7 +138,6 @@ if (isLoggedIn()) {
                         <strong>Error!</strong>
                     </div>
                     <div class="alert alert-danger" id="errorDatabase" style="display: none">
-                        <!--TODO: implement in JS-->
                         <strong>Error!</strong> There was a problem with the database connection.
                     </div>
                 </div>
@@ -145,7 +148,7 @@ if (isLoggedIn()) {
         <div class="jumbotron depth-1">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="text-center">Forgot password ?</h2>
+                    <h2 class="text-center">Reset password</h2>
                 </div>
             </div>
         </div>

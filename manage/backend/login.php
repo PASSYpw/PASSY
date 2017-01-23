@@ -12,6 +12,8 @@ if (!isset($_POST["login_email"]) || !isset($_POST["login_password"]))
 
 $email = $_POST["login_email"];
 $password = $_POST["login_password"];
+$email = trim($email);
+$email = strtolower($email);
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
     die(getError("invalid_email", "login_user"));

@@ -124,53 +124,39 @@ if (!isLoggedIn()) {
 
 <!-- MODALS -->
 <div class="modal fade" id="modalAdd" tabindex="-1" role="dialog">
-    <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-dialog" role="document">
         <div class="modal-content depth-5">
             <div class="modal-header">
-                <h4 class="modal-title">Add password...</h4>
+                <h4 class="modal-title">Create password</h4>
             </div>
             <form method="post" action="backend/addPassword.php" id="formAddPassword">
                 <div class="modal-body">
-                    <ul class="nav nav-tabs nav-justified depth-2" role="tablist">
-                        <li role="presentation" class="active">
-                            <a href="#tabPrivate" aria-controls="tabPrivate" role="tab" data-toggle="tab">Private
-                                password</a>
-                        </li>
-                        <li role="presentation">
-                            <a href="#tabShared" aria-controls="tabShare" role="tab" data-toggle="tab">Share</a>
-                        </li>
-                    </ul>
-                    <div class="tab-content">
-                        <div role="tabpanel" class="tab-pane fade in active" id="tabPrivate">
-                            <div class="form-group">
-                                <div class="text">
-                                    <input type="text" class="form-control" title="Username" name="username"
-                                           autocomplete="off"/>
-                                    <label>Username (optional)</label>
-                                </div>
-                                <div class="text">
-                                    <input type="password" class="form-control" title="Password" name="password"
-                                           required autocomplete="off"/>
-                                    <label>Password</label>
-                                </div>
-                                <div class="text">
-                                    <input type="url" class="form-control" title="Password" name="website"
-                                           autocomplete="off"/>
-                                    <label>Website (optional)</label>
-                                </div>
-                            </div>
-                            <div class="alert alert-danger" id="errorDatabase" style="display: none">
-                                <strong>Error!</strong> There was a problem with the database connection.
-                            </div>
-                            <div class="alert alert-danger" id="errorUnknown" style="display: none">
-                                <strong>Error!</strong> An unknown error occurred!
-                            </div>
+                    <p>
+                        Fill the form below to create a new password entry. You will be able to view the password, edit the
+                        entry and share the entry with others later.
+                    </p>
+                    <div class="form-group">
+                        <div class="text">
+                            <input type="text" class="form-control" title="Username" name="username"
+                                   autocomplete="off"/>
+                            <label>Username (optional)</label>
                         </div>
-                        <div role="tabpanel" class="tab-pane fade" id="tabShare">
-                            <div class="form-group">
-
-                            </div>
+                        <div class="text">
+                            <input type="password" class="form-control" title="Password" name="password"
+                                   required autocomplete="off"/>
+                            <label>Password</label>
                         </div>
+                        <div class="text">
+                            <input type="url" class="form-control" title="Password" name="website"
+                                   autocomplete="off"/>
+                            <label>Website (optional)</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" id="errorDatabase" style="display: none">
+                        <strong>Error!</strong> There was a problem with the database connection.
+                    </div>
+                    <div class="alert alert-danger" id="errorUnknown" style="display: none">
+                        <strong>Error!</strong> An unhandled error occurred!
                     </div>
                 </div>
                 <div class="modal-footer">

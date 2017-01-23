@@ -21,6 +21,8 @@ if (!$resp->isSuccess())
 
 $email = $_POST["register_email"];
 $password = $_POST["register_password"];
+$email = trim($email);
+$email = strtolower($email);
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))
     die(getError("invalid_email", "register_user"));
