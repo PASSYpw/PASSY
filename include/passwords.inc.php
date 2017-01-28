@@ -13,9 +13,10 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     $base64 = base64_encode($iv . $encrypted);
     $id = uniqid("pass_");
     $date = time();
+    $archived = 0;
     $conn = getMYSQL();
-    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`) VALUES (?, ?, ?, ?, ?, ?)");
-    $ps->bind_param("ssssss", $id, $userId, $base64, $username, $website, $date);
+    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`) VALUES (?, ?, ?, ?, ?, ?, ?)");
+    $ps->bind_param("ssssssi", $id, $userId, $base64, $username, $website, $date, $archived);
     $succeeded = $ps->execute();
     $ps->close();
     if ($succeeded)
@@ -49,10 +50,66 @@ function getPassword($userId, $id, $masterPassword)
     return getError("database_" . $ps->errno, "get_password");
 }
 
-function deletePassword($userId, $id) {
+function archivePassword($userId, $id)
+{
     $conn = getMYSQL();
-    $ps = $conn->prepare("DELETE FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?)");
+    $ps = $conn->prepare("SELECT `ARCHIVED` FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?)");
     $ps->bind_param("ss", $userId, $id);
+    $succeeded = $ps->execute();
+    $result = $ps->get_result();
+    $ps->close();
+    if ($succeeded) {
+        if ($result->num_rows == 1) {
+            if ($result->fetch_assoc()["ARCHIVED"] == 1)
+                return getSuccess(null, "archive_password");
+
+            $archived = 1;
+            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
+            $ps->bind_param("iss", $archived, $userId, $id);
+            $succeeded = $ps->execute();
+            $ps->close();
+            if ($succeeded) {
+                return getSuccess(null, "archive_password");
+            }
+            return getError("database_" . $ps->errno, "archive_password");
+        }
+    }
+    return getError("database_" . $ps->errno, "archive_password");
+}
+
+function restorePassword($userId, $id)
+{
+    $conn = getMYSQL();
+    $ps = $conn->prepare("SELECT `ARCHIVED` FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?)");
+    $ps->bind_param("ss", $userId, $id);
+    $succeeded = $ps->execute();
+    $result = $ps->get_result();
+    $ps->close();
+    if ($succeeded) {
+        if ($result->num_rows == 1) {
+            if ($result->fetch_assoc()["ARCHIVED"] == 0)
+                return getSuccess(null, "restore_password");
+
+            $archived = 0;
+            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
+            $ps->bind_param("iss", $archived, $userId, $id);
+            $succeeded = $ps->execute();
+            $ps->close();
+            if ($succeeded) {
+                return getSuccess(null, "restore_password");
+            }
+            return getError("database_" . $ps->errno, "restore_password");
+        }
+    }
+    return getError("database_" . $ps->errno, "restore_password");
+}
+
+function deletePassword($userId, $id)
+{
+    $conn = getMYSQL();
+    $archived = 1;
+    $ps = $conn->prepare("DELETE FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?) AND `ARCHIVED` = (?)");
+    $ps->bind_param("ssi", $userId, $id, $archived);
     $succeeded = $ps->execute();
     $ps->close();
     if ($succeeded) {
@@ -64,7 +121,7 @@ function deletePassword($userId, $id) {
 function getPasswordList($userId)
 {
     $conn = getMYSQL();
-    $ps = $conn->prepare("SELECT `ID`,`USERNAME`,`WEBSITE`,`DATE` FROM `passwords` WHERE `USERID` = (?)");
+    $ps = $conn->prepare("SELECT `ID`,`USERNAME`,`WEBSITE`,`DATE`,`ARCHIVED` FROM `passwords` WHERE `USERID` = (?) ORDER BY `DATE`");
     $ps->bind_param("s", $userId);
     $succeeded = $ps->execute();
     $result = $ps->get_result();
@@ -82,20 +139,19 @@ function getPasswordList($userId)
                     $website = null;
                 }
 
-                $tableRow = array(
+                $entry = array(
                     "password_id" => $row["ID"],
                     "username" => $username,
                     "website" => $website,
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
-                    "user_id" => $userId
+                    "user_id" => $userId,
+                    "archived" => (bool) $row["ARCHIVED"]
                 );
-                array_push($data, $tableRow);
+                array_push($data, $entry);
             }
         }
-        $json = getSuccess($data, "get_password_list");
-    } else {
-        $json = getError("database_" . $ps->errno, "get_password_list");
+        return getSuccess($data, "get_password_list");
     }
-    return $json;
+    return getError("database_" . $ps->errno, "get_password_list");
 }

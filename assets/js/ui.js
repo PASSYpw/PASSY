@@ -1,22 +1,22 @@
 var spinnerSVG = '<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>';
 var spinnerSVGSmall = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>';
+var rippleSettings = {
+    debug: false,
+    on: 'mousedown',
+    opacity: 0.3,
+    color: "auto",
+    multi: true,
+    duration: 0.3,
+    rate: function (pxPerSecond) {
+        return pxPerSecond;
+    },
+    easing: 'linear'
+};
 
 function registerListeners() {
-    var rippleSettings = {
-        debug: false,
-        on: 'mousedown',
-        opacity: 0.3,
-        color: "auto",
-        multi: true,
-        duration: 0.3,
-        rate: function (pxPerSecond) {
-            return pxPerSecond;
-        },
-        easing: 'linear'
-    };
 
     $.ripple(".nav > li > a", rippleSettings);
-    $.ripple(".btn", rippleSettings);
+    $.ripple(".btn:not([disabled])", rippleSettings);
 
     $(".text > input").on("input", function () {
         var me = $(this);
@@ -26,12 +26,11 @@ function registerListeners() {
             me.removeClass("hastext");
     });
 
-    $("*[data-to-page]").click(function (e) {
-        var me = $(this), toPage = me.attr("data-to-page");
-        e.preventDefault();
-        if (toPage == "refresh")
-            toPage = currentPage;
-        loadPage(toPage);
+    var delay = 100;
+    $(".dropdown-menu").find("li").each(function (index, item) {
+        item = $(item);
+        item.css({"animation-delay": delay + "ms"});
+        delay += 25;
     });
 
     var contextMenu = $("#dropdownContextMenu");
@@ -58,6 +57,9 @@ function registerListeners() {
     var lastHeight = 0;
 
     $(window).scroll(function () {
+        $(".dropdown.open").find(".dropdown-toggle").dropdown("toggle");
+        $(".contextmenu.open").removeClass("open");
+
         var navbar = $(".navbar-fixed-top"),
             scrollTop = $(document).scrollTop(),
             firstHeight = navbar.children().first().outerHeight();

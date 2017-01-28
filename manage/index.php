@@ -37,9 +37,11 @@ if (!isLoggedIn()) {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
                 <ul class="dropdown-menu">
-                    <li><a href="#"><i class="material-icons">edit</i> Profile Settings</a></li>
+                    <li style="animation-delay: 100ms"><a href="#"><i class="material-icons">edit</i> Profile
+                            Settings</a></li>
                     <li role="separator" class="divider"></li>
-                    <li><a href="#" id="btnLogout"><i class="material-icons">exit_to_app</i> Logout</a></li>
+                    <li style="animation-delay: 125ms"><a href="#" id="btnLogout"><i
+                                    class="material-icons">exit_to_app</i> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -49,8 +51,8 @@ if (!isLoggedIn()) {
             <li data-page-highlight="passwords"><a href="#!p=passwords" data-to-page="passwords"><i
                             class="material-icons">lock_outline</i>
                     Passwords <span class="sr-only">(current)</span></a></li>
-            <li data-page-highlight="groups"><a href="#!p=groups" data-to-page="groups"><i
-                            class="material-icons">group</i> Groups</a></li>
+            <li data-page-highlight="archive"><a href="#!p=archive" data-to-page="archive"><i class="material-icons">archive</i>
+                    Archive</a></li>
         </ul>
     </div>
 </nav>
@@ -101,11 +103,30 @@ if (!isLoggedIn()) {
             </div>
         </div>
     </div>
-    <div id="page_groups" class="container" style="display: none">
+    <div id="page_archive" class="container" style="display: none">
         <div class="jumbotron">
             <div class="row">
                 <div class="col-xs-12">
-                    <h2 class="text-center">Groups</h2>
+                    <h2 class="text-center">Archive</h2>
+                </div>
+            </div>
+            <div class="row row-margin">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table id="tableArchivedPasswords" class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>Username</th>
+                                <th>Password</th>
+                                <th>Website</th>
+                                <th>Date archived</th>
+                                <th>Actions</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbodyArchivedPasswords">
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
@@ -115,10 +136,7 @@ if (!isLoggedIn()) {
 <!-- CONTEXTMENU -->
 <div class="dropdown contextmenu" id="dropdownContextMenu">
     <ul class="dropdown-menu">
-        <li><a href="#">This context menu</a></li>
-        <li><a href="#">is supposed to</a></li>
-        <li><a href="#">have a function</a></li>
-        <li><a href="#">but does not have one</a></li>
+        <li><a href="#"><i class="material-icons">refresh</i> Refresh</a></li>
     </ul>
 </div>
 
@@ -132,8 +150,8 @@ if (!isLoggedIn()) {
             <form method="post" action="backend/addPassword.php" id="formAddPassword">
                 <div class="modal-body">
                     <p>
-                        Fill the form below to create a new password entry. You will be able to view the password, edit the
-                        entry and share the entry with others later.
+                        Fill the form below to create a new password entry. You will be able to view the password, edit
+                        the entry and share the entry with others later.
                     </p>
                     <div class="form-group">
                         <div class="text">
@@ -142,13 +160,12 @@ if (!isLoggedIn()) {
                             <label>Username (optional)</label>
                         </div>
                         <div class="text">
-                            <input type="password" class="form-control" title="Password" name="password"
-                                   required autocomplete="off"/>
+                            <input type="password" class="form-control" title="Password" name="password" required
+                                   autocomplete="off"/>
                             <label>Password</label>
                         </div>
                         <div class="text">
-                            <input type="url" class="form-control" title="Password" name="website"
-                                   autocomplete="off"/>
+                            <input type="text" class="form-control" title="Password" name="website" autocomplete="off"/>
                             <label>Website (optional)</label>
                         </div>
                     </div>

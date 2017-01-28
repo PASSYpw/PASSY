@@ -1,148 +1,188 @@
-var currentPage = "passwords", switchingPage = false;
+(function () {
+    var currentPage = "passwords", switchingPage = false;
 
-$(document).ready(function () {
-    var rippleSettings = {
-        debug: false,
-        on: 'mousedown',
-        opacity: 0.41,
-        color: "auto",
-        multi: true,
-        duration: 0.4,
-        rate: function (pxPerSecond) {
-            return pxPerSecond;
-        },
-        easing: 'linear'
-    };
+    $(document).ready(function () {
+        currentPage = getCurrentPage();
+        loadPage(currentPage);
+        registerPageListeners();
+        registerListeners();
+    });
 
-    $.ripple(".nav > li > a", rippleSettings);
-    $.ripple(".btn-flat", rippleSettings);
-    applyCurrentPage();
-    loadPage(currentPage);
-    registerPageListeners();
-    registerListeners();
-});
-
-function applyCurrentPage() {
-    var anchor = window.location.href.substring(window.location.href.indexOf("#"));
-    if (anchor.substring(0, 4) === "#!p=" && anchor.length > 1) {
-        currentPage = anchor.substring(4);
+    function getCurrentPage() {
+        var anchor = location.href.substring(location.href.indexOf("#"));
+        if (anchor.substring(0, 4) === "#!p=" && anchor.length > 1) {
+            return anchor.substring(4);
+        }
+        return currentPage;
     }
-}
 
-function registerPageListeners() {
-    $("#btnAdd").click(function (e) {
-        e.preventDefault();
-        $("#modalAdd").modal('toggle');
-    });
+    function registerPageListeners() {
+        var passwordTable = $('#tbodyPasswords'), archivedPasswordTable = $('#tbodyArchivedPasswords');
 
-    $("#btnLogout").click(function (e) {
-        e.preventDefault();
-        logout();
-    });
+        $("*[data-to-page]").click(function (e) {
+            var me = $(this), toPage = me.attr("data-to-page");
+            e.preventDefault();
+            if (toPage == "refresh")
+                toPage = currentPage;
+            loadPage(toPage);
+        });
 
-    $("#formAddPassword").submit(function (e) {
-        var me = $(this);
-        e.preventDefault();
-        var btn = me.find("button");
-        btn.attr("disabled", "");
-        $.ajax({
-            url: me.attr("action"),
-            method: me.attr("method"),
-            data: me.serialize(),
-            success: function (data) {
-                btn.attr("disabled", null);
-                if (data.success) {
-                    me.find("input").val("");
-                    me.find("input.hastext").removeClass("hastext");
-                    refresh();
-                    $(".modal.fade.in").modal("hide");
-                } else {
-                    if (startsWith(data.msg, "database_")) {
-                        showAlert($("#errorDatabase"), 3000)
+        $("#btnAdd").click(function (e) {
+            e.preventDefault();
+            $("#modalAdd").modal('toggle');
+        });
+
+        $("#btnLogout").click(function (e) {
+            e.preventDefault();
+            logout();
+        });
+
+        $("#formAddPassword").submit(function (e) {
+            var me = $(this);
+            e.preventDefault();
+            var btn = me.find("button");
+            btn.attr("disabled", "");
+            $.ajax({
+                url: me.attr("action"),
+                method: me.attr("method"),
+                data: me.serialize(),
+                success: function (data) {
+                    btn.attr("disabled", null);
+                    if (data.success) {
+                        me.find("input").val("");
+                        me.find("input.hastext").removeClass("hastext");
+                        refresh();
+                        $(".modal.fade.in").modal("hide");
                     } else {
-                        showAlert($("#errorUnknown"), 3000)
+                        if (startsWith(data.msg, "database_")) {
+                            showAlert($("#errorDatabase"), 3000)
+                        } else {
+                            showAlert($("#errorUnknown"), 3000)
+                        }
                     }
                 }
-            }
-        })
-    });
-    $("#btnRefresh").click(function (e) {
-        e.preventDefault();
-        refresh();
-    });
-
-    var passwordTable = $('#tbodyPasswords');
-
-    passwordTable.on('click', '*[data-password-action="show"]', function (e) {
-        var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
-        e.preventDefault();
-        me.attr("disabled", "");
-        me.html(spinnerSVGSmall);
-        $.ajax({
-            url: "backend/getPassword.php",
-            method: "post",
-            data: "id=" + encodeURIComponent(passwordId),
-            success: function (data) {
-                if (data.success) {
-                    parent.html("<span class='selectable no-contextmenu'>" + data.data.password + "</span>")
-                } else {
-                    me.html("<i class='material-icons'>error</i>")
-                }
-            }
-        })
-    });
-    passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
-        e.preventDefault();
-        alert("Not implemented yet!");
-    });
-    passwordTable.on('click', '*[data-password-action="share"]', function (e) {
-        e.preventDefault();
-        alert("Not implemented yet!");
-    });
-    passwordTable.on('click', '*[data-password-action="delete"]', function (e) {
-        var me = $(this), passwordId = me.data("password-id");
-        e.preventDefault();
-        me.attr("disabled", "");
-        me.html(spinnerSVGSmall);
-        $.ajax({
-            url: "backend/deletePassword.php",
-            method: "post",
-            data: "id=" + encodeURIComponent(passwordId),
-            success: function (data) {
-                if (data.success) {
-                    refresh();
-                } else {
-                    me.html("<i class='material-icons'>error</i>")
-                }
-            }
-        })
-    });
-}
-
-function refresh() {
-    var refreshButton = $("#btnRefresh"), icon = refreshButton.find(".material-icons");
-    icon.addClass("spin");
-    refreshButton.addClass("disabled");
-    refreshButton.attr("disabled", "");
-    setTimeout(function () {
-        loadPage(currentPage, function () {
-            icon.removeClass("spin");
-            refreshButton.removeClass("disabled");
-            refreshButton.attr("disabled", null);
+            })
         });
-    }, 100);
-}
+        $("#btnRefresh").click(function (e) {
+            e.preventDefault();
+            refresh();
+        });
 
-function loadPage(page, callback) {
-    if (switchingPage)
-        return;
-    switchingPage = true;
-    var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
-    currentPage = page;
+        passwordTable.on('click', '*[data-password-action="show"]', function (e) {
+            var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
+            e.preventDefault();
+            me.attr("disabled", "");
+            me.html(spinnerSVGSmall);
+            $.ajax({
+                url: "backend/getPassword.php",
+                method: "post",
+                data: "id=" + encodeURIComponent(passwordId),
+                success: function (data) {
+                    if (data.success) {
+                        parent.html("<span class='selectable no-contextmenu'>" + data.data.password + "</span>")
+                    } else {
+                        me.html("<i class='material-icons'>error</i>")
+                    }
+                }
+            })
+        });
+        passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
+            e.preventDefault();
+            alert("Not implemented yet!");
+        });
+        passwordTable.on('click', '*[data-password-action="share"]', function (e) {
+            e.preventDefault();
+            alert("Not implemented yet!");
+        });
+        passwordTable.on('click', '*[data-password-action="archive"]', function (e) {
+            var me = $(this), passwordId = me.data("password-id");
+            e.preventDefault();
+            me.attr("disabled", "");
+            me.html(spinnerSVGSmall);
+            $.ajax({
+                url: "backend/archivePassword.php",
+                method: "post",
+                data: "id=" + encodeURIComponent(passwordId),
+                success: function (data) {
+                    if (data.success) {
+                        refresh();
+                    } else {
+                        me.html("<i class='material-icons'>error</i>")
+                    }
+                },
+                error: function () {
+                    me.html("<i class='material-icons'>error</i>")
+                }
+            })
+        });
+        archivedPasswordTable.on('click', '*[data-password-action="restore"]', function (e) {
+            var me = $(this), passwordId = me.data("password-id");
+            e.preventDefault();
+            me.attr("disabled", "");
+            me.html(spinnerSVGSmall);
+            $.ajax({
+                url: "backend/restorePassword.php",
+                method: "post",
+                data: "id=" + encodeURIComponent(passwordId),
+                success: function (data) {
+                    if (data.success) {
+                        refresh();
+                    } else {
+                        me.html("<i class='material-icons'>error</i>")
+                    }
+                },
+                error: function () {
+                    me.html("<i class='material-icons'>error</i>")
+                }
+            })
+        });
+        archivedPasswordTable.on('click', '*[data-password-action="delete"]', function (e) {
+            var me = $(this), passwordId = me.data("password-id");
+            e.preventDefault();
+            me.attr("disabled", "");
+            me.html(spinnerSVGSmall);
+            $.ajax({
+                url: "backend/deletePassword.php",
+                method: "post",
+                data: "id=" + encodeURIComponent(passwordId),
+                success: function (data) {
+                    if (data.success) {
+                        refresh();
+                    } else {
+                        me.html("<i class='material-icons'>error</i>")
+                    }
+                },
+                error: function () {
+                    me.html("<i class='material-icons'>error</i>")
+                }
+            })
+        });
+    }
 
-    spinner.addClass("shown");
+    function refresh() {
+        var refreshButton = $("#btnRefresh"), icon = refreshButton.find(".material-icons");
+        icon.addClass("spin");
+        refreshButton.addClass("disabled");
+        refreshButton.attr("disabled", "");
+        setTimeout(function () {
+            loadPage(currentPage, function () {
+                icon.removeClass("spin");
+                refreshButton.removeClass("disabled");
+                refreshButton.attr("disabled", null);
+            });
+        }, 100);
+    }
 
-    var show = function () {
+    function loadPage(page, callback) {
+        if (switchingPage)
+            return;
+        switchingPage = true;
+        var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
+        currentPage = page;
+
+        spinner.addClass("shown");
+
+        var show = function () {
             $("*[data-page-highlight]").each(function (index, elem) {
                 elem = $(elem);
                 if (elem.attr("data-page-highlight") == page) {
@@ -156,54 +196,75 @@ function loadPage(page, callback) {
             switchingPage = false;
             if (callback != null)
                 callback();
-    };
+        };
 
-    oldPage.fadeOut(300, function () {
-        if (page == "passwords") {
-            fetchPasswords(show);
-        } else {
-            show();
-        }
-    });
-}
-
-function logout() {
-    $.ajax({
-        url: "backend/logout.php",
-        success: function () {
-            location.replace("../");
-        }
-    })
-}
-
-function fetchPasswords(callback) {
-    $.ajax({
-        url: "backend/getPasswords.php",
-        success: function (data) {
-            var tableBody = $("#tbodyPasswords");
-            if (data.success) {
-                var jsonData = data.data, tbody = "";
-                $.each(jsonData, function (index, item) {
-                    var website = "";
-                    if (item.website == null) {
-                        website = "<i>None</i>";
-                    } else {
-                        website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
-                    }
-
-                    var row = "<tr>";
-                    row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
-                    row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
-                    row += "<td>" + website + "</td>";
-                    row += "<td>" + item.date_added_nice + "</td>";
-                    row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='share' data-password-id='" + item.password_id + "'><i class='material-icons'>share</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
-                    row += "</tr>";
-                    tbody += row;
-                });
-                tableBody.html(tbody);
-                if (callback != null)
-                    callback();
+        oldPage.fadeOut(300, function () {
+            if (page == "passwords" || page == "archive") {
+                fetchPasswords(show);
+            } else {
+                show();
             }
-        }
-    })
-}
+        });
+    }
+
+    function logout() {
+        $.ajax({
+            url: "backend/logout.php",
+            success: function () {
+                location.replace("../");
+            }
+        })
+    }
+
+    function fetchPasswords(callbackDone) {
+        var tableBody = $("#tbodyPasswords");
+        var tableArchivedBody = $("#tbodyArchivedPasswords");
+        $.ajax({
+            url: "backend/getPasswords.php",
+            success: function (data) {
+                if (data.success) {
+                    var jsonData = data.data, tbody = "", tbodyArchived = "";
+                    $.each(jsonData, function (index, item) {
+                            var website = "";
+                            if (item.website == null) {
+                                website = "<i>None</i>";
+                            } else {
+                                website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
+                            }
+                        var row = "<tr id='" + item.password_id + "'>";
+                        if(!item.archived) {
+                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
+                            row += "<td>" + website + "</td>";
+                            row += "<td>" + item.date_added_nice + "</td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='share' data-password-id='" + item.password_id + "'><i class='material-icons'>share</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='archive' data-password-id='" + item.password_id + "'><i class='material-icons'>archive</i></a></td>";
+                            row += "</tr>";
+                            tbody += row;
+                        } else {
+                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></a></td>";
+                            row += "<td>" + website + "</td>";
+                            row += "<td>" + item.date_added_nice + "</td>";
+                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
+                            row += "</tr>";
+                            tbodyArchived += row;
+                        }
+                    });
+                    tableBody.html(tbody);
+                    tableArchivedBody.html(tbodyArchived);
+                    if (callbackDone != null)
+                        callbackDone();
+                } else {
+                    tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td><td></td></tr>");
+                    if (callbackDone != null)
+                        callbackDone(data.msg);
+                }
+            },
+            error: function (xhr, error) {
+                tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td><td></td></tr>");
+                if (callbackDone != null)
+                    callbackDone(error);
+            }
+        })
+    }
+})();

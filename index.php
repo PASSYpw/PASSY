@@ -87,7 +87,10 @@ if (isLoggedIn()) {
                         <strong>Error!</strong> The specified email is invalid!
                     </div>
                     <div class="alert alert-danger" id="errorLoginFormInvalid" style="display: none">
-                        <strong>Error!</strong>
+                        <strong>Error!</strong> The form is invalid
+                    </div>
+                    <div class="alert alert-danger" id="errorLoginServer" style="display: none">
+                        <strong>Error!</strong> There has been a problem with the server. Please contact support.
                     </div>
                     <div class="alert alert-danger" id="errorLoginDatabase" style="display: none">
                         <strong>Error!</strong> There was a problem with the database connection.
@@ -135,10 +138,13 @@ if (isLoggedIn()) {
                         <strong>Error!</strong> The specified email is invalid!
                     </div>
                     <div class="alert alert-danger" id="errorFormInvalid" style="display: none">
-                        <strong>Error!</strong>
+                        <strong>Error!</strong> The form is invalid
+                    </div>
+                    <div class="alert alert-danger" id="errorRegisterServer" style="display: none">
+                        <strong>Error!</strong> There has been a problem with the server. Please contact the support!
                     </div>
                     <div class="alert alert-danger" id="errorDatabase" style="display: none">
-                        <strong>Error!</strong> There was a problem with the database connection.
+                        <strong>Error!</strong> There has been a problem with the database connection.
                     </div>
                 </div>
             </div>
@@ -155,13 +161,6 @@ if (isLoggedIn()) {
     </div>
 </div>
 
-<!-- CONTEXTMENU -->
-<div class="dropdown contextmenu" id="dropdownContextMenu">
-    <ul class="dropdown-menu">
-        <li><a href="#" data-to-page="refresh"><i class="material-icons">refresh</i> Reload</a></li>
-        <li><a><i class="material-icons">help</i> Help</a></li> <!-- TODO: Add Help-Function -->
-    </ul>
-</div>
 
 <script src="assets/js/jquery.min.js"></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
