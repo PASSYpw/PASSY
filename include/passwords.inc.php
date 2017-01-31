@@ -13,10 +13,11 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     $base64 = base64_encode($iv . $encrypted);
     $id = uniqid("pass_");
     $date = time();
+    $archivedDate = 0;
     $archived = 0;
     $conn = getMYSQL();
-    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`) VALUES (?, ?, ?, ?, ?, ?, ?)");
-    $ps->bind_param("ssssssi", $id, $userId, $base64, $username, $website, $date, $archived);
+    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`, `ARCHIVED_DATE`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
+    $ps->bind_param("ssssssis", $id, $userId, $base64, $username, $website, $date, $archived, $archivedDate);
     $succeeded = $ps->execute();
     $ps->close();
     if ($succeeded)
@@ -62,10 +63,10 @@ function archivePassword($userId, $id)
         if ($result->num_rows == 1) {
             if ($result->fetch_assoc()["ARCHIVED"] == 1)
                 return getSuccess(null, "archive_password");
-
+            $archivedDate = time();
             $archived = 1;
-            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
-            $ps->bind_param("iss", $archived, $userId, $id);
+            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?), `ARCHIVED_DATE` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
+            $ps->bind_param("isss", $archived, $archivedDate, $userId, $id);
             $succeeded = $ps->execute();
             $ps->close();
             if ($succeeded) {
@@ -121,7 +122,7 @@ function deletePassword($userId, $id)
 function getPasswordList($userId)
 {
     $conn = getMYSQL();
-    $ps = $conn->prepare("SELECT `ID`,`USERNAME`,`WEBSITE`,`DATE`,`ARCHIVED` FROM `passwords` WHERE `USERID` = (?) ORDER BY `DATE`");
+    $ps = $conn->prepare("SELECT `ID`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?) ORDER BY `DATE`");
     $ps->bind_param("s", $userId);
     $succeeded = $ps->execute();
     $result = $ps->get_result();
@@ -146,7 +147,9 @@ function getPasswordList($userId)
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
                     "user_id" => $userId,
-                    "archived" => (bool) $row["ARCHIVED"]
+                    "archived" => (bool) $row["ARCHIVED"],
+                    "date_archived" => $row["ARCHIVED_DATE"],
+                    "date_archived_nice" => formatTime($row["ARCHIVED_DATE"])
                 );
                 array_push($data, $entry);
             }

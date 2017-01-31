@@ -39,6 +39,7 @@ if (!isLoggedIn()) {
                 <ul class="dropdown-menu">
                     <li style="animation-delay: 100ms"><a href="#"><i class="material-icons">edit</i> Profile
                             Settings</a></li>
+                    <li style="animation-delay: 100ms"><a href="#!p=login_history" data-to-page="login_history"><i class="material-icons">list</i> Login History</a></li>
                     <li role="separator" class="divider"></li>
                     <li style="animation-delay: 125ms"><a href="#" id="btnLogout"><i
                                     class="material-icons">exit_to_app</i> Logout</a></li>
@@ -72,13 +73,10 @@ if (!isLoggedIn()) {
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                    <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
-                                    class="material-icons">add</i> Add
-                        </button>
-                        <button type="button" class="btn btn-primary" id="btnRefresh" title="Refresh..."><i
-                                    class="material-icons">refresh</i> Refresh
-                        </button>
+                        <div class="btn-group" role="group" aria-label="...">
+                            <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
+                                        class="material-icons">add</i> Add
+                            </button>
                     </div>
                 </div>
             </div>
@@ -131,12 +129,38 @@ if (!isLoggedIn()) {
             </div>
         </div>
     </div>
+    <div id="page_login_history" class="container" style="display: none">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="text-center">Login History</h2>
+                </div>
+            </div>
+            <div class="row row-margin">
+                <div class="col-xs-12">
+                    <div class="table-responsive">
+                        <table id="tableLoginHistory" class="table table-hover">
+                            <thead>
+                            <tr>
+                                <th>IP Address</th>
+                                <th>User-Agent</th>
+                                <th>Date</th>
+                            </tr>
+                            </thead>
+                            <tbody id="tbodyLoginHistory">
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- CONTEXTMENU -->
 <div class="dropdown contextmenu" id="dropdownContextMenu">
     <ul class="dropdown-menu">
-        <li><a href="#"><i class="material-icons">refresh</i> Refresh</a></li>
+        <li><a href="#" id="aRefresh"><i class="material-icons">refresh</i> Refresh</a></li>
     </ul>
 </div>
 

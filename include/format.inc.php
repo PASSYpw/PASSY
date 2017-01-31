@@ -1,6 +1,9 @@
 <?php
 function formatTime($time)
 {
+    if($time == null || $time == 0)
+        return "never";
+
     $cur_time = time();
     $time_elapsed = $cur_time - $time;
     $seconds = $time_elapsed;

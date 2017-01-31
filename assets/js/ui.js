@@ -18,7 +18,12 @@ function registerListeners() {
     $.ripple(".nav > li > a", rippleSettings);
     $.ripple(".btn:not([disabled])", rippleSettings);
 
-    $(".text > input").on("input", function () {
+    var inputs = $(".text > input");
+
+    if(inputs.val().length > 0)
+        me.addClass("hastext");
+
+    inputs.on("input", function () {
         var me = $(this);
         if (me.val().length > 0)
             me.addClass("hastext");
@@ -34,7 +39,7 @@ function registerListeners() {
     });
 
     var contextMenu = $("#dropdownContextMenu");
-    $(document).mousedown(function (e) {
+    $("body").mouseup(function (e) {
         if (e.which == 1)
             contextMenu.removeClass("open");
     });

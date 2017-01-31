@@ -26,6 +26,13 @@
                 toPage = currentPage;
             loadPage(toPage);
         });
+        $(document).on("keydown", function (e) {
+            if ((e.which || e.keyCode) == 116) {
+                e.preventDefault();
+                refresh();
+            }
+        });
+
 
         $("#btnAdd").click(function (e) {
             e.preventDefault();
@@ -63,7 +70,7 @@
                 }
             })
         });
-        $("#btnRefresh").click(function (e) {
+        $("#aRefresh").click(function (e) {
             e.preventDefault();
             refresh();
         });
@@ -225,14 +232,14 @@
                 if (data.success) {
                     var jsonData = data.data, tbody = "", tbodyArchived = "";
                     $.each(jsonData, function (index, item) {
-                            var website = "";
-                            if (item.website == null) {
-                                website = "<i>None</i>";
-                            } else {
-                                website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
-                            }
+                        var website = "";
+                        if (item.website == null) {
+                            website = "<i>None</i>";
+                        } else {
+                            website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
+                        }
                         var row = "<tr id='" + item.password_id + "'>";
-                        if(!item.archived) {
+                        if (!item.archived) {
                             row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
                             row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
                             row += "<td>" + website + "</td>";
@@ -244,7 +251,7 @@
                             row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
                             row += "<td><a class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></a></td>";
                             row += "<td>" + website + "</td>";
-                            row += "<td>" + item.date_added_nice + "</td>";
+                            row += "<td>" + item.date_archived_nice + "</td>";
                             row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
                             row += "</tr>";
                             tbodyArchived += row;
