@@ -7,7 +7,7 @@ function getSuccess($data, $context)
         "response" => $context,
         "data" => $data
     );
-    return json_encode($json);
+    return json_encode($json, JSON_UNESCAPED_UNICODE);
 }
 
 function getError($errorString, $context)

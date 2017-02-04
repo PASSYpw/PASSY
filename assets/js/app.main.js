@@ -208,6 +208,8 @@
         oldPage.fadeOut(300, function () {
             if (page == "passwords" || page == "archive") {
                 fetchPasswords(show);
+            } else if (page == "login_history") {
+                fetchIPLog(show);
             } else {
                 show();
             }
@@ -274,4 +276,49 @@
             }
         })
     }
+
+    function fetchIPLog(callbackDone) {
+        var tableBody = $("#tbodyLoginHistory");
+        $.ajax({
+            url: "backend/getIPLog.php",
+            success: function (data) {
+                if (data.success) {
+                    var jsonData = data.data, tbody = "";
+                    $.each(jsonData, function (index, item) {
+                        var row = "<tr>";
+
+                        var location = "";
+                        if(item.city != "")
+                            location += item.city + ", ";
+                        if(item.region != "")
+                            location += item.region + ", ";
+                        if(item.country != "")
+                            location += item.country;
+
+
+                        row += "<td><span>" + item.ip + "</span></td>";
+                        row += "<td><span>" + location + "</span></td>";
+                        row += "<td><span>" + item.user_agent + "</span></td>";
+                        row += "<td><span>" + item.date_nice + "</span></td>";
+                        row += "</tr>";
+
+                        tbody += row;
+                    });
+                    tableBody.html(tbody);
+                    if (callbackDone != null)
+                        callbackDone();
+                } else {
+                    tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td></tr>");
+                    if (callbackDone != null)
+                        callbackDone(data.msg);
+                }
+            },
+            error: function (xhr, error) {
+                tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td></tr>");
+                if (callbackDone != null)
+                    callbackDone(error);
+            }
+        })
+    }
+
 })();

@@ -12,7 +12,7 @@ if (!isLoggedIn()) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ff5722">
-    <title>Passy.pw</title>
+    <title>PASSY.pw</title>
 
     <link href="../assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
@@ -29,7 +29,7 @@ if (!isLoggedIn()) {
     <div class="container">
         <div class="navbar-header">
             <!-- @formatter:off -->
-            <span class="navbar-brand">Passy<small>.pw</small></span>
+            <span class="navbar-brand">PASSY<small>.pw</small></span>
             <!-- @formatter:on -->
         </div>
         <ul class="nav navbar-nav navbar-right">
@@ -39,7 +39,8 @@ if (!isLoggedIn()) {
                 <ul class="dropdown-menu">
                     <li style="animation-delay: 100ms"><a href="#"><i class="material-icons">edit</i> Profile
                             Settings</a></li>
-                    <li style="animation-delay: 100ms"><a href="#!p=login_history" data-to-page="login_history"><i class="material-icons">list</i> Login History</a></li>
+                    <li style="animation-delay: 100ms"><a href="#!p=login_history" data-to-page="login_history"><i
+                                    class="material-icons">list</i> Login History</a></li>
                     <li role="separator" class="divider"></li>
                     <li style="animation-delay: 125ms"><a href="#" id="btnLogout"><i
                                     class="material-icons">exit_to_app</i> Logout</a></li>
@@ -69,14 +70,15 @@ if (!isLoggedIn()) {
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Passwords</h2>
+                    <p>Add new passwords or view your saved passwords.</p>
                 </div>
             </div>
             <div class="row">
                 <div class="col-xs-12">
-                        <div class="btn-group" role="group" aria-label="...">
-                            <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
-                                        class="material-icons">add</i> Add
-                            </button>
+                    <div class="btn-group" role="group" aria-label="...">
+                        <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
+                                    class="material-icons">add</i> Add
+                        </button>
                     </div>
                 </div>
             </div>
@@ -106,6 +108,8 @@ if (!isLoggedIn()) {
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Archive</h2>
+                    <p>The passwords appearing here can be restored or deleted permanently. They will be deleted two
+                        weeks after they have been archived.</p>
                 </div>
             </div>
             <div class="row row-margin">
@@ -134,6 +138,7 @@ if (!isLoggedIn()) {
             <div class="row">
                 <div class="col-xs-12">
                     <h2 class="text-center">Login History</h2>
+                    <p>Find out who accessed your account.</p>
                 </div>
             </div>
             <div class="row row-margin">
@@ -143,6 +148,7 @@ if (!isLoggedIn()) {
                             <thead>
                             <tr>
                                 <th>IP Address</th>
+                                <th>Location</th>
                                 <th>User-Agent</th>
                                 <th>Date</th>
                             </tr>
@@ -209,6 +215,30 @@ if (!isLoggedIn()) {
     </div>
 </div>
 
+<div class="footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-12">
+                <h3>PASSY.pw</h3>
+                <p class="text-muted">
+                    Store your passwords securely.
+                </p>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-6">
+                <span>Powered by <a href="//scrumplex.net" target="_blank">scrumplex.net</a></span>
+            </div>
+            <div class="col-xs-6">
+                <ul class="list-inline">
+                    <li><a href="//scrumplex.net/imprint.php">Terms of Service</a></li>
+                    <li><a href="//scrumplex.net/imprint.php">Privacy</a></li>
+                    <li><a href="//scrumplex.net/imprint.php">Imprint</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/ripple.min.js"></script>
