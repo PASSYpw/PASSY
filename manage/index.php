@@ -228,6 +228,7 @@ if (!isLoggedIn()) {
         <div class="row">
             <div class="col-xs-6">
                 <span>Powered by <a href="//scrumplex.net" target="_blank">scrumplex.net</a></span>
+                <span>Version <?php include_once __DIR__ . "/../version.txt"; ?></span>
             </div>
             <div class="col-xs-6">
                 <ul class="list-inline">
