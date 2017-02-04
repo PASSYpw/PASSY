@@ -216,7 +216,7 @@ if (!isLoggedIn()) {
 </div>
 
 <?php
-include __DIR__ . "/include/ui/footer.php";
+include __DIR__ . "/../include/ui/footer.php";
 ?>
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
