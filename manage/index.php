@@ -215,31 +215,9 @@ if (!isLoggedIn()) {
     </div>
 </div>
 
-<div class="footer">
-    <div class="container">
-        <div class="row">
-            <div class="col-xs-12">
-                <h3>PASSY.pw</h3>
-                <p class="text-muted">
-                    Store your passwords securely.
-                </p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-xs-6">
-                <span>Powered by <a href="//scrumplex.net" target="_blank">scrumplex.net</a></span>
-                <span>Version <?php include_once __DIR__ . "/../version.txt"; ?></span>
-            </div>
-            <div class="col-xs-6">
-                <ul class="list-inline">
-                    <li><a href="//scrumplex.net/imprint.php">Terms of Service</a></li>
-                    <li><a href="//scrumplex.net/imprint.php">Privacy</a></li>
-                    <li><a href="//scrumplex.net/imprint.php">Imprint</a></li>
-                </ul>
-            </div>
-        </div>
-    </div>
-</div>
+<?php
+include __DIR__ . "/include/ui/footer.php";
+?>
 <script src="../assets/js/jquery.min.js"></script>
 <script src="../assets/js/bootstrap.min.js"></script>
 <script src="../assets/js/ripple.min.js"></script>
