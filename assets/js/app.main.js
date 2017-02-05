@@ -259,6 +259,12 @@
                             tbodyArchived += row;
                         }
                     });
+                    if(tbody.length == 0) {
+                        tbody = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
+                    }
+                    if(tbodyArchived.length == 0) {
+                        tbodyArchived = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
+                    }
                     tableBody.html(tbody);
                     tableArchivedBody.html(tbodyArchived);
                     if (callbackDone != null)
@@ -304,17 +310,20 @@
 
                         tbody += row;
                     });
+                    if(tbody.length == 0) {
+                        tbody = "<tr><td>Empty</td><td></td><td></td><td></td></tr>";
+                    }
                     tableBody.html(tbody);
                     if (callbackDone != null)
                         callbackDone();
                 } else {
-                    tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td></tr>");
+                    tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td></tr>");
                     if (callbackDone != null)
                         callbackDone(data.msg);
                 }
             },
             error: function (xhr, error) {
-                tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td></tr>");
+                tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td></tr>");
                 if (callbackDone != null)
                     callbackDone(error);
             }

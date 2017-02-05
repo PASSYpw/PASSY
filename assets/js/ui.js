@@ -20,7 +20,7 @@ function registerListeners() {
 
     var inputs = $(".text > input");
 
-    if(inputs.val().length > 0)
+    if (inputs.val().length > 0)
         me.addClass("hastext");
 
     inputs.on("input", function () {
@@ -78,18 +78,19 @@ function registerListeners() {
     });
 }
 
-function showAlert(object, timeout) {
-    object.fadeIn(200, function () {
-        var me = $(this);
-        setTimeout(function () {
-            me.fadeOut(200);
-        }, timeout)
-    });
-}
+var currentAlert, hideAlert;
 
-function hideAllAlerts() {
-    $("#errorAccountRegistered").fadeOut(200);
-    $("#successAccountCreated").fadeOut(200);
+function showAlert(object, timeout) {
+    if (hideAlert != null)
+        hideAlert();
+    clearInterval(currentAlert);
+    object.fadeIn(100, function () {
+        var me = $(this);
+        hideAlert = function () {
+            me.fadeOut(100);
+        };
+        currentAlert = setTimeout(hideAlert, timeout)
+    });
 }
 
 function startsWith(haystack, needle) {

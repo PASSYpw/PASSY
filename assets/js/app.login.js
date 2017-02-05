@@ -82,7 +82,6 @@
         $("#registerForm").submit(function (e) {
             var me = $(this);
             e.preventDefault();
-            hideAllAlerts();
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),

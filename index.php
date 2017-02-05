@@ -163,6 +163,7 @@ if (isLoggedIn()) {
 
 <?php
 include __DIR__ . "/include/ui/footer.php";
+include __DIR__ . "/include/ui/tracker.php";
 ?>
 
 <script src="assets/js/jquery.min.js"></script>
