@@ -14,10 +14,10 @@ if (isLoggedIn()) {
     <meta name="theme-color" content="#ff5722">
     <title>PASSY.pw</title>
 
-    <link href="assets/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-    <link href="assets/css/ripple.min.css" rel="stylesheet">
-    <link href="assets/css/theme.min.css" rel="stylesheet">
+    <link href="https://cdn.scrumplex.net/css/bootstrap/3.3.7/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.scrumplex.net/css/material-icons/3.0.1/material-icons.min.css" rel="stylesheet">
+    <link href="https://cdn.scrumplex.net/css/ripple.js/1.2.1/ripple.min.css" rel="stylesheet">
+    <link href="assets/css/app.min.css" rel="stylesheet">
 
     <!--[if lt IE 9]>
     <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
@@ -166,11 +166,11 @@ include __DIR__ . "/include/ui/footer.php";
 include __DIR__ . "/include/ui/tracker.php";
 ?>
 
-<script src="assets/js/jquery.min.js"></script>
+<script src="https://cdn.scrumplex.net/js/jquery/3.1.0/jquery.min.js "></script>
 <script src='https://www.google.com/recaptcha/api.js'></script>
-<script src="assets/js/bootstrap.min.js"></script>
-<script src="assets/js/ripple.min.js"></script>
-<script src="assets/js/app.login.js"></script>
+<script src="https://cdn.scrumplex.net/js/bootstrap/3.3.7/bootstrap.min.js "></script>
+<script src="https://cdn.scrumplex.net/js/ripple.js/1.2.1/ripple.min.js"></script>
 <script src="assets/js/ui.js"></script>
+<script src="assets/js/app.login.js"></script>
 </body>
 </html>
