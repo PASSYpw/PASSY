@@ -57,6 +57,8 @@ function formatTime($time)
 }
 
 function replaceCriticalCharacters($string) {
+    if($string == null)
+        return $string;
     $string = htmlentities($string);
     return $string;
 }
