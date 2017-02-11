@@ -5,6 +5,10 @@ require_once __DIR__ . "/format.inc.php";
 
 function addPassword($userId, $password, $masterPassword, $username, $website)
 {
+    $password = replaceCriticalCharacters($password);
+    $username = replaceCriticalCharacters($username);
+    $website = replaceCriticalCharacters($website);
+
     $keySize = mcrypt_get_key_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
     $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
     $iv = mcrypt_create_iv($ivSize, MCRYPT_DEV_URANDOM);
@@ -44,7 +48,7 @@ function getPassword($userId, $id, $masterPassword)
             $data = base64_decode($base64);
             $iv = substr($data, 0, $ivSize);
             $encrypted = substr($data, $ivSize, strlen($data));
-            $decrypted = mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, $iv);
+            $decrypted = htmlspecialchars(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, $iv));
             return getSuccess(array("password" => $decrypted), "get_password");
         }
     }
@@ -142,8 +146,8 @@ function getPasswordList($userId)
 
                 $entry = array(
                     "password_id" => $row["ID"],
-                    "username" => $username,
-                    "website" => $website,
+                    "username" => replaceCriticalCharacters($username),
+                    "website" => replaceCriticalCharacters($website),
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
                     "user_id" => $userId,

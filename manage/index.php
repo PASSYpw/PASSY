@@ -1,4 +1,5 @@
 <?php
+define("END", "FRONT");
 include __DIR__ . "/../include/user.inc.php";
 if (!isLoggedIn()) {
     header("Location: ../");
@@ -58,6 +59,12 @@ if (!isLoggedIn()) {
         </ul>
     </div>
 </nav>
+<div class="statusMessageContainer" style="display: none">
+    <div class="statusMessage text-center col-xs-11 col-sm-5 col-md-4 col-lg-3">
+        <h3 class="statusMessageText">No connection!</h3>
+        <button class="btn btn-flat btn-primary statusMessageButton" data-location="reload">Retry</button>
+    </div>
+</div>
 <div class="content">
     <div class="load-spinner">
         <svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg">

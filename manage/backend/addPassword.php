@@ -1,6 +1,7 @@
 <?php
+define("END", "BACK");
 require_once __DIR__ . "/../../include/passwords.inc.php";
-header("Content-Type: application/json");
+require_once __DIR__ . "/../../include/json.inc.php";
 
 if (!isLoggedIn())
     die(getError("no_login", "add_password"));
@@ -20,4 +21,5 @@ if (isset($_POST["username"]))
     $username = trim($_POST["username"]);
 
 $_SESSION["last_request_addPassword"] = time();
+
 die(addPassword($_SESSION["userid"], trim($_POST["password"]), $_SESSION["masterPassword"], $username, $website));

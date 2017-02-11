@@ -55,3 +55,8 @@ function formatTime($time)
         }
     }
 }
+
+function replaceCriticalCharacters($string) {
+    $string = htmlentities($string);
+    return $string;
+}

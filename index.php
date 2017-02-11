@@ -1,4 +1,5 @@
 <?php
+define("END", "FRONT");
 include __DIR__ . "/include/user.inc.php";
 if (isLoggedIn()) {
     header("Location: manage/");
@@ -34,7 +35,7 @@ if (isLoggedIn()) {
         </div>
     </div>
     <div class="container">
-        <ul class="nav navbar-nav" style="position: static">
+        <ul class="nav navbar-nav">
             <li data-page-highlight="login"><a href="#!p=login" data-to-page="login"><i
                             class="material-icons">person</i>
                     Login</a></li>
@@ -44,6 +45,7 @@ if (isLoggedIn()) {
     </div>
 </nav>
 <div class="content">
+
     <div id="page_login" class="container" style="display: none">
         <div class="jumbotron depth-1">
             <div class="row">
@@ -67,14 +69,23 @@ if (isLoggedIn()) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-success">Login</button>
                             <button type="button" class="btn btn-default btn-flat" data-to-page="forgotpass">Forgot
                                 password
                             </button>
+                            <button type="submit" class="btn btn-success pull-right">Login</button>
                         </div>
                     </form>
+                    <?php
+                    if (isset($_GET["msg"]) && $_GET["msg"] == "session_expired") {
+                        ?>
+                        <div class="alert alert-warning" id="warningSessionExpired" style="display: none">
+                            <strong>Warning!</strong> Your session has expired! You were inactive for more than 5 minutes!
+                        </div>
+                        <?php
+                    }
+                    ?>
                     <div class="alert alert-success" id="successAccountCreated" style="display: none">
-                        <strong>Success!</strong> You can now login.
+                        <strong>Success!</strong> You can now log in.
                     </div>
                     <div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
                         <strong>Error!</strong> Invalid Credentials!
@@ -128,14 +139,20 @@ if (isLoggedIn()) {
                             <div class="g-recaptcha" data-sitekey="6LeUfBEUAAAAAG7h_NoKmOx1FzP3gPpDs_lwhlcE"></div>
                         </div>
                         <div class="form-group">
-                            <button type="submit" class="btn btn-default">Register</button>
+                            <button type="submit" class="btn btn-primary pull-right">Register</button>
                         </div>
                     </form>
+                    <div class="alert alert-danger" id="errorPasswordsNotMatch" style="display: none">
+                        <strong>Error!</strong> The passwords do not match!
+                    </div>
                     <div class="alert alert-danger" id="errorAccountRegistered" style="display: none">
                         <strong>Error!</strong> There is an account registered with that email!
                     </div>
                     <div class="alert alert-danger" id="errorEmailInvalid" style="display: none">
                         <strong>Error!</strong> The specified email is invalid!
+                    </div>
+                    <div class="alert alert-danger" id="errorVerification" style="display: none">
+                        <strong>Error!</strong> The captcha could not be validated!
                     </div>
                     <div class="alert alert-danger" id="errorFormInvalid" style="display: none">
                         <strong>Error!</strong> The form is invalid
@@ -172,5 +189,14 @@ include __DIR__ . "/include/ui/tracker.php";
 <script src="https://cdn.scrumplex.net/js/ripple.js/1.2.1/ripple.min.js"></script>
 <script src="assets/js/ui.js"></script>
 <script src="assets/js/app.login.js"></script>
+<?php
+if (isset($_GET["msg"]) && $_GET["msg"] == "session_expired") {
+    ?>
+    <script>
+        showAlert($("#warningSessionExpired"), 3000);
+    </script>
+    <?php
+}
+?>
 </body>
 </html>

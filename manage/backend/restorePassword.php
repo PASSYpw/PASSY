@@ -1,6 +1,7 @@
 <?php
+define("END", "BACK");
 require_once __DIR__ . "/../../include/passwords.inc.php";
-header("Content-Type: application/json");
+require_once __DIR__ . "/../../include/json.inc.php";
 
 if (!isLoggedIn())
     die(getError("no_login", "restore_password"));

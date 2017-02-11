@@ -7,9 +7,6 @@ var rippleSettings = {
     color: "auto",
     multi: true,
     duration: 0.3,
-    rate: function (pxPerSecond) {
-        return pxPerSecond;
-    },
     easing: 'linear'
 };
 

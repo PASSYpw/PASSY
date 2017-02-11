@@ -82,6 +82,7 @@
         $("#registerForm").submit(function (e) {
             var me = $(this);
             e.preventDefault();
+            me.find("button").attr("disabled", "disabled");
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),
@@ -96,8 +97,10 @@
                             return;
                         } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorFormInvalid"), 3000);
+                        } else if (data.msg == "passwords_not_match") {
+                            showAlert($("#errorPasswordsNotMatch"), 3000);
                         } else if (data.msg == "verification_failed") {
-                            showAlert($("#errorVerificationFailed"), 3000);
+                            showAlert($("#errorVerification"), 3000);
                         } else if (data.msg == "invalid_email") {
                             showAlert($("#errorEmailInvalid"), 3000);
                         } else if (data.msg == "already_registered") {
@@ -107,11 +110,14 @@
                         }
                         grecaptcha.reset();
                     }
+                    me.find("button").attr("disabled", null);
                 },
                 error: function () {
                     showAlert($("#errorRegisterServer"), 3000);
+                    me.find("button").attr("disabled", null);
                 }
             })
         })
     }
+
 })();

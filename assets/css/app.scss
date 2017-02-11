@@ -11,7 +11,7 @@ $colorThemeText: #FFFFFF;
 
 //Colors
 $colorDefault: #ffffff;
-$colorPrimary: #2196F3;
+$colorPrimary: $colorTheme /*#2196F3*/;
 $colorSuccess: #4CAF50;
 $colorInfo: #00BCD4;
 $colorWarning: #FFC107;
@@ -25,7 +25,6 @@ $durationSpinner: 1.6s;
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -khtml-user-select: none;
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
@@ -35,7 +34,6 @@ $durationSpinner: 1.6s;
 .selectable {
   -webkit-touch-callout: default;
   -webkit-user-select: auto;
-  -khtml-user-select: all;
   -moz-user-select: all;
   -ms-user-select: all;
   user-select: all;
@@ -64,6 +62,16 @@ body {
   @extend .depth-1;
 }
 
+@media (max-width: 768px) {
+  .jumbotron {
+    box-shadow: none !important;
+  }
+
+  body {
+    background-color: $colorForeground;
+  }
+}
+
 .jumbotron p {
   font-size: 14px;
 }
@@ -78,59 +86,113 @@ body {
   cursor: pointer;
 }
 
-.btn-default, .btn-default:focus, .btn-default:hover, .btn-default:active, .btn-default:hover:active, .btn-default:focus:active {
+.btn-default, .btn-default:focus, .btn-default:hover, .btn-default:focus:active {
+  color: $colorText;
   background: $colorDefault;
 }
 
-.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:active, .btn-primary:hover:active, .btn-primary:focus:active {
+.btn-default:active, .btn-default:hover:active {
+  background: mix($colorDefault, $colorText, 70%);
+}
+
+.btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:focus:active {
+  color: invert($colorText);
   background: $colorPrimary;
 }
 
-.btn-success, .btn-success:focus, .btn-success:hover, .btn-success:active, .btn-success:hover:active, .btn-success:focus:active {
+.btn-primary:active, .btn-primary:hover:active {
+  background: mix($colorPrimary, invert($colorText), 70%);
+}
+
+.btn-success, .btn-success:focus, .btn-success:hover, .btn-success:focus:active {
+  color: invert($colorText);
   background: $colorSuccess;
 }
 
-.btn-info, .btn-info:focus, .btn-info:hover, .btn-info:active, .btn-info:hover:active, .btn-info:focus:active {
+.btn-success:active, .btn-success:hover:active {
+  background: mix($colorSuccess, invert($colorText), 70%);
+}
+
+.btn-info, .btn-info:focus, .btn-info:hover, .btn-info:focus:active {
+  color: invert($colorText);
   background: $colorInfo;
 }
 
-.btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:active, .btn-warning:hover:active, .btn-warning:focus:active {
+.btn-info:active, .btn-info:hover:active {
+  background: mix($colorInfo, invert($colorText), 70%);
+}
+
+.btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:focus:active {
+  color: invert($colorText);
   background: $colorWarning;
 }
 
-.btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:active, .btn-danger:hover:active, .btn-danger:focus:active {
+.btn-warning:active, .btn-warning:hover:active {
+  background: mix($colorWarning, invert($colorText), 70%);
+}
+
+.btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:focus:active {
+  color: invert($colorText);
   background: $colorDanger;
 }
 
+.btn-danger:active, .btn-danger:hover:active {
+  background: mix($colorDanger, invert($colorText), 70%);
+}
+
 .btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:hover:active, .btn-flat[disabled], .btn-flat[disabled]:focus, .btn-flat[disabled]:hover, .btn-flat[disabled]:active, .btn-flat[disabled]:hover:active {
-  background: transparent !important;
+  background: transparent;
   outline: none !important;
   box-shadow: none;
   text-transform: uppercase;
 }
 
-.btn-flat.btn-default, .btn-flat.btn-default:focus, .btn-flat.btn-default:hover, .btn-flat.btn-default:active, .btn-flat.btn-default:active:hover {
+.btn-flat.btn-default, .btn-flat.btn-default:focus, .btn-flat.btn-default:hover {
   color: $colorText;
 }
 
-.btn-flat.btn-primary, .btn-flat.btn-primary:focus, .btn-flat.btn-primary:hover, .btn-flat.btn-primary:active, .btn-flat.btn-primary:active:hover {
+.btn-flat.btn-default:active, .btn-flat.btn-default:active:hover  {
+  background: mix(transparent, $colorText, 70%);
+}
+
+.btn-flat.btn-primary, .btn-flat.btn-primary:focus, .btn-flat.btn-primary:hover {
   color: $colorPrimary;
 }
 
-.btn-flat.btn-success, .btn-flat.btn-success:focus, .btn-flat.btn-success:hover, .btn-flat.btn-success:active, .btn-flat.btn-success:active:hover {
+.btn-flat.btn-primary:active, .btn-flat.btn-primary:active:hover  {
+  background: mix(transparent, $colorPrimary, 70%);
+}
+
+.btn-flat.btn-success, .btn-flat.btn-success:focus, .btn-flat.btn-success:hover {
   color: $colorSuccess;
 }
 
-.btn-flat.btn-info, .btn-flat.btn-info:focus, .btn-flat.btn-info:hover, .btn-flat.btn-info:active, .btn-flat.btn-info:active:hover {
+.btn-flat.btn-success:active, .btn-flat.btn-success:active:hover  {
+  background: mix(transparent, $colorSuccess, 70%);
+}
+
+.btn-flat.btn-info, .btn-flat.btn-info:focus, .btn-flat.btn-info:hover {
   color: $colorInfo;
 }
 
-.btn-flat.btn-warning, .btn-flat.btn-warning:focus, .btn-flat.btn-warning:hover, .btn-flat.btn-warning:active, .btn-flat.btn-warning:active:hover {
+.btn-flat.btn-info:active, .btn-flat.btn-info:active:hover  {
+  background: mix(transparent, $colorInfo, 70%);
+}
+
+.btn-flat.btn-warning, .btn-flat.btn-warning:focus, .btn-flat.btn-warning:hover {
   color: $colorWarning;
 }
 
-.btn-flat.btn-danger, .btn-flat.btn-danger:focus, .btn-flat.btn-danger:hover, .btn-flat.btn-danger:active, .btn-flat.btn-danger:active:hover {
+.btn-flat.btn-warning:active, .btn-warning.btn-warning:active:hover  {
+  background: mix(transparent, $colorWarning, 70%);
+}
+
+.btn-flat.btn-danger, .btn-flat.btn-danger:focus, .btn-flat.btn-danger:hover {
   color: $colorDanger;
+}
+
+.btn-flat.btn-danger:active, .btn-info.btn-danger:active:hover  {
+  background: mix(transparent, $colorDanger, 70%);
 }
 
 .btn {
@@ -143,6 +205,10 @@ body {
   border-radius: 2px;
   text-transform: uppercase;
   font-size: 14px;
+  -webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  -moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  -ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+  -o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
   transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
@@ -200,6 +266,10 @@ body {
 }
 
 .progress-bar {
+  -webkit-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -moz-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -ms-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -o-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
   transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
@@ -270,15 +340,24 @@ body {
   color: $colorThemeText;
 }
 
+.navbar-default .navbar-nav > li > a:active, .navbar-default .navbar-nav > li > a:active:hover {
+  background: mix(transparent, $colorThemeText, 70%);
+}
+
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
   background-color: transparent;
   border-bottom: solid 2px $colorThemeText;
 }
 
 .navbar-default .navbar-nav > li > a {
+  background: transparent;
   border: none;
   border-bottom: solid 2px transparent;
-  transition: border ease 200ms;
+  -webkit-transition: border 200ms ease, background 300ms linear;
+  -moz-transition: border 200ms ease, background 300ms linear;
+  -ms-transition: border 200ms ease, background 300ms linear;
+  -o-transition: border 200ms ease, background 300ms linear;
+  transition: border 200ms ease, background 300ms linear;
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover,
@@ -297,6 +376,11 @@ body {
   width: 54px;
   height: 54px;
   padding: 15px;
+}
+
+.navbar-nav > .dropdown > a:active, .navbar-nav > .dropdown > a:active:hover,
+.navbar-nav > .open > a:active, .navbar-nav > .open > a:active:hover{
+  background-color: mix(transparent, $colorThemeText, 70%) !important;
 }
 
 .navbar-nav {
@@ -405,9 +489,11 @@ body {
   position: absolute;
   pointer-events: none;
   transform: translate(10px, -27px);
-  transition: 0.2s ease all;
-  -moz-transition: 0.2s ease all;
-  -webkit-transition: 0.2s ease all;
+  -webkit-transition: all 0.2s ease;
+  -moz-transition: all 0.2s ease;
+  -ms-transition: all 0.2s ease;
+  -o-transition: all 0.2s ease;
+  transition: all 0.2s ease;
 }
 
 .text > input:focus ~ label, .text > input.hastext ~ label {
@@ -433,6 +519,10 @@ body {
 // MODALS
 .modal.fade, .modal.in, .modal.fade .modal-dialog, .modal.in .modal-dialog {
   transform: none;
+  -webkit-transition: opacity 100ms linear;
+  -moz-transition: opacity 100ms linear;
+  -ms-transition: opacity 100ms linear;
+  -o-transition: opacity 100ms linear;
   transition: opacity 100ms linear;
 }
 
@@ -502,14 +592,38 @@ body {
   transform: translate(-50%, -100%) scale(0);
   height: 40px;
   width: 40px;
-  transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
   padding: 10px;
+  -webkit-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -moz-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -ms-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  -o-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
   @extend .depth-2;
 }
 
 .load-spinner.shown {
   transform: translate(-50%, 0) scale(1);
 }
+
+/* STATUS MESSAGE */
+.statusMessageContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: mix(transparent, invert($colorForeground), 70%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  height: 100vh;
+  width: 100vw;
+  z-index: 999999;
+
+  .statusMessage {
+    background-color: $colorForeground;
+    @extend .depth-3;
+  }
+}
+
 
 /* MISC */
 .material-icons {

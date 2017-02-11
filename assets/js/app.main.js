@@ -1,8 +1,27 @@
 (function () {
-    var currentPage = "passwords", switchingPage = false;
+    var currentPage = "passwords", switchingPage = false, statusShown = false;
 
     $(document).ready(function () {
         currentPage = getCurrentPage();
+
+        setInterval(function () {
+            $.ajax({
+                url: "backend/status.php",
+                success: function (data) {
+                    if (data.msg == "no_login") {
+                        statusSessionExpired();
+                        return;
+                    }
+                    hideStatusMessage();
+                },
+                error: function (xhr) {
+                    if (xhr.readyState == 0) {
+                        statusNoConnection();
+                    }
+                }
+            });
+        }, 2000);
+
         loadPage(currentPage);
         registerPageListeners();
         registerListeners();
@@ -18,6 +37,17 @@
 
     function registerPageListeners() {
         var passwordTable = $('#tbodyPasswords'), archivedPasswordTable = $('#tbodyArchivedPasswords');
+
+        $(window).focus(function () {
+            if (!statusShown)
+                $(".content").fadeIn(300);
+        });
+
+        $(window).blur(function () {
+            if (!statusShown)
+                $(".content").fadeOut(300);
+        });
+
 
         $("*[data-to-page]").click(function (e) {
             var me = $(this), toPage = me.attr("data-to-page");
@@ -61,6 +91,10 @@
                         refresh();
                         $(".modal.fade.in").modal("hide");
                     } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
                         if (startsWith(data.msg, "database_")) {
                             showAlert($("#errorDatabase"), 3000)
                         } else {
@@ -87,7 +121,12 @@
                 success: function (data) {
                     if (data.success) {
                         parent.html("<span class='selectable no-contextmenu'>" + data.data.password + "</span>")
+                        timeoutPassword(parent, passwordId);
                     } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
                         me.html("<i class='material-icons'>error</i>")
                     }
                 }
@@ -114,6 +153,10 @@
                     if (data.success) {
                         refresh();
                     } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
                         me.html("<i class='material-icons'>error</i>")
                     }
                 },
@@ -135,6 +178,10 @@
                     if (data.success) {
                         refresh();
                     } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
                         me.html("<i class='material-icons'>error</i>")
                     }
                 },
@@ -156,6 +203,10 @@
                     if (data.success) {
                         refresh();
                     } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
                         me.html("<i class='material-icons'>error</i>")
                     }
                 },
@@ -178,6 +229,39 @@
                 refreshButton.attr("disabled", null);
             });
         }, 100);
+    }
+
+    function showStatusMessage(message, buttonText, buttonAction, timeout) {
+        if (!statusShown) {
+            var statusMessageContainer = $(".statusMessageContainer"),
+                statusMessageText = statusMessageContainer.find(".statusMessageText"),
+                statusMessageButton = statusMessageContainer.find(".statusMessageButton");
+
+            statusMessageButton.off("click");
+            statusMessageButton.click(buttonAction);
+            statusMessageButton.text(buttonText);
+
+            statusMessageText.text(message);
+
+            statusMessageContainer.fadeIn(300);
+
+            $(".content").fadeOut(300);
+            statusShown = true;
+
+            if (timeout != null && timeout > 0)
+                setTimeout(function () {
+                    hideStatusMessage()
+                }, timeout);
+        }
+    }
+
+    function hideStatusMessage() {
+        if (statusShown) {
+            var statusMessageContainer = $(".statusMessageContainer");
+            statusMessageContainer.fadeOut(300);
+            $(".content").fadeIn(300);
+            statusShown = false;
+        }
     }
 
     function loadPage(page, callback) {
@@ -225,6 +309,27 @@
         })
     }
 
+    function timeoutPassword(passwordObject, passwordId) {
+        var timeLeft = 60;
+        passwordObject.append(" <span id='timeLeft_" + passwordId + "' class='text-muted'></span>");
+        var timeLeftDisplay = passwordObject.find("#timeLeft_" + passwordId);
+
+        var timer = function () {
+            timeLeftDisplay.html(timeLeft);
+            if (timeLeft == 10) {
+                timeLeftDisplay.addClass("text-danger");
+                timeLeftDisplay.removeClass("text-muted");
+            } else if (timeLeft == 0) {
+                clearInterval(timerId);
+                passwordObject.html("<a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + passwordId + "'><i class='material-icons'>remove_red_eye</i></a>");
+            }
+            timeLeft--;
+        };
+        timer();
+
+        var timerId = setInterval(timer, 1000);
+    }
+
     function fetchPasswords(callbackDone) {
         var tableBody = $("#tbodyPasswords");
         var tableArchivedBody = $("#tbodyArchivedPasswords");
@@ -259,10 +364,10 @@
                             tbodyArchived += row;
                         }
                     });
-                    if(tbody.length == 0) {
+                    if (tbody.length == 0) {
                         tbody = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
                     }
-                    if(tbodyArchived.length == 0) {
+                    if (tbodyArchived.length == 0) {
                         tbodyArchived = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
                     }
                     tableBody.html(tbody);
@@ -270,6 +375,11 @@
                     if (callbackDone != null)
                         callbackDone();
                 } else {
+                    if (data.msg == "no_login") {
+                        statusSessionExpired();
+                        return;
+                    }
+
                     tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td><td></td></tr>");
                     if (callbackDone != null)
                         callbackDone(data.msg);
@@ -294,11 +404,11 @@
                         var row = "<tr>";
 
                         var location = "";
-                        if(item.city != "")
+                        if (item.city != "")
                             location += item.city + ", ";
-                        if(item.region != "")
+                        if (item.region != "")
                             location += item.region + ", ";
-                        if(item.country != "")
+                        if (item.country != "")
                             location += item.country;
 
 
@@ -310,13 +420,18 @@
 
                         tbody += row;
                     });
-                    if(tbody.length == 0) {
+                    if (tbody.length == 0) {
                         tbody = "<tr><td>Empty</td><td></td><td></td><td></td></tr>";
                     }
                     tableBody.html(tbody);
                     if (callbackDone != null)
                         callbackDone();
                 } else {
+                    if (data.msg == "no_login") {
+                        statusSessionExpired();
+                        return;
+                    }
+
                     tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td></tr>");
                     if (callbackDone != null)
                         callbackDone(data.msg);
@@ -328,6 +443,18 @@
                     callbackDone(error);
             }
         })
+    }
+
+    function statusSessionExpired() {
+        showStatusMessage("Your session has expired!", "Login", function () {
+            location.replace("../?msg=session_expired");
+        });
+    }
+
+    function statusNoConnection() {
+        showStatusMessage("No connection to server!", "Refresh", function () {
+            location.reload(true);
+        });
     }
 
 })();

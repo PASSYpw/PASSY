@@ -1,8 +1,8 @@
 <?php
+define("END", "BACK");
 require_once __DIR__ . "/../../include/user.inc.php";
 require_once __DIR__ . "/../../include/json.inc.php";
 require_once __DIR__ . "/../../include/recaptcha.inc.php";
-header("Content-Type: application/json");
 
 if (isLoggedIn())
     die(getError("already_logged_in", "login_user"));

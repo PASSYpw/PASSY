@@ -5,6 +5,12 @@ require_once __DIR__ . "/json.inc.php";
 require_once __DIR__ . "/format.inc.php";
 require_once __DIR__ . "/geoip.inc.php";
 
+if (isset($_SESSION["last_activity"]) && (time() - $_SESSION["last_activity"]) >= 300)
+    logoutUser();
+if (!defined("TRACK_ACTIVITY") || TRACK_ACTIVITY)
+    $_SESSION["last_activity"] = time();
+
+
 function loginUser($email, $password)
 {
     if (!apc_exists("login_attempts_" . $email))
@@ -29,10 +35,13 @@ function loginUser($email, $password)
                 $_SESSION["masterPassword"] = hash("SHA256", $password . $row['USERID']);
                 $_SESSION["userid"] = $row['USERID'];
                 $_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
+                $_SESSION["last_activity"] = time();
+
+                $userAgent = replaceCriticalCharacters($_SERVER['HTTP_USER_AGENT']);
 
                 //Log IP Address
                 $ps = $conn->prepare("INSERT INTO `iplog` (`USERID`, `IP`, `USERAGENT`, `DATE`) VALUES (?,?,?,?)");
-                $ps->bind_param("ssss", $_SESSION["userid"], $_SESSION["ip"], $_SERVER['HTTP_USER_AGENT'], time());
+                $ps->bind_param("ssss", $_SESSION["userid"], $_SESSION["ip"], $userAgent, time());
                 $succeeded = $ps->execute();
                 $ps->close();
                 if ($succeeded) {
@@ -55,7 +64,7 @@ function loginUser($email, $password)
 
 function registerUser($email, $password)
 {
-    $salt = hash("SHA256", microtime());
+    $salt = hash("SHA256", uniqid());
     $passwordHash = hash("SHA256", $password . $salt);
     $conn = getMYSQL();
     $ps = $conn->prepare("SELECT * FROM `users` WHERE `EMAIL` = (?)");
@@ -80,23 +89,24 @@ function registerUser($email, $password)
     return getError("database_" . $ps->errno, "register_user");
 }
 
-function getIPLog($userId) {
+function getIPLog($userId)
+{
     $conn = getMYSQL();
     $ps = $conn->prepare("SELECT * FROM `iplog` WHERE `USERID` = (?) ORDER BY `DATE` DESC");
     $ps->bind_param("s", $userId);
     $succeeded = $ps->execute();
     $result = $ps->get_result();
     $ps->close();
-    if($succeeded) {
+    if ($succeeded) {
         $data = array();
-        if($result->num_rows > 0) {
+        if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $geoIP = geoIP($row ["IP"]);
                 $entry = array(
                     "ip" => $row["IP"],
                     "date" => $row["DATE"],
                     "date_nice" => formatTime($row["DATE"]),
-                    "user_agent" => $row["USERAGENT"],
+                    "user_agent" => replaceCriticalCharacters($row["USERAGENT"]),
                     "country" => $geoIP["country_name"],
                     "country_code" => $geoIP["country_code"],
                     "region" => $geoIP["region_name"],
