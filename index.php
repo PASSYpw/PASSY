@@ -13,7 +13,7 @@ if (isLoggedIn()) {
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ff5722">
-    <title>PASSY.pw</title>
+    <title>PASSY</title>
 
     <link href="https://cdn.scrumplex.net/css/bootstrap/3.3.7/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.scrumplex.net/css/material-icons/3.0.1/material-icons.min.css" rel="stylesheet">
@@ -30,7 +30,7 @@ if (isLoggedIn()) {
     <div class="container">
         <div class="navbar-header">
             <!-- @formatter:off -->
-            <span class="navbar-brand">PASSY<small>.pw</small></span>
+            <span class="navbar-brand">PASSY</span>
             <!-- @formatter:on -->
         </div>
     </div>
@@ -187,7 +187,7 @@ include __DIR__ . "/include/ui/tracker.php";
 <script src='https://www.google.com/recaptcha/api.js'></script>
 <script src="https://cdn.scrumplex.net/js/bootstrap/3.3.7/bootstrap.min.js "></script>
 <script src="https://cdn.scrumplex.net/js/ripple.js/1.2.1/ripple.min.js"></script>
-<script src="assets/js/ui.js"></script>
+<script src="assets/js/global.js"></script>
 <script src="assets/js/app.login.js"></script>
 <?php
 if (isset($_GET["msg"]) && $_GET["msg"] == "session_expired") {

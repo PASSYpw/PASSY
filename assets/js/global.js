@@ -11,7 +11,6 @@ var rippleSettings = {
 };
 
 function registerListeners() {
-
     $.ripple(".nav > li > a", rippleSettings);
     $.ripple(".btn:not([disabled])", rippleSettings);
 

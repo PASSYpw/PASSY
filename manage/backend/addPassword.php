@@ -17,7 +17,7 @@ if (isset($_POST["website"])) {
 }
 
 $username = null;
-if (isset($_POST["username"]))
+if (isset($_POST["username"]) && strlen($username) > 0)
     $username = trim($_POST["username"]);
 
 $_SESSION["last_request_addPassword"] = time();

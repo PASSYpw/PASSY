@@ -1,10 +1,10 @@
 (function () {
-    var currentPage = "passwords", switchingPage = false, statusShown = false;
+    var currentPage = "passwords", switchingPage = false, statusShown = false, statusMessageTimeout, mainTimer;
 
     $(document).ready(function () {
         currentPage = getCurrentPage();
 
-        setInterval(function () {
+        mainTimer = setInterval(function () {
             $.ajax({
                 url: "backend/status.php",
                 success: function (data) {
@@ -41,9 +41,7 @@
         $(window).focus(function () {
             if (!statusShown)
                 $(".content").fadeIn(300);
-        });
-
-        $(window).blur(function () {
+        }).blur(function () {
             if (!statusShown)
                 $(".content").fadeOut(300);
         });
@@ -232,24 +230,33 @@
     }
 
     function showStatusMessage(message, buttonText, buttonAction, timeout) {
-        if (!statusShown) {
-            var statusMessageContainer = $(".statusMessageContainer"),
-                statusMessageText = statusMessageContainer.find(".statusMessageText"),
-                statusMessageButton = statusMessageContainer.find(".statusMessageButton");
+        var statusMessageContainer = $(".statusMessageContainer"),
+            statusMessageText = statusMessageContainer.find(".statusMessageText"),
+            statusMessageButton = statusMessageContainer.find(".statusMessageButton");
 
-            statusMessageButton.off("click");
-            statusMessageButton.click(buttonAction);
+        if (statusMessageTimeout != null)
+            clearTimeout(statusMessageTimeout);
+
+        statusMessageButton.off("click");
+        if (buttonText != null) {
+            if (buttonAction != null)
+                statusMessageButton.click(buttonAction);
             statusMessageButton.text(buttonText);
+            statusMessageButton.show();
+        } else {
+            statusMessageButton.hide();
+        }
 
-            statusMessageText.text(message);
+        statusMessageText.text(message);
 
+        if (!statusShown) {
             statusMessageContainer.fadeIn(300);
 
             $(".content").fadeOut(300);
             statusShown = true;
 
             if (timeout != null && timeout > 0)
-                setTimeout(function () {
+                statusMessageTimeout = setTimeout(function () {
                     hideStatusMessage()
                 }, timeout);
         }
@@ -301,10 +308,14 @@
     }
 
     function logout() {
+        clearInterval(mainTimer);
+        showStatusMessage("We are destroying your session...");
         $.ajax({
             url: "backend/logout.php",
             success: function () {
-                location.replace("../");
+                showStatusMessage("You have been logged out!", "Login", function () {
+                    location.replace("../");
+                });
             }
         })
     }
@@ -339,15 +350,19 @@
                 if (data.success) {
                     var jsonData = data.data, tbody = "", tbodyArchived = "";
                     $.each(jsonData, function (index, item) {
-                        var website = "";
-                        if (item.website == null) {
-                            website = "<i>None</i>";
-                        } else {
+                        var website = "<i>None</i>";
+                        if (item.website != null) {
                             website = "<a href='" + item.website + "' target='_blank'>" + item.website + "</a>";
                         }
+
+                        var username = "<i>None</i>";
+                        if (item.username != null) {
+                            username = item.username;
+                        }
+
                         var row = "<tr id='" + item.password_id + "'>";
                         if (!item.archived) {
-                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
+                            row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
                             row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
                             row += "<td>" + website + "</td>";
                             row += "<td>" + item.date_added_nice + "</td>";
@@ -355,7 +370,7 @@
                             row += "</tr>";
                             tbody += row;
                         } else {
-                            row += "<td><span class='selectable no-contextmenu'> " + item.username + "</span></td>";
+                            row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
                             row += "<td><a class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></a></td>";
                             row += "<td>" + website + "</td>";
                             row += "<td>" + item.date_archived_nice + "</td>";

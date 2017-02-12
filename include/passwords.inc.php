@@ -136,13 +136,12 @@ function getPasswordList($userId)
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
                 $username = $row["USERNAME"];
-                if ($username != null && strlen($username) == 0)
+                if (strlen($username) == 0)
                     $username = null;
 
                 $website = $row["WEBSITE"];
-                if ($website != null && strlen($website) <= 8) {
+                if (strlen($website) <= 8)
                     $website = null;
-                }
 
                 $entry = array(
                     "password_id" => $row["ID"],
@@ -151,7 +150,7 @@ function getPasswordList($userId)
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
                     "user_id" => $userId,
-                    "archived" => (bool) $row["ARCHIVED"],
+                    "archived" => $row["ARCHIVED"],
                     "date_archived" => $row["ARCHIVED_DATE"],
                     "date_archived_nice" => formatTime($row["ARCHIVED_DATE"])
                 );

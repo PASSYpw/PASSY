@@ -50,10 +50,13 @@
         $("#loginForm").submit(function (e) {
             var me = $(this);
             e.preventDefault();
+            var data = me.serialize();
+            me.find("input").attr("disabled", "disabled");
+            me.find("button").attr("disabled", "disabled");
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),
-                data: me.serialize(),
+                data: data,
                 success: function (data) {
                     if(data.success) {
                         location.replace("manage/");
@@ -71,10 +74,14 @@
                         } else if(startsWith(data.msg, "database_")) {
                             showAlert($("#errorLoginDatabase"), 3000);
                         }
+                        me.find("input").attr("disabled", null);
+                        me.find("button").attr("disabled", null);
                     }
                 },
                 error: function () {
                     showAlert($("#errorLoginServer"), 3000);
+                    me.find("input").attr("disabled", null);
+                    me.find("button").attr("disabled", null);
                 }
             })
         });
@@ -82,11 +89,13 @@
         $("#registerForm").submit(function (e) {
             var me = $(this);
             e.preventDefault();
+            var data = me.serialize();
+            me.find("input").attr("disabled", "disabled");
             me.find("button").attr("disabled", "disabled");
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),
-                data: me.serialize(),
+                data: data,
                 success: function (data) {
                     if(data.success) {
                         loadPage("login");
@@ -110,10 +119,12 @@
                         }
                         grecaptcha.reset();
                     }
+                    me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
                 },
                 error: function () {
                     showAlert($("#errorRegisterServer"), 3000);
+                    me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
                 }
             })
