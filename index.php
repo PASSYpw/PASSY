@@ -75,15 +75,6 @@ if (isLoggedIn()) {
                             <button type="submit" class="btn btn-success pull-right">Login</button>
                         </div>
                     </form>
-                    <?php
-                    if (isset($_GET["msg"]) && $_GET["msg"] == "session_expired") {
-                        ?>
-                        <div class="alert alert-warning" id="warningSessionExpired" style="display: none">
-                            <strong>Warning!</strong> Your session has expired! You were inactive for more than 5 minutes!
-                        </div>
-                        <?php
-                    }
-                    ?>
                     <div class="alert alert-success" id="successAccountCreated" style="display: none">
                         <strong>Success!</strong> You can now log in.
                     </div>
@@ -189,14 +180,5 @@ include __DIR__ . "/include/ui/tracker.php";
 <script src="https://cdn.scrumplex.net/js/ripple.js/1.2.1/ripple.min.js"></script>
 <script src="assets/js/global.js"></script>
 <script src="assets/js/app.login.js"></script>
-<?php
-if (isset($_GET["msg"]) && $_GET["msg"] == "session_expired") {
-    ?>
-    <script>
-        showAlert($("#warningSessionExpired"), 3000);
-    </script>
-    <?php
-}
-?>
 </body>
 </html>

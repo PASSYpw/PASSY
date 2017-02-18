@@ -8,10 +8,12 @@ $colorSecondaryText: #757575;
 $colorDivider: rgba(0, 0, 0, 0.06);
 $colorTheme: #FF5722;
 $colorThemeText: #FFFFFF;
+$colorAccent: #00BCD4;
+$colorAccentText: #FFFFFF;
 
 //Colors
 $colorDefault: #ffffff;
-$colorPrimary: $colorTheme /*#2196F3*/;
+$colorPrimary: $colorAccent;
 $colorSuccess: #4CAF50;
 $colorInfo: #00BCD4;
 $colorWarning: #FFC107;
@@ -22,12 +24,13 @@ $offsetSpinnerStroke: 187;
 $durationSpinner: 1.6s;
 
 //Styling
+
 * {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
-  user-select: none;
+  -moz-user-select: -moz-none;
+  -ms-user-select: element;
+  user-select: element;
   cursor: default;
 }
 
@@ -41,7 +44,6 @@ $durationSpinner: 1.6s;
 }
 
 html {
-  overflow-y: scroll;
   height: 100%;
 }
 
@@ -234,6 +236,33 @@ body {
   border-bottom-left-radius: 2px;
 }
 
+.container {
+  position: relative;
+}
+
+.btn-fab {
+  position: fixed;
+  right: 20px;
+  bottom: 20px;
+  background: $colorAccent;
+  padding-left: 0;
+  padding-right: 0;
+  color: $colorAccentText;
+  height: 54px;
+  width: 54px;
+  min-width: initial;
+  border-radius: 100%;
+  z-index: 999;
+}
+
+.btn-fab:focus, .btn-fab:hover {
+  color: $colorAccentText;
+}
+
+.btn-fab:active, .btn-fab:active:hover  {
+  background-color: mix($colorAccent, $colorAccentText, 70%);
+}
+
 .btn-block {
   width: auto;
 }
@@ -367,8 +396,9 @@ body {
   border-bottom: solid 2px $colorThemeText;
 }
 
-.navbar-nav > .dropdown > a, .navbar-nav > .dropdown > a:focus, .navbar-nav > .dropdown > a:hover,
-.navbar-nav > .open > a, .navbar-nav > .open > a:focus, .navbar-nav > .open > a:hover {
+.navbar-right > li > a, .navbar-right > li > a:focus, .navbar-right > li > a:hover,
+.navbar-right > .dropdown > a, .navbar-right > .dropdown > a:focus, .navbar-right > .dropdown > a:hover,
+.navbar-right > .open > a, .navbar-right > .open > a:focus, .navbar-right > .open > a:hover {
   color: $colorThemeText !important;
   background-color: transparent !important;
   border-radius: 100%;
@@ -378,8 +408,9 @@ body {
   padding: 15px;
 }
 
-.navbar-nav > .dropdown > a:active, .navbar-nav > .dropdown > a:active:hover,
-.navbar-nav > .open > a:active, .navbar-nav > .open > a:active:hover{
+.navbar-right > li > a:active, .navbar-right > li > a:active:hover,
+.navbar-right > .dropdown > a:active, .navbar-right > .dropdown > a:active:hover,
+.navbar-right > .open > a:active, .navbar-right > .open > a:active:hover{
   background-color: mix(transparent, $colorThemeText, 70%) !important;
 }
 
@@ -499,21 +530,17 @@ body {
 .text > input:focus ~ label, .text > input.hastext ~ label {
   transform: translate(5px, -44px);
   font-size: 14px;
-  color: $colorTheme;
+  color: $colorAccent;
 }
 
-.form-control:focus {
+.text > .form-control:focus {
   box-shadow: none;
-  border-bottom-color: $colorTheme;
+  border-bottom-color: $colorAccent;
 }
 
-.form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+.text > .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
   background-color: transparent;
   opacity: 0.5;
-}
-
-.form-group > span {
-  color: $colorTheme;
 }
 
 // MODALS
@@ -581,7 +608,7 @@ body {
 }
 
 .spinner.primary .path {
-  stroke: $colorTheme;
+  stroke: $colorAccent;
 }
 
 .load-spinner {

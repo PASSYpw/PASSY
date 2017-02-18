@@ -30,13 +30,35 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     return getError("database_" . $ps->errno, "add_password");
 }
 
+function editPassword($userId, $id, $password, $masterPassword, $username, $website) {
+    $password = replaceCriticalCharacters($password);
+    $username = replaceCriticalCharacters($username);
+    $website = replaceCriticalCharacters($website);
+
+    $keySize = mcrypt_get_key_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+    $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
+    $iv = mcrypt_create_iv($ivSize, MCRYPT_DEV_URANDOM);
+    $key = mb_substr(hash('SHA256', $masterPassword), 0, $keySize);
+    $encrypted = mcrypt_encrypt(MCRYPT_RIJNDAEL_256, $key, $password, MCRYPT_MODE_CBC, $iv);
+    $base64 = base64_encode($iv . $encrypted);
+    $conn = getMYSQL();
+    $ps = $conn->prepare("UPDATE `passwords` SET `PASSWORD` = (?), `USERNAME` = (?), `WEBSITE` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
+    $ps->bind_param("sssss", $base64, $username, $website, $userId, $id);
+    $succeeded = $ps->execute();
+    $ps->close();
+    if ($succeeded)
+        return getSuccess(array(), "edit_password");
+
+    return getError("database_" . $ps->errno, "edit_password");
+}
+
 function getPassword($userId, $id, $masterPassword)
 {
     $ivSize = mcrypt_get_iv_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
     $keySize = mcrypt_get_key_size(MCRYPT_RIJNDAEL_256, MCRYPT_MODE_CBC);
     $conn = getMYSQL();
     $key = mb_substr(hash('SHA256', $masterPassword), 0, $keySize);
-    $ps = $conn->prepare("SELECT `PASSWORD` FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?)");
+    $ps = $conn->prepare("SELECT `PASSWORD`, `ID`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?) AND `ID` = (?)");
     $ps->bind_param("ss", $userId, $id);
     $succeeded = $ps->execute();
     $result = $ps->get_result();
@@ -48,8 +70,21 @@ function getPassword($userId, $id, $masterPassword)
             $data = base64_decode($base64);
             $iv = substr($data, 0, $ivSize);
             $encrypted = substr($data, $ivSize, strlen($data));
-            $decrypted = htmlspecialchars(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, $iv));
-            return getSuccess(array("password" => $decrypted), "get_password");
+            $decrypted = replaceCriticalCharacters(mcrypt_decrypt(MCRYPT_RIJNDAEL_256, $key, $encrypted, MCRYPT_MODE_CBC, $iv));
+            $decrypted = trim($decrypted);
+
+            return getSuccess(array(
+                "password" => $decrypted,
+                "password_id" => $row["ID"],
+                "username" => replaceCriticalCharacters($row["USERNAME"]),
+                "website" => replaceCriticalCharacters($row["WEBSITE"]),
+                "date_added" => $row["DATE"],
+                "date_added_nice" => formatTime($row["DATE"]),
+                "user_id" => $userId,
+                "archived" => $row["ARCHIVED"],
+                "date_archived" => $row["ARCHIVED_DATE"],
+                "date_archived_nice" => formatTime($row["ARCHIVED_DATE"])
+            ), "get_password");
         }
     }
     return getError("database_" . $ps->errno, "get_password");
@@ -145,8 +180,8 @@ function getPasswordList($userId)
 
                 $entry = array(
                     "password_id" => $row["ID"],
-                    "username" => replaceCriticalCharacters($username),
-                    "website" => replaceCriticalCharacters($website),
+                    "username" => replaceCriticalCharacters($row["USERNAME"]),
+                    "website" => replaceCriticalCharacters($row["WEBSITE"]),
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
                     "user_id" => $userId,

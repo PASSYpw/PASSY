@@ -34,6 +34,7 @@ if (!isLoggedIn()) {
             <!-- @formatter:on -->
         </div>
         <ul class="nav navbar-nav navbar-right">
+            <li><a href="#" id="btnLogout"><i class="material-icons">exit_to_app</i></a></li>
             <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
@@ -42,9 +43,6 @@ if (!isLoggedIn()) {
                             Settings</a></li>
                     <li style="animation-delay: 100ms"><a href="#!p=login_history" data-to-page="login_history"><i
                                     class="material-icons">list</i> Login History</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li style="animation-delay: 125ms"><a href="#" id="btnLogout"><i
-                                    class="material-icons">exit_to_app</i> Logout</a></li>
                 </ul>
             </li>
         </ul>
@@ -80,15 +78,6 @@ if (!isLoggedIn()) {
                     <p>Add new passwords or view your saved passwords.</p>
                 </div>
             </div>
-            <div class="row">
-                <div class="col-xs-12">
-                    <div class="btn-group" role="group" aria-label="...">
-                        <button type="button" class="btn btn-success" id="btnAdd" title="Add password..."><i
-                                    class="material-icons">add</i> Add
-                        </button>
-                    </div>
-                </div>
-            </div>
             <div class="row row-margin">
                 <div class="col-xs-12">
                     <div class="table-responsive">
@@ -109,6 +98,7 @@ if (!isLoggedIn()) {
                 </div>
             </div>
         </div>
+        <button class="btn btn-fab" id="btnAdd" title="Add password..."><i class="material-icons">add</i></button>
     </div>
     <div id="page_archive" class="container" style="display: none">
         <div class="jumbotron">
@@ -184,7 +174,7 @@ if (!isLoggedIn()) {
             <div class="modal-header">
                 <h4 class="modal-title">Create password</h4>
             </div>
-            <form method="post" action="backend/addPassword.php" id="formAddPassword">
+            <form method="post" action="backend/addPassword.php" id="formAddPassword" autocomplete="off">
                 <div class="modal-body">
                     <p>
                         Fill the form below to create a new password entry. You will be able to view the password, edit
@@ -216,6 +206,52 @@ if (!isLoggedIn()) {
                 <div class="modal-footer">
                     <button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
                     <button type="submit" class="btn btn-flat btn-primary">Add</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="modal fade" id="modalEdit" tabindex="-1" role="dialog">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content depth-5">
+            <div class="modal-header">
+                <h4 class="modal-title">Edit password</h4>
+            </div>
+            <form method="post" action="backend/editPassword.php" id="formEditPassword" autocomplete="off">
+                <input id="formEditPasswordId" type="hidden" name="id" value="" style="display: none"/>
+                <div class="modal-body">
+                    <p>
+                        Put text here
+                    </p>
+                    <div class="form-group">
+                        <div class="text">
+                            <input id="formEditPasswordUsername" type="text" class="form-control" title="Username"
+                                   name="username"
+                                   autocomplete="off"/>
+                            <label>Username (optional)</label>
+                        </div>
+                        <div class="text">
+                            <input id="formEditPasswordPassword" type="text" class="form-control" title="Password"
+                                   name="password" required
+                                   autocomplete="off"/>
+                            <label>Password</label>
+                        </div>
+                        <div class="text">
+                            <input id="formEditPasswordWebsite" type="text" class="form-control" title="Password"
+                                   name="website" autocomplete="off"/>
+                            <label>Website (optional)</label>
+                        </div>
+                    </div>
+                    <div class="alert alert-danger" id="errorDatabase" style="display: none">
+                        <strong>Error!</strong> There was a problem with the database connection.
+                    </div>
+                    <div class="alert alert-danger" id="errorUnknown" style="display: none">
+                        <strong>Error!</strong> An unhandled error occurred!
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-flat btn-primary">Save</button>
                 </div>
             </form>
         </div>

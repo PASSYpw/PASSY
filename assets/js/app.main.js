@@ -46,7 +46,6 @@
                 $(".content").fadeOut(300);
         });
 
-
         $("*[data-to-page]").click(function (e) {
             var me = $(this), toPage = me.attr("data-to-page");
             e.preventDefault();
@@ -54,10 +53,14 @@
                 toPage = currentPage;
             loadPage(toPage);
         });
+
         $(document).on("keydown", function (e) {
             if ((e.which || e.keyCode) == 116) {
                 e.preventDefault();
-                refresh();
+                if (e.shiftKey)
+                    location.reload(true);
+                else
+                    refresh();
             }
         });
 
@@ -131,8 +134,36 @@
             })
         });
         passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
+            var me = $(this), passwordId = me.data("password-id");
             e.preventDefault();
-            alert("Not implemented yet!");
+            me.attr("disabled", "");
+            me.html(spinnerSVGSmall);
+            $.ajax({
+                url: "backend/getPassword.php",
+                method: "post",
+                data: "id=" + encodeURIComponent(passwordId),
+                success: function (data) {
+                    if (data.success) {
+                        me.html("<i class='material-icons'>edit</i>");
+                        me.attr("disabled", null);
+                        $("#formEditPasswordId").val(passwordId);
+                        $("#formEditPasswordPassword").val(data.data.password).change();
+                        $("#formEditPasswordUsername").val(data.data.username).change();
+                        $("#formEditPasswordWebsite").val(data.data.website).change();
+                        $("#modalEdit").modal("show");
+                    } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
+                        me.html("<i class='material-icons'>error</i>")
+                    }
+                },
+                error: function () {
+                    me.html("<i class='material-icons'>error</i>")
+                }
+            })
+
         });
         passwordTable.on('click', '*[data-password-action="share"]', function (e) {
             e.preventDefault();
@@ -313,9 +344,10 @@
         $.ajax({
             url: "backend/logout.php",
             success: function () {
-                showStatusMessage("You have been logged out!", "Login", function () {
+                showStatusMessage("You have been logged out!");
+                setTimeout(function () {
                     location.replace("../");
-                });
+                }, 2000);
             }
         })
     }

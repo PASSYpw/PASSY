@@ -1,3 +1,2 @@
 Share passwords
 edit user
-edit password

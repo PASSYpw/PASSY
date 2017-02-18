@@ -19,7 +19,7 @@ function registerListeners() {
     if (inputs.val().length > 0)
         me.addClass("hastext");
 
-    inputs.on("input", function () {
+    inputs.change(function () {
         var me = $(this);
         if (me.val().length > 0)
             me.addClass("hastext");
