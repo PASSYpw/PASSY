@@ -1,4 +1,5 @@
 <?php
+
 $global = array(
     "passy" => array(
         "version" => "1.0",

@@ -1,4 +1,5 @@
 <?php
+
 session_start();
 require_once __DIR__ . "/mysql.inc.php";
 require_once __DIR__ . "/json.inc.php";
@@ -41,11 +42,11 @@ function loginUser($email, $password)
 
                 //Log IP Address
                 $ps = $conn->prepare("INSERT INTO `iplog` (`USERID`, `IP`, `USERAGENT`, `DATE`) VALUES (?,?,?,?)");
-                $ps->bind_param("ssss", $_SESSION["userid"], $_SESSION["ip"], $userAgent, time());
+                $ps->bind_param("sssi", $_SESSION["userid"], $_SESSION["ip"], $userAgent, time());
                 $succeeded = $ps->execute();
                 $ps->close();
                 if ($succeeded) {
-                    return getSuccess(null, "login_user");
+                    return getSuccess(array(), "login_user");
                 } else {
                     logoutUser();
                     return getError("database_" . $ps->errno, "login_user");
@@ -80,7 +81,7 @@ function registerUser($email, $password)
             $succeeded = $ps->execute();
             $ps->close();
             if ($succeeded) {
-                return getSuccess(null, "register_user");
+                return getSuccess(array(), "register_user");
             }
             return getError("database_" . $ps->errno, "register_user");
         }

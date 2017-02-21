@@ -1,6 +1,6 @@
 <?php
 define("END", "FRONT");
-include __DIR__ . "/include/user.inc.php";
+require_once __DIR__ . "/include/user.inc.php";
 if (isLoggedIn()) {
     header("Location: manage/");
     die();
@@ -170,8 +170,8 @@ if (isLoggedIn()) {
 </div>
 
 <?php
-include __DIR__ . "/include/ui/footer.php";
-include __DIR__ . "/include/ui/tracker.php";
+include __DIR__ . "/include/ui/footer.inc.php";
+include __DIR__ . "/include/ui/tracker.inc.php";
 ?>
 
 <script src="https://cdn.scrumplex.net/js/jquery/3.1.0/jquery.min.js "></script>

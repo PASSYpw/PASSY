@@ -1,10 +1,11 @@
 <?php
 define("END", "FRONT");
-include __DIR__ . "/../include/user.inc.php";
+require_once __DIR__ . "/../include/user.inc.php";
 if (!isLoggedIn()) {
     header("Location: ../");
     die();
 }
+include_once __DIR__ . "/../include/cron.inc.php";
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -39,7 +40,7 @@ if (!isLoggedIn()) {
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true"
                    aria-expanded="false"><i class="material-icons" id="aMenu">more_vert</i></a>
                 <ul class="dropdown-menu">
-                    <li style="animation-delay: 100ms"><a href="#"><i class="material-icons">edit</i> Profile
+                    <li style="animation-delay: 100ms"><a href="#!p=user_settings" data-to-page="user_settings"><i class="material-icons">edit</i> User
                             Settings</a></li>
                     <li style="animation-delay: 100ms"><a href="#!p=login_history" data-to-page="login_history"><i
                                     class="material-icons">list</i> Login History</a></li>
@@ -158,6 +159,57 @@ if (!isLoggedIn()) {
             </div>
         </div>
     </div>
+    <div id="page_user_settings" class="container" style="display: none">
+        <div class="jumbotron">
+            <div class="row">
+                <div class="col-xs-12">
+                    <h2 class="text-center">User Settings</h2>
+                    <p>Your account needs to be secure! Change your password, add two-step-verifications or change your
+                        email.</p>
+                </div>
+            </div>
+            <div class="row row-margin">
+                <div class="col-xs-12">
+                    <h3>Change password</h3>
+                    <form id="formChangePassword" action="backend/user/changePassword.php" method="post">
+                        <div class="text">
+                            <input type="password" class="form-control" title="Current password" name="oldPassword" required
+                                   autocomplete="off"/>
+                            <label>Current password</label>
+                        </div>
+                        <div class="text">
+                            <input type="password" class="form-control" title="New Password" name="newPassword" required
+                                   autocomplete="off"/>
+                            <label>New Password</label>
+                        </div>
+                        <div class="text">
+                            <input type="password" class="form-control" title="New Password (again)" name="newPassword2" required autocomplete="off"/>
+                            <label>New Password (again)</label>
+                        </div>
+                        <p>This process could take a while, because all your passwords have to be encrypted again!</p>
+                        <button type="submit" class="btn btn-primary pull-right">Apply</button>
+                    </form>
+                </div>
+                <div class="col-xs-12">
+                    <h3>Change email</h3>
+                    <form id="formChangePassword" action="backend/user/changeEmail.php" method="post">
+                        <div class="text">
+                            <input type="email" id="inputCurrentEmail" class="form-control" title="Current email" disabled
+                                   autocomplete="off"/>
+                            <label>Current email</label>
+                        </div>
+                        <div class="text">
+                            <input type="email" class="form-control" title="New email" name="newEmail" required
+                                   autocomplete="off"/>
+                            <label>New email</label>
+                        </div>
+                        <button type="submit" class="btn btn-primary pull-right">Apply</button>
+                    </form>
+                </div>
+            </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 <!-- CONTEXTMENU -->
@@ -192,7 +244,7 @@ if (!isLoggedIn()) {
                             <label>Password</label>
                         </div>
                         <div class="text">
-                            <input type="text" class="form-control" title="Password" name="website" autocomplete="off"/>
+                            <input type="text" class="form-control" title="Website" name="website" autocomplete="off"/>
                             <label>Website (optional)</label>
                         </div>
                     </div>
@@ -211,6 +263,7 @@ if (!isLoggedIn()) {
         </div>
     </div>
 </div>
+
 <div class="modal fade" id="modalEdit" tabindex="-1" role="dialog">
     <div class="modal-dialog" role="document">
         <div class="modal-content depth-5">
@@ -237,15 +290,15 @@ if (!isLoggedIn()) {
                             <label>Password</label>
                         </div>
                         <div class="text">
-                            <input id="formEditPasswordWebsite" type="text" class="form-control" title="Password"
+                            <input id="formEditPasswordWebsite" type="text" class="form-control" title="Website"
                                    name="website" autocomplete="off"/>
                             <label>Website (optional)</label>
                         </div>
                     </div>
-                    <div class="alert alert-danger" id="errorDatabase" style="display: none">
+                    <div class="alert alert-danger" id="errorEditDatabase" style="display: none">
                         <strong>Error!</strong> There was a problem with the database connection.
                     </div>
-                    <div class="alert alert-danger" id="errorUnknown" style="display: none">
+                    <div class="alert alert-danger" id="errorEditUnknown" style="display: none">
                         <strong>Error!</strong> An unhandled error occurred!
                     </div>
                 </div>
@@ -259,8 +312,8 @@ if (!isLoggedIn()) {
 </div>
 
 <?php
-include __DIR__ . "/../include/ui/footer.php";
-include __DIR__ . "/../include/ui/tracker.php";
+include __DIR__ . "/../include/ui/footer.inc.php";
+include __DIR__ . "/../include/ui/tracker.inc.php";
 ?>
 <script src="https://cdn.scrumplex.net/js/jquery/3.1.0/jquery.min.js "></script>
 <script src="https://cdn.scrumplex.net/js/bootstrap/3.3.7/bootstrap.min.js "></script>

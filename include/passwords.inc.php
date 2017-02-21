@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . "/mysql.inc.php";
 require_once __DIR__ . "/user.inc.php";
 require_once __DIR__ . "/format.inc.php";
@@ -17,11 +18,9 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     $base64 = base64_encode($iv . $encrypted);
     $id = uniqid("pass_");
     $date = time();
-    $archivedDate = 0;
-    $archived = 0;
     $conn = getMYSQL();
-    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`, `ARCHIVED_DATE`) VALUES (?, ?, ?, ?, ?, ?, ?, ?)");
-    $ps->bind_param("ssssssis", $id, $userId, $base64, $username, $website, $date, $archived, $archivedDate);
+    $ps = $conn->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `PASSWORD`, `USERNAME`, `WEBSITE`, `DATE`, `ARCHIVED`, `ARCHIVED_DATE`) VALUES (?, ?, ?, ?, ?, ?, 0, 0)");
+    $ps->bind_param("sssssi", $id, $userId, $base64, $username, $website, $date);
     $succeeded = $ps->execute();
     $ps->close();
     if ($succeeded)
@@ -30,7 +29,8 @@ function addPassword($userId, $password, $masterPassword, $username, $website)
     return getError("database_" . $ps->errno, "add_password");
 }
 
-function editPassword($userId, $id, $password, $masterPassword, $username, $website) {
+function editPassword($userId, $id, $password, $masterPassword, $username, $website)
+{
     $password = replaceCriticalCharacters($password);
     $username = replaceCriticalCharacters($username);
     $website = replaceCriticalCharacters($website);
@@ -101,15 +101,14 @@ function archivePassword($userId, $id)
     if ($succeeded) {
         if ($result->num_rows == 1) {
             if ($result->fetch_assoc()["ARCHIVED"] == 1)
-                return getSuccess(null, "archive_password");
+                return getSuccess(array(), "archive_password");
             $archivedDate = time();
-            $archived = 1;
-            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?), `ARCHIVED_DATE` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
-            $ps->bind_param("isss", $archived, $archivedDate, $userId, $id);
+            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = 1, `ARCHIVED_DATE` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
+            $ps->bind_param("iss", $archivedDate, $userId, $id);
             $succeeded = $ps->execute();
             $ps->close();
             if ($succeeded) {
-                return getSuccess(null, "archive_password");
+                return getSuccess(array(), "archive_password");
             }
             return getError("database_" . $ps->errno, "archive_password");
         }
@@ -128,15 +127,13 @@ function restorePassword($userId, $id)
     if ($succeeded) {
         if ($result->num_rows == 1) {
             if ($result->fetch_assoc()["ARCHIVED"] == 0)
-                return getSuccess(null, "restore_password");
-
-            $archived = 0;
-            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = (?) WHERE `USERID` = (?) AND `ID` = (?)");
-            $ps->bind_param("iss", $archived, $userId, $id);
+                return getSuccess(array(), "restore_password");
+            $ps = $conn->prepare("UPDATE `passwords` SET `ARCHIVED` = 0, `ARCHIVED_DATE` = 0 WHERE `USERID` = (?) AND `ID` = (?)");
+            $ps->bind_param("ss", $userId, $id);
             $succeeded = $ps->execute();
             $ps->close();
             if ($succeeded) {
-                return getSuccess(null, "restore_password");
+                return getSuccess(array(), "restore_password");
             }
             return getError("database_" . $ps->errno, "restore_password");
         }
@@ -153,7 +150,7 @@ function deletePassword($userId, $id)
     $succeeded = $ps->execute();
     $ps->close();
     if ($succeeded) {
-        return getSuccess(null, "delete_password");
+        return getSuccess(array(), "delete_password");
     }
     return getError("database_" . $ps->errno, "delete_password");
 }

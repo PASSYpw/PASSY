@@ -1,5 +1,5 @@
 (function () {
-    var currentPage = "passwords", switchingPage = false, statusShown = false, statusMessageTimeout, mainTimer;
+    var currentPage = "passwords", switchingPage = false, statusShown = false, statusMessageTimeout, mainTimer, inputCurrentEmail = $("#inputCurrentEmail");
 
     $(document).ready(function () {
         currentPage = getCurrentPage();
@@ -12,6 +12,8 @@
                         statusSessionExpired();
                         return;
                     }
+                    inputCurrentEmail.val(data.data.user_email);
+                    inputCurrentEmail.change();
                     hideStatusMessage();
                 },
                 error: function (xhr) {
@@ -45,7 +47,6 @@
             if (!statusShown)
                 $(".content").fadeOut(300);
         });
-
         $("*[data-to-page]").click(function (e) {
             var me = $(this), toPage = me.attr("data-to-page");
             e.preventDefault();
@@ -105,6 +106,38 @@
                 }
             })
         });
+
+        $("#formEditPassword").submit(function (e) {
+            var me = $(this);
+            e.preventDefault();
+            var btn = me.find("button");
+            btn.attr("disabled", "");
+            $.ajax({
+                url: me.attr("action"),
+                method: me.attr("method"),
+                data: me.serialize(),
+                success: function (data) {
+                    btn.attr("disabled", null);
+                    if (data.success) {
+                        me.find("input").val("");
+                        me.find("input").change();
+                        refresh();
+                        $(".modal.fade.in").modal("hide");
+                    } else {
+                        if (data.msg == "no_login") {
+                            statusSessionExpired();
+                            return;
+                        }
+                        if (startsWith(data.msg, "database_")) {
+                            showAlert($("#errorEditDatabase"), 3000)
+                        } else {
+                            showAlert($("#errorEditUnknown"), 3000)
+                        }
+                    }
+                }
+            })
+        });
+
         $("#aRefresh").click(function (e) {
             e.preventDefault();
             refresh();
@@ -394,19 +427,31 @@
 
                         var row = "<tr id='" + item.password_id + "'>";
                         if (!item.archived) {
+                            //Passwords page
                             row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></a></td>";
+                            row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
                             row += "<td>" + website + "</td>";
                             row += "<td>" + item.date_added_nice + "</td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'><i class='material-icons'>edit</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='share' data-password-id='" + item.password_id + "'><i class='material-icons'>share</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='archive' data-password-id='" + item.password_id + "'><i class='material-icons'>archive</i></a></td>";
+                            row += "<td>" +
+                                "<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
+                                "<i class='material-icons'>edit</i>" +
+                                "</button>" +
+                                "<button class='btn btn-default btn-flat btn-sm' data-password-action='share' data-password-id='" + item.password_id + "'>" +
+                                "<i class='material-icons'>share</i>" +
+                                "</button>" +
+                                "<button class='btn btn-default btn-flat btn-sm' data-password-action='archive' data-password-id='" + item.password_id + "'>" +
+                                "<i class='material-icons'>archive</i>" +
+                                "</button>" +
+                                "</td>";
                             row += "</tr>";
                             tbody += row;
                         } else {
+                            //Archived page
                             row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></a></td>";
+                            row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
                             row += "<td>" + website + "</td>";
                             row += "<td>" + item.date_archived_nice + "</td>";
-                            row += "<td><a class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></a><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
+                            row += "<td><button class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></button><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
                             row += "</tr>";
                             tbodyArchived += row;
                         }

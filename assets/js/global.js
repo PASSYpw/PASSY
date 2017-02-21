@@ -11,6 +11,12 @@ var rippleSettings = {
 };
 
 function registerListeners() {
+    var anchor = location.href.substring(location.href.indexOf("#"));
+    if (anchor == "#!r") {
+        location.replace("#");
+        location.reload(true)
+    }
+
     $.ripple(".nav > li > a", rippleSettings);
     $.ripple(".btn:not([disabled])", rippleSettings);
 

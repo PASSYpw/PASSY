@@ -25,7 +25,7 @@ $password2 = $_POST["register_password2"];
 $email = trim($email);
 $email = strtolower($email);
 
-if($password != $password2)
+if ($password != $password2)
     die(getError("passwords_not_match", "register_user"));
 
 if (!filter_var($email, FILTER_VALIDATE_EMAIL))

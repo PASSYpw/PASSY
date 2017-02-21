@@ -1,4 +1,4 @@
-(function() {
+(function () {
     var currentPage = "login", switchingPage = false;
 
     $(document).ready(function () {
@@ -58,20 +58,20 @@
                 method: me.attr("method"),
                 data: data,
                 success: function (data) {
-                    if(data.success) {
+                    if (data.success) {
                         location.replace("manage/");
                     } else {
-                        if(data.msg == "already_logged_in") {
+                        if (data.msg == "already_logged_in") {
                             location.replace("manage/");
-                        } else if(data.msg == "missing_arguments") {
+                        } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorLoginFormInvalid"), 3000);
-                        } else if(data.msg == "account_locked") {
+                        } else if (data.msg == "account_locked") {
                             showAlert($("#errorAccountLocked"), 3000);
-                        } else if(data.msg == "invalid_email") {
+                        } else if (data.msg == "invalid_email") {
                             showAlert($("#errorLoginEmailInvalid"), 3000);
-                        } else if(data.msg == "invalid_credentials") {
+                        } else if (data.msg == "invalid_credentials") {
                             showAlert($("#errorInvalidCredentials"), 3000);
-                        } else if(startsWith(data.msg, "database_")) {
+                        } else if (startsWith(data.msg, "database_")) {
                             showAlert($("#errorLoginDatabase"), 3000);
                         }
                         me.find("input").attr("disabled", null);
@@ -97,7 +97,7 @@
                 method: me.attr("method"),
                 data: data,
                 success: function (data) {
-                    if(data.success) {
+                    if (data.success) {
                         loadPage("login");
                         showAlert($("#successAccountCreated"), 3000);
                     } else {

@@ -84,6 +84,10 @@ body {
 
 /* Buttons */
 
+button {
+  align-items: unset;
+}
+
 .btn > * {
   cursor: pointer;
 }
@@ -153,7 +157,7 @@ body {
   color: $colorText;
 }
 
-.btn-flat.btn-default:active, .btn-flat.btn-default:active:hover  {
+.btn-flat.btn-default:active, .btn-flat.btn-default:active:hover {
   background: mix(transparent, $colorText, 70%);
 }
 
@@ -161,7 +165,7 @@ body {
   color: $colorPrimary;
 }
 
-.btn-flat.btn-primary:active, .btn-flat.btn-primary:active:hover  {
+.btn-flat.btn-primary:active, .btn-flat.btn-primary:active:hover {
   background: mix(transparent, $colorPrimary, 70%);
 }
 
@@ -169,7 +173,7 @@ body {
   color: $colorSuccess;
 }
 
-.btn-flat.btn-success:active, .btn-flat.btn-success:active:hover  {
+.btn-flat.btn-success:active, .btn-flat.btn-success:active:hover {
   background: mix(transparent, $colorSuccess, 70%);
 }
 
@@ -177,7 +181,7 @@ body {
   color: $colorInfo;
 }
 
-.btn-flat.btn-info:active, .btn-flat.btn-info:active:hover  {
+.btn-flat.btn-info:active, .btn-flat.btn-info:active:hover {
   background: mix(transparent, $colorInfo, 70%);
 }
 
@@ -185,7 +189,7 @@ body {
   color: $colorWarning;
 }
 
-.btn-flat.btn-warning:active, .btn-warning.btn-warning:active:hover  {
+.btn-flat.btn-warning:active, .btn-warning.btn-warning:active:hover {
   background: mix(transparent, $colorWarning, 70%);
 }
 
@@ -193,7 +197,7 @@ body {
   color: $colorDanger;
 }
 
-.btn-flat.btn-danger:active, .btn-info.btn-danger:active:hover  {
+.btn-flat.btn-danger:active, .btn-info.btn-danger:active:hover {
   background: mix(transparent, $colorDanger, 70%);
 }
 
@@ -259,11 +263,11 @@ body {
   color: $colorAccentText;
 }
 
-.btn-fab:active, .btn-fab:active:hover  {
+.btn-fab:active, .btn-fab:active:hover {
   background-color: mix($colorAccent, $colorAccentText, 70%);
 }
 
-.btn-block {
+a.btn-block {
   width: auto;
 }
 
@@ -410,7 +414,7 @@ body {
 
 .navbar-right > li > a:active, .navbar-right > li > a:active:hover,
 .navbar-right > .dropdown > a:active, .navbar-right > .dropdown > a:active:hover,
-.navbar-right > .open > a:active, .navbar-right > .open > a:active:hover{
+.navbar-right > .open > a:active, .navbar-right > .open > a:active:hover {
   background-color: mix(transparent, $colorThemeText, 70%) !important;
 }
 
@@ -496,8 +500,13 @@ body {
 }
 
 /* INPUTS */
+
 .text {
   padding-top: 15px;
+}
+
+.text:last-of-type {
+  padding-bottom: 15px;
 }
 
 .text > .form-control {
@@ -650,7 +659,6 @@ body {
     @extend .depth-3;
   }
 }
-
 
 /* MISC */
 .material-icons {
