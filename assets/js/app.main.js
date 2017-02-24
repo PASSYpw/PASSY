@@ -47,6 +47,16 @@
             if (!statusShown)
                 $(".content").fadeOut(300);
         });
+
+        $("#formEditPasswordPassword").on("mouseenter", function () {
+            $(this).attr("type", "text");
+        });
+
+        $("#formEditPasswordPassword").on("mouseleave", function () {
+            $(this).attr("type", "password");
+        });
+
+
         $("*[data-to-page]").click(function (e) {
             var me = $(this), toPage = me.attr("data-to-page");
             e.preventDefault();
@@ -179,8 +189,10 @@
                     if (data.success) {
                         me.html("<i class='material-icons'>edit</i>");
                         me.attr("disabled", null);
+                        var password = data.data.password;
+                        password = password.replace(/&lt;/g,'<').replace(/&gt;/g,'>').replace(/&amp;/g,'&');
                         $("#formEditPasswordId").val(passwordId);
-                        $("#formEditPasswordPassword").val(data.data.password).change();
+                        $("#formEditPasswordPassword").val(password).change();
                         $("#formEditPasswordUsername").val(data.data.username).change();
                         $("#formEditPasswordWebsite").val(data.data.website).change();
                         $("#modalEdit").modal("show");

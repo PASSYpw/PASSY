@@ -10,6 +10,13 @@ var rippleSettings = {
     easing: 'linear'
 };
 
+function hideNAV() {
+
+    //TODO: CSS Class
+    var navbar = $(".navbar"), firstContainer = navbar.children().first();
+    navbar.css({height: firstContainer.outerHeight() + "px"});
+}
+
 function registerListeners() {
     var anchor = location.href.substring(location.href.indexOf("#"));
     if (anchor == "#!r") {

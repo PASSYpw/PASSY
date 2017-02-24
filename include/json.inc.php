@@ -11,7 +11,7 @@ function getSuccess($data, $context)
         "response" => $context,
         "data" => $data
     );
-    return json_encode($json, JSON_UNESCAPED_UNICODE);
+    return json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }
 
 function getError($errorString, $context)
@@ -22,5 +22,5 @@ function getError($errorString, $context)
         "response" => $context,
         "data" => array()
     );
-    return json_encode($json);
+    return json_encode($json, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
 }

@@ -284,7 +284,7 @@ include_once __DIR__ . "/../include/cron.inc.php";
                             <label>Username (optional)</label>
                         </div>
                         <div class="text">
-                            <input id="formEditPasswordPassword" type="text" class="form-control" title="Password"
+                            <input id="formEditPasswordPassword" type="password" class="form-control" title="Password"
                                    name="password" required
                                    autocomplete="off"/>
                             <label>Password</label>

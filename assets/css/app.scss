@@ -364,6 +364,7 @@ a.btn-block {
   background-color: $colorTheme;
   border: none;
   border-radius: 0;
+  overflow-y: hidden;
   @extend .depth-2;
 }
 
@@ -656,6 +657,7 @@ a.btn-block {
 
   .statusMessage {
     background-color: $colorForeground;
+    padding: 20px;
     @extend .depth-3;
   }
 }
