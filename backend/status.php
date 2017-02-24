@@ -1,8 +1,8 @@
 <?php
 define("END", "BACK");
 define("TRACK_ACTIVITY", false);
-require_once __DIR__ . "/../../include/user.inc.php";
-require_once __DIR__ . "/../../include/json.inc.php";
+require_once __DIR__ . "/../include/user.inc.php";
+require_once __DIR__ . "/../include/json.inc.php";
 
 if (isLoggedIn()) {
     $arr = array(
