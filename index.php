@@ -337,15 +337,19 @@ require_once __DIR__ . "/include/user.inc.php";
                 </div>
                 <div class="col-xs-12">
                     <h3>Change email</h3>
-                    <form id="formChangePassword" action="backend/user/changeEmail.php" method="post">
+                    <form id="formChangeEmail" action="backend/user/changeEmail.php" method="post">
                         <div class="text">
                             <input type="email" id="inputCurrentEmail" class="form-control" title="Current email"
-                                   disabled
-                                   autocomplete="off"/>
+                                   disabled autocomplete="off"/>
                             <label>Current email</label>
                         </div>
                         <div class="text">
-                            <input type="email" class="form-control" title="New email" name="newEmail" required
+                            <input type="password" class="form-control" title="Current password" name="password"
+                                   autocomplete="off"/>
+                            <label>Current password</label>
+                        </div>
+                        <div class="text">
+                            <input type="email" class="form-control" title="New email" name="newemail" required
                                    autocomplete="off"/>
                             <label>New email</label>
                         </div>

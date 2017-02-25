@@ -20,6 +20,4 @@ $username = null;
 if (isset($_POST["username"]) && strlen($_POST["username"]) > 0)
     $username = trim($_POST["username"]);
 
-$_SESSION["last_request_addPassword"] = time();
-
 die(addPassword($_SESSION["userid"], trim($_POST["password"]), $_SESSION["masterPassword"], $username, $website));

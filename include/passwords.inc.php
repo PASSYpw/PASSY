@@ -177,8 +177,8 @@ function getPasswordList($userId)
 
                 $entry = array(
                     "password_id" => $row["ID"],
-                    "username" => replaceCriticalCharacters($row["USERNAME"]),
-                    "website" => replaceCriticalCharacters($row["WEBSITE"]),
+                    "username" => replaceCriticalCharacters($username),
+                    "website" => replaceCriticalCharacters($website),
                     "date_added" => $row["DATE"],
                     "date_added_nice" => formatTime($row["DATE"]),
                     "user_id" => $userId,

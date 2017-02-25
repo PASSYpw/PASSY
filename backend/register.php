@@ -7,7 +7,7 @@ require_once __DIR__ . "/../include/recaptcha.inc.php";
 if (isLoggedIn())
     die(getError("already_logged_in", "register_user"));
 
-if (!isset($_POST["register_email"]) || !isset($_POST["register_password"]) || !isset($_POST["g-recaptcha-response"]))
+if (!isset($_POST["register_email"]) || !isset($_POST["register_password"]) || !isset($_POST["register_password2"]) || !isset($_POST["g-recaptcha-response"]))
     die(getError("missing_arguments", "register_user"));
 
 $recaptcha = new \ReCaptcha\ReCaptcha("6LeUfBEUAAAAANw4SOK1QTk6fTLqeqYbiIJneFfD");

@@ -59,6 +59,7 @@
         switchingPage = true;
         var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
         currentPage = page;
+        changePageScope(newPage.attr("data-apply-page-scope"));
 
         spinner.addClass("shown");
 
@@ -84,7 +85,6 @@
         };
 
         oldPage.fadeOut(300, function () {
-            changePageScope(newPage.attr("data-apply-page-scope"));
             if (page == "passwords" || page == "archive") {
                 fetchPasswords(show);
             } else if (page == "login_history") {
@@ -146,8 +146,10 @@
         $.ajax({
             url: "backend/status.php",
             success: function (data) {
-                if (data.msg == "success") {
+                if (data.msg == "success" && currentPage == "login") {
                     currentPage = "passwords";
+                } else if (data.msg == "no_login" && currentPage != "login") {
+                    sessionExpired();
                 }
                 loadPage(currentPage);
                 registerPageListeners();
@@ -160,6 +162,10 @@
                 success: function (data) {
                     if (data.msg == "no_login" && currentScope != "logged_out") {
                         sessionExpired();
+                    }
+                    if(data.msg == "success") {
+                        $("#inputCurrentEmail").val(data.data.user_email);
+                        $("#inputCurrentEmail").change();
                     }
                 }
             });
@@ -429,6 +435,66 @@
                             showAlert($("#errorEditDatabase"), 3000)
                         } else {
                             showAlert($("#errorEditUnknown"), 3000)
+                        }
+                    }
+                }
+            })
+        });
+
+        $("#formChangePassword").submit(function (e) {
+            var me = $(this);
+            e.preventDefault();
+            var btn = me.find("button");
+            btn.attr("disabled", "");
+            $.ajax({
+                url: me.attr("action"),
+                method: me.attr("method"),
+                data: me.serialize(),
+                success: function (data) {
+                    btn.attr("disabled", null);
+                    if (data.success) {
+                        me.find("input").val("");
+                        me.find("input").change();
+                        logout();
+                    } else {
+                        if (data.msg == "no_login") {
+                            sessionExpired();
+                            return;
+                        }
+                        if (startsWith(data.msg, "database_")) {
+                            showAlert($("#errorChangePasswordDatabase"), 3000)
+                        } else {
+                            showAlert($("#errorChangePasswordUnknown"), 3000)
+                        }
+                    }
+                }
+            })
+        });
+
+        $("#formChangeEmail").submit(function (e) {
+            var me = $(this);
+            e.preventDefault();
+            var btn = me.find("button");
+            btn.attr("disabled", "");
+            $.ajax({
+                url: me.attr("action"),
+                method: me.attr("method"),
+                data: me.serialize(),
+                success: function (data) {
+                    btn.attr("disabled", null);
+                    if (data.success) {
+                        me.find("input").val("");
+                        me.find("input").change();
+                        logout();
+                    } else {
+                        if (data.msg == "no_login") {
+                            sessionExpired();
+                            return;
+                        }
+                        if (startsWith(data.msg, "database_")) {
+                            showAlert($("#errorChangeEmailDatabase"), 3000)
+                        } else {
+                            showAlert($("#errorChangeEmailUnknown"), 3000)
                         }
                     }
                 }
