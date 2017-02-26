@@ -1,6 +1,6 @@
 <?php
-
 session_start();
+require_once __DIR__ . "/config.inc.php";
 require_once __DIR__ . "/mysql.inc.php";
 require_once __DIR__ . "/json.inc.php";
 require_once __DIR__ . "/format.inc.php";
@@ -15,6 +15,7 @@ if (!defined("TRACK_ACTIVITY") || TRACK_ACTIVITY)
 
 function loginUser($email, $password)
 {
+    global $global;
     if (!apc_exists("login_attempts_" . $email))
         apc_store("login_attempts_" . $email, 0);
 
@@ -40,6 +41,9 @@ function loginUser($email, $password)
                 $_SESSION["last_activity"] = time();
 
                 $userAgent = replaceCriticalCharacters($_SERVER['HTTP_USER_AGENT']);
+
+                if (!$global["general"]["enable_login_history"])
+                    return getSuccess(array(), "login_user");
 
                 //Log IP Address
                 $ps = $conn->prepare("INSERT INTO `iplog` (`USERID`, `IP`, `USERAGENT`, `DATE`) VALUES (?,?,?,?)");
@@ -103,7 +107,7 @@ function getIPLog($userId)
         $data = array();
         if ($result->num_rows > 0) {
             while ($row = $result->fetch_assoc()) {
-                $geoIP = geoIP($row ["IP"]);
+                $geoIP = geoIP($row["IP"]);
                 $entry = array(
                     "ip" => $row["IP"],
                     "date" => $row["DATE"],

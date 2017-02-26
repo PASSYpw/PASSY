@@ -6,7 +6,6 @@
         currentScope = "logged_out",
         currentAlert,
         switchingPage = false,
-        spinnerSVG = '<svg class="spinner" width="65px" height="65px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>',
         spinnerSVGSmall = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>',
         rippleSettings = {
             debug: false,
@@ -39,10 +38,6 @@
 
     function startsWith(haystack, needle) {
         return haystack.substr(0, needle.length) == needle;
-    }
-
-    function endsWith(haystack, needle) {
-        return haystack.substr(needle.length, haystack.length) == needle;
     }
 
     function getCurrentPage() {
@@ -146,9 +141,9 @@
         $.ajax({
             url: "backend/status.php",
             success: function (data) {
-                if (data.msg == "success" && currentPage == "login") {
+                if (data.msg == "success" && currentScope == "logged_out") {
                     currentPage = "passwords";
-                } else if (data.msg == "no_login" && currentPage != "login") {
+                } else if (data.msg == "no_login" && currentScope == "logged_in") {
                     sessionExpired();
                 }
                 loadPage(currentPage);
@@ -163,9 +158,10 @@
                     if (data.msg == "no_login" && currentScope != "logged_out") {
                         sessionExpired();
                     }
-                    if(data.msg == "success") {
-                        $("#inputCurrentEmail").val(data.data.user_email);
-                        $("#inputCurrentEmail").change();
+                    if (data.msg == "success") {
+                        const inputCurrentEmail = $("#inputCurrentEmail");
+                        inputCurrentEmail.val(data.data.user_email);
+                        inputCurrentEmail.change();
                     }
                 }
             });
@@ -195,7 +191,7 @@
         });
 
         inputs.change(function () {
-            var me = $(this);
+            const me = $(this);
             if (me.val().length > 0)
                 me.addClass("hastext");
             else
@@ -210,13 +206,14 @@
         });
 
         var lastHeight = 0;
+        const navbar = $(".navbar-fixed-top");
         $(window).scroll(function () {
             $(".dropdown.open").find(".dropdown-toggle").dropdown("toggle");
             $(".contextmenu.open").removeClass("open");
 
-            var navbar = $(".navbar-fixed-top"),
-                scrollTop = $(document).scrollTop(),
+            var scrollTop = $(document).scrollTop(),
                 firstHeight = navbar.children().first().outerHeight();
+
             if (scrollTop < firstHeight) {
                 navbar.css({transform: "translateY(-" + scrollTop + "px)"});
                 lastHeight = scrollTop;
@@ -283,11 +280,11 @@
                 success: function (data) {
                     if (data.success) {
                         loadPage("passwords");
-                        me[0].reset();
-                        me.find("input").change();
+                        hideAlert();
                     } else {
                         if (data.msg == "already_logged_in") {
                             loadPage("passwords");
+                            hideAlert();
                         } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorLoginFormInvalid"), 3000);
                         } else if (data.msg == "account_locked") {
@@ -300,12 +297,15 @@
                             showAlert($("#errorLoginDatabase"), 3000);
                         }
                     }
+                    me[0].reset();
+                    me.find("input").change();
                     me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
-                    hideAlert();
                 },
                 error: function () {
                     showAlert($("#errorLoginServer"), 3000);
+                    me[0].reset();
+                    me.find("input").change();
                     me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
                 }
@@ -326,11 +326,10 @@
                     if (data.success) {
                         loadPage("login");
                         showAlert($("#successAccountCreated"), 3000);
-                        me.reset();
                     } else {
                         if (data.msg == "already_logged_in") {
-                            location.replace("manage/");
-                            return;
+                            loadPage("passwords");
+                            hideAlert();
                         } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorFormInvalid"), 3000);
                         } else if (data.msg == "passwords_not_match") {
@@ -344,15 +343,20 @@
                         } else if (startsWith(data.msg, "database_")) {
                             showAlert($("#errorDatabase"), 3000);
                         }
-                        grecaptcha.reset();
                     }
+                    me[0].reset();
+                    me.find("input").change();
                     me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
+                    grecaptcha.reset();
                 },
                 error: function () {
                     showAlert($("#errorRegisterServer"), 3000);
+                    me[0].reset();
+                    me.find("input").change();
                     me.find("input").attr("disabled", null);
                     me.find("button").attr("disabled", null);
+                    grecaptcha.reset();
                 }
             })
         });

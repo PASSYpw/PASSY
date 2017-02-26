@@ -1,6 +1,6 @@
 <?php
 
-require_once __DIR__ . "/../global.inc.php";
+require_once __DIR__ . "/../config.inc.php";
 ?>
 <div class="footer">
     <div class="container">
