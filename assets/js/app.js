@@ -188,9 +188,11 @@
         $.ripple(".nav > li > a", rippleSettings);
         $.ripple(".btn:not([disabled])", rippleSettings);
 
-
-        if (inputs.val().length > 0)
-            me.addClass("hastext");
+        inputs.each(function (index, elem) {
+            elem = $(elem);
+            if (elem.val().length > 0)
+                elem.addClass("hastext");
+        });
 
         inputs.change(function () {
             var me = $(this);
