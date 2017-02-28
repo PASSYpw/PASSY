@@ -148,24 +148,24 @@
                 }
                 loadPage(currentPage);
                 registerPageListeners();
+
+                setInterval(function () {
+                    $.ajax({
+                        url: "backend/status.php",
+                        success: function (data) {
+                            if (data.msg == "no_login" && currentScope != "logged_out") {
+                                sessionExpired();
+                            }
+                            if (data.msg == "success") {
+                                const inputCurrentEmail = $("#inputCurrentEmail");
+                                inputCurrentEmail.val(data.data.user_email);
+                                inputCurrentEmail.change();
+                            }
+                        }
+                    });
+                }, 2000);
             }
         });
-
-        setInterval(function () {
-            $.ajax({
-                url: "backend/status.php",
-                success: function (data) {
-                    if (data.msg == "no_login" && currentScope != "logged_out") {
-                        sessionExpired();
-                    }
-                    if (data.msg == "success") {
-                        const inputCurrentEmail = $("#inputCurrentEmail");
-                        inputCurrentEmail.val(data.data.user_email);
-                        inputCurrentEmail.change();
-                    }
-                }
-            });
-        }, 2000);
     });
 
     function registerPageListeners() {

@@ -5,17 +5,17 @@ require_once __DIR__ . "/../include/json.inc.php";
 require_once __DIR__ . "/../include/config.inc.php";
 require_once __DIR__ . "/../include/recaptcha.inc.php";
 
-if (!$global["general"]["enable_register"])
+if (!$config["general"]["enable_register"])
     die("disabled");
 
 if (isLoggedIn())
     die(getError("already_logged_in", "register_user"));
 
-if (!isset($_POST["register_email"]) || !isset($_POST["register_password"]) || !isset($_POST["register_password2"]) || ($global["recaptcha"]["enabled"] && !isset($_POST["g-recaptcha-response"])))
+if (!isset($_POST["register_email"]) || !isset($_POST["register_password"]) || !isset($_POST["register_password2"]) || ($config["recaptcha"]["enabled"] && !isset($_POST["g-recaptcha-response"])))
     die(getError("missing_arguments", "register_user"));
 
-if ($global["recaptcha"]["enabled"]) {
-    $recaptcha = new \ReCaptcha\ReCaptcha($global["recaptcha"]["secret_key"]);
+if ($config["recaptcha"]["enabled"]) {
+    $recaptcha = new \ReCaptcha\ReCaptcha($config["recaptcha"]["secret_key"]);
 
     $recaptchaResponse = $_POST["g-recaptcha-response"];
     $remoteIp = $_SERVER["REMOTE_ADDR"];

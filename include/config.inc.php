@@ -1,10 +1,16 @@
 <?php
-$global = array(
+$config = array(
     "general" => array(
         "title" => "PASSY",
         "enable_register" => true,
         "enable_forgot_password" => true,
         "enable_login_history" => true
+    ),
+    "mysql" => array(
+        "host" => "localhost",
+        "db" => "passy",
+        "user" => "passy",
+        "pass" => ""
     ),
     "geoip" => array(
         "enabled" => true,
@@ -22,7 +28,9 @@ $global = array(
         "version_number" => "1",
         "authors" => array(
             "Scrumplex" => "https://scrumplex.net"
-        )
+        ),
+        "github" => "https://github.com/Scrumplex/PASSY",
+        "issues" => "https://github.com/Scrumplex/PASSY/issues"
     )
 );
 

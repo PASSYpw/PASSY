@@ -15,7 +15,7 @@ if (!defined("TRACK_ACTIVITY") || TRACK_ACTIVITY)
 
 function loginUser($email, $password)
 {
-    global $global;
+    global $config;
     if (!apc_exists("login_attempts_" . $email))
         apc_store("login_attempts_" . $email, 0);
 
@@ -42,7 +42,7 @@ function loginUser($email, $password)
 
                 $userAgent = replaceCriticalCharacters($_SERVER['HTTP_USER_AGENT']);
 
-                if (!$global["general"]["enable_login_history"])
+                if (!$config["general"]["enable_login_history"])
                     return getSuccess(array(), "login_user");
 
                 //Log IP Address

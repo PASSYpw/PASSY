@@ -49,7 +49,7 @@ require_once __DIR__ . "/include/config.inc.php";
                     </li>
 
                     <?php
-                    if ($global["general"]["enable_login_history"]) {
+                    if ($config["general"]["enable_login_history"]) {
                         ?>
                         <li style="animation-delay: 100ms">
                             <a href="#!p=login_history" data-to-page="login_history">
@@ -73,7 +73,7 @@ require_once __DIR__ . "/include/config.inc.php";
             </li>
 
             <?php
-            if ($global["general"]["enable_register"]) {
+            if ($config["general"]["enable_register"]) {
                 ?>
                 <li data-page-highlight="register" data-page-scope="logged_out">
                     <a href="#!p=register" data-to-page="register">
@@ -117,17 +117,17 @@ require_once __DIR__ . "/include/config.inc.php";
 
     include_once __DIR__ . "/include/page/login.page.php";
 
-    if ($global["general"]["enable_register"])
+    if ($config["general"]["enable_register"])
         include_once __DIR__ . "/include/page/register.page.php";
 
-    if ($global["general"]["enable_forgot_password"])
+    if ($config["general"]["enable_forgot_password"])
         include_once __DIR__ . "/include/page/forgotpass.page.php";
 
     include_once __DIR__ . "/include/page/passwords.page.php";
 
     include_once __DIR__ . "/include/page/archive.page.php";
 
-    if ($global["general"]["enable_login_history"])
+    if ($config["general"]["enable_login_history"])
         include_once __DIR__ . "/include/page/login_history.page.php";
 
     include_once __DIR__ . "/include/page/user_settings.page.php";

@@ -25,7 +25,7 @@ require_once __DIR__ . "/../config.inc.php";
                     </div>
                     <div class="form-group">
                         <?php
-                        if ($global["general"]["enable_forgot_password"]) {
+                        if ($config["general"]["enable_forgot_password"]) {
                             ?>
                             <button type="button" class="btn btn-default btn-flat" data-to-page="forgotpass">
                                 Forgot password

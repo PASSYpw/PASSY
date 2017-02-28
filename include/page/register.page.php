@@ -28,8 +28,8 @@ require_once __DIR__ . "/../config.inc.php";
                             <label>Password (again)</label>
                         </div>
                         <?php
-                        if ($global["recaptcha"]["enabled"]) {
-                            echo '<div class="g-recaptcha" data-sitekey="' . $global["recaptcha"]["website_key"] .  '"></div>';
+                        if ($config["recaptcha"]["enabled"]) {
+                            echo '<div class="g-recaptcha" data-sitekey="' . $config["recaptcha"]["website_key"] .  '"></div>';
                         }
                         ?>
                     </div>
