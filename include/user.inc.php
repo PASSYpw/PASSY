@@ -16,11 +16,10 @@ if (!defined("TRACK_ACTIVITY") || TRACK_ACTIVITY)
 function loginUser($email, $password)
 {
     global $config;
-    if (!apc_exists("login_attempts_" . $email))
-        apc_store("login_attempts_" . $email, 0);
-
-    if (apc_fetch("login_attempts_" . $email) >= 5)
-        return getError("account_locked", "login_user");
+    if ($config["general"]["enable_account_lock_on_failed_logins"]) {
+        if (apc_fetch("login_attempts_" . $email) >= 5)
+            return getError("account_locked", "login_user");
+    }
 
     $conn = getMYSQL();
     $ps = $conn->prepare("SELECT * FROM `users` WHERE `EMAIL` = (?)");
@@ -33,7 +32,8 @@ function loginUser($email, $password)
             $row = $result->fetch_assoc();
             $passwordHash = hash("SHA256", $password . $row["SALT"]);
             if ($passwordHash == $row['PASSWORD']) {
-                apc_store("login_attempts_" . $email, 0);
+                if ($config["general"]["enable_account_lock_on_failed_logins"])
+                    apc_store("login_attempts_" . $email, 0);
                 $_SESSION["email"] = $email;
                 $_SESSION["masterPassword"] = hash("SHA256", $password . $row['USERID']);
                 $_SESSION["userid"] = $row['USERID'];
@@ -58,9 +58,11 @@ function loginUser($email, $password)
                 }
             }
         }
-        $attempts = apc_fetch("login_attempts_" . $email);
-        $attempts++;
-        apc_store("login_attempts_" . $email, $attempts);
+        if ($config["general"]["enable_account_lock_on_failed_logins"]) {
+            $attempts = apc_fetch("login_attempts_" . $email);
+            $attempts++;
+            apc_store("login_attempts_" . $email, $attempts);
+        }
         logoutUser();
         return getError("invalid_credentials", "login_user");
     }
@@ -198,7 +200,7 @@ function changePassword($userId, $oldPassword, $newPassword)
                                 $username = $row["USERNAME"];
                                 $website = $row["WEBSITE"];
                                 $password = json_decode(getPassword($userId, $passId, $_SESSION["masterPassword"]), true)["data"]["password"];
-                                editPassword($userId, $passId,$password, hash("SHA256", $newPassword . $userId), $username, $website);
+                                editPassword($userId, $passId, $password, hash("SHA256", $newPassword . $userId), $username, $website);
                             }
                             logoutUser();
                             return getSuccess(array(), "change_password");

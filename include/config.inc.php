@@ -4,7 +4,8 @@ $config = array(
         "title" => "PASSY",
         "enable_register" => true,
         "enable_forgot_password" => true,
-        "enable_login_history" => true
+        "enable_login_history" => true,
+        "enable_account_lock_on_failed_logins" => true
     ),
     "mysql" => array(
         "host" => "localhost",
@@ -13,19 +14,19 @@ $config = array(
         "pass" => ""
     ),
     "geoip" => array(
-        "enabled" => true,
+        "enabled" => false,
         "ip_and_port" => "localhost:8080",
         "download_geoip_server" => "https://github.com/fiorix/freegeoip/releases"
     ),
     "recaptcha" => array(
-        "enabled" => true,
-        "website_key" => "6LeUfBEUAAAAAG7h_NoKmOx1FzP3gPpDs_lwhlcE",
-        "secret_key" => "6LeUfBEUAAAAANw4SOK1QTk6fTLqeqYbiIJneFfD"
+        "enabled" => false,
+        "website_key" => "",
+        "secret_key" => ""
     ),
 
     "passy" => array(
-        "version" => "1.0",
-        "version_number" => "1",
+        "version" => "1.0.1",
+        "version_number" => "2",
         "authors" => array(
             "Scrumplex" => "https://scrumplex.net"
         ),
