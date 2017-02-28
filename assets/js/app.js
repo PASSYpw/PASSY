@@ -273,6 +273,8 @@
             var data = me.serialize();
             me.find("input").attr("disabled", "disabled");
             me.find("button").attr("disabled", "disabled");
+            if (hideAlert != null)
+                hideAlert();
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),
@@ -280,11 +282,9 @@
                 success: function (data) {
                     if (data.success) {
                         loadPage("passwords");
-                        hideAlert();
                     } else {
                         if (data.msg == "already_logged_in") {
                             loadPage("passwords");
-                            hideAlert();
                         } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorLoginFormInvalid"), 3000);
                         } else if (data.msg == "account_locked") {
@@ -318,6 +318,8 @@
             var data = me.serialize();
             me.find("input").attr("disabled", "disabled");
             me.find("button").attr("disabled", "disabled");
+            if (hideAlert != null)
+                hideAlert();
             $.ajax({
                 url: me.attr("action"),
                 method: me.attr("method"),
@@ -329,7 +331,6 @@
                     } else {
                         if (data.msg == "already_logged_in") {
                             loadPage("passwords");
-                            hideAlert();
                         } else if (data.msg == "missing_arguments") {
                             showAlert($("#errorFormInvalid"), 3000);
                         } else if (data.msg == "passwords_not_match") {

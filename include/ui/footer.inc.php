@@ -22,7 +22,7 @@ require_once __DIR__ . "/../config.inc.php";
         </div>
         <div class="row">
             <div class="col-sm-6 col-xs-12">
-                <span>Powered by <a href="//scrumplex.net" target="_blank">scrumplex.net</a>.</span>
+                <span>Powered by <a href="//scrumplex.net" target="_blank">scrumplex.net</a>.</span><!-- TODO: Replace this with something creative please -->
                 <span class="hidden-xs">Version <?php echo $config["passy"]["version"] ?></span>
             </div>
             <div class="col-sm-6 col-xs-12 text-right">
