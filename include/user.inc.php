@@ -6,6 +6,7 @@ require_once __DIR__ . "/json.inc.php";
 require_once __DIR__ . "/format.inc.php";
 require_once __DIR__ . "/geoip.inc.php";
 require_once __DIR__ . "/passwords.inc.php";
+require_once __DIR__ . "/cron.inc.php";
 
 if (isset($_SESSION["last_activity"]) && (time() - $_SESSION["last_activity"]) >= 300)
     logoutUser();
@@ -51,6 +52,7 @@ function loginUser($email, $password)
                 $succeeded = $ps->execute();
                 $ps->close();
                 if ($succeeded) {
+                    runJob();
                     return getSuccess(array(), "login_user");
                 } else {
                     logoutUser();

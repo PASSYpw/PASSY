@@ -226,7 +226,8 @@
         $(window).focus(function () {
             $(".content").fadeIn(300);
         }).blur(function () {
-            $(".content").fadeOut(300);
+            if (!$('iframe').is(':focus'))
+                $(".content").fadeOut(300);
         });
 
         $(document).on("keydown", function (e) {
