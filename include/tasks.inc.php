@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/mysql.inc.php";
 
-function runJob() {
+function runTask() {
     $conn = getMYSQL();
 
     //Clear ip log

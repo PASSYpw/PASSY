@@ -6,6 +6,7 @@ require_once __DIR__ . "/../config.inc.php";
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-center">Register</h2>
+                <p>Your very own account is just some inputs away.</p>
             </div>
         </div>
         <div class="row row-margin">

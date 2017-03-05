@@ -3,6 +3,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-center">Reset password</h2>
+                <p>Feature not available!</p>
             </div>
         </div>
     </div>

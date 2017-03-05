@@ -6,6 +6,7 @@ require_once __DIR__ . "/../config.inc.php";
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-center">Login</h2>
+                <p>Welcome to <?php echo $config["general"]["title"] ?>. You will need an account to use this service.</p>
             </div>
         </div>
         <div class="row row-margin">

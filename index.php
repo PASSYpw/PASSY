@@ -115,22 +115,22 @@ require_once __DIR__ . "/include/config.inc.php";
 
     <?php
 
-    include_once __DIR__ . "/include/page/login.page.php";
+    include_once __DIR__ . "/include/page/login.page.inc.php";
 
     if ($config["general"]["enable_register"])
-        include_once __DIR__ . "/include/page/register.page.php";
+        include_once __DIR__ . "/include/page/register.page.inc.php";
 
     if ($config["general"]["enable_forgot_password"])
-        include_once __DIR__ . "/include/page/forgotpass.page.php";
+        include_once __DIR__ . "/include/page/forgotpass.page.inc.php";
 
-    include_once __DIR__ . "/include/page/passwords.page.php";
+    include_once __DIR__ . "/include/page/passwords.page.inc.php";
 
-    include_once __DIR__ . "/include/page/archive.page.php";
+    include_once __DIR__ . "/include/page/archive.page.inc.php";
 
     if ($config["general"]["enable_login_history"])
-        include_once __DIR__ . "/include/page/login_history.page.php";
+        include_once __DIR__ . "/include/page/login_history.page.inc.php";
 
-    include_once __DIR__ . "/include/page/user_settings.page.php";
+    include_once __DIR__ . "/include/page/user_settings.page.inc.php";
 
     ?>
 </div>
@@ -148,7 +148,7 @@ require_once __DIR__ . "/include/config.inc.php";
 </div>
 
 <?php
-include __DIR__ . "/include/ui/footer.inc.php";
+include __DIR__ . "/include/ui/footer.ui.inc.php";
 ?>
 
 <script src="https://cdn.scrumplex.net/js/jquery/3.1.0/jquery.min.js "></script>

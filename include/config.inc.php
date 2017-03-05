@@ -25,11 +25,8 @@ $config = array(
     ),
 
     "passy" => array(
-        "version" => "1.0.2",
-        "version_number" => "3",
-        "authors" => array(
-            "Scrumplex" => "https://scrumplex.net"
-        ),
+        "version" => "1.0.3",
+        "version_number" => "4",
         "github" => "https://github.com/Scrumplex/PASSY",
         "issues" => "https://github.com/Scrumplex/PASSY/issues"
     )

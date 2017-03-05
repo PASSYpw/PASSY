@@ -3,8 +3,7 @@
         <div class="row">
             <div class="col-xs-12">
                 <h2 class="text-center">User Settings</h2>
-                <p>Your account needs to be secure! Change your password, add two-step-verifications or change
-                    your
+                <p>Your account needs to be secure! Change your password, add two-step-verifications or change your
                     email.</p>
             </div>
         </div>
