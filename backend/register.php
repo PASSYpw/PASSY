@@ -3,7 +3,7 @@ define("END", "BACK");
 require_once __DIR__ . "/../include/user.inc.php";
 require_once __DIR__ . "/../include/json.inc.php";
 require_once __DIR__ . "/../include/config.inc.php";
-require_once __DIR__ . "/../include/recaptcha.inc.php";
+require_once __DIR__ . "/../vendor/autoload.php";
 
 if (!$config["general"]["enable_register"])
     die("disabled");
