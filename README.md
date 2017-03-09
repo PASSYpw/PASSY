@@ -1,5 +1,5 @@
 # PASSY
-[Live Demo / Hosted Version](https://app.passy.pw)
+[Hosted Version](https://app.passy.pw)
 
 A web based password manager with multiple user accounts.
 

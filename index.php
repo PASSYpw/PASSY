@@ -10,7 +10,7 @@ require_once __DIR__ . "/include/config.inc.php";
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="theme-color" content="#ff5722">
-    <title>PASSY</title>
+    <title><?php echo $config["general"]["title"] ?></title>
 
     <link href="assets/css/bootstrap.min.css" rel="stylesheet">
     <link href="assets/css/material-icons.min.css" rel="stylesheet">
@@ -22,7 +22,7 @@ require_once __DIR__ . "/include/config.inc.php";
     <div class="container">
         <div class="navbar-header">
             <!-- @formatter:off -->
-            <span class="navbar-brand">PASSY</span>
+            <span class="navbar-brand"><?php echo $config["general"]["title"] ?></span>
             <!-- @formatter:on -->
         </div>
         <ul class="nav navbar-nav navbar-right">
