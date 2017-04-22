@@ -26,783 +26,783 @@ $durationSpinner: 1.6s;
 //Styling
 
 * {
-  -webkit-touch-callout: none;
-  -webkit-user-select: none;
-  -moz-user-select: -moz-none;
-  -ms-user-select: element;
-  user-select: element;
-  cursor: default;
+	-webkit-touch-callout: none;
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: element;
+	user-select: element;
+	cursor: default;
 }
 
 .selectable {
-  -webkit-touch-callout: default;
-  -webkit-user-select: auto;
-  -moz-user-select: all;
-  -ms-user-select: all;
-  user-select: all;
-  cursor: auto;
+	-webkit-touch-callout: default;
+	-webkit-user-select: auto;
+	-moz-user-select: all;
+	-ms-user-select: all;
+	user-select: all;
+	cursor: auto;
 }
 
 html {
-  height: 100%;
+	height: 100%;
 }
 
 body {
-  position: relative;
-  margin: 0;
-  padding-bottom: 200px;
-  min-height: 100%;
-  font-family: "Roboto", 'Helvetica Neue', Helvetica, Arial, sans-serif;
-  overflow-x: hidden;
-  background-color: $colorBackground;
-  color: $colorText;
+	position: relative;
+	margin: 0;
+	padding-bottom: 200px;
+	min-height: 100%;
+	font-family: "Roboto", 'Helvetica Neue', Helvetica, Arial, sans-serif;
+	overflow-x: hidden;
+	background-color: $colorBackground;
+	color: $colorText;
 }
 
 .jumbotron {
-  background-color: $colorForeground;
-  border-radius: 0 !important;
-  @extend .depth-1;
+	background-color: $colorForeground;
+	border-radius: 0 !important;
+	@extend .depth-1;
 }
 
 @media (max-width: 768px) {
-  .jumbotron {
-    box-shadow: none !important;
-  }
+	.jumbotron {
+		box-shadow: none !important;
+	}
 
-  body {
-    background-color: $colorForeground;
-  }
+	body {
+		background-color: $colorForeground;
+	}
 }
 
 .jumbotron p {
-  font-size: 14px;
+	font-size: 14px;
 }
 
 .content {
-  padding-top: 120px;
+	padding-top: 120px;
 }
 
 /* Buttons */
 
 button {
-  align-items: unset;
+	align-items: unset;
 }
 
 .btn > * {
-  cursor: pointer;
+	cursor: pointer;
 }
 
 .btn-default, .btn-default:focus, .btn-default:hover, .btn-default:focus:active {
-  color: $colorText;
-  background: $colorDefault;
+	color: $colorText;
+	background: $colorDefault;
 }
 
 .btn-default:active, .btn-default:hover:active {
-  background: mix($colorDefault, $colorText, 70%);
+	background: mix($colorDefault, $colorText, 70%);
 }
 
 .btn-primary, .btn-primary:focus, .btn-primary:hover, .btn-primary:focus:active {
-  color: invert($colorText);
-  background: $colorPrimary;
+	color: invert($colorText);
+	background: $colorPrimary;
 }
 
 .btn-primary:active, .btn-primary:hover:active {
-  background: mix($colorPrimary, invert($colorText), 70%);
+	background: mix($colorPrimary, invert($colorText), 70%);
 }
 
 .btn-success, .btn-success:focus, .btn-success:hover, .btn-success:focus:active {
-  color: invert($colorText);
-  background: $colorSuccess;
+	color: invert($colorText);
+	background: $colorSuccess;
 }
 
 .btn-success:active, .btn-success:hover:active {
-  background: mix($colorSuccess, invert($colorText), 70%);
+	background: mix($colorSuccess, invert($colorText), 70%);
 }
 
 .btn-info, .btn-info:focus, .btn-info:hover, .btn-info:focus:active {
-  color: invert($colorText);
-  background: $colorInfo;
+	color: invert($colorText);
+	background: $colorInfo;
 }
 
 .btn-info:active, .btn-info:hover:active {
-  background: mix($colorInfo, invert($colorText), 70%);
+	background: mix($colorInfo, invert($colorText), 70%);
 }
 
 .btn-warning, .btn-warning:focus, .btn-warning:hover, .btn-warning:focus:active {
-  color: invert($colorText);
-  background: $colorWarning;
+	color: invert($colorText);
+	background: $colorWarning;
 }
 
 .btn-warning:active, .btn-warning:hover:active {
-  background: mix($colorWarning, invert($colorText), 70%);
+	background: mix($colorWarning, invert($colorText), 70%);
 }
 
 .btn-danger, .btn-danger:focus, .btn-danger:hover, .btn-danger:focus:active {
-  color: invert($colorText);
-  background: $colorDanger;
+	color: invert($colorText);
+	background: $colorDanger;
 }
 
 .btn-danger:active, .btn-danger:hover:active {
-  background: mix($colorDanger, invert($colorText), 70%);
+	background: mix($colorDanger, invert($colorText), 70%);
 }
 
 .btn-flat, .btn-flat:focus, .btn-flat:hover, .btn-flat:active, .btn-flat:hover:active, .btn-flat[disabled], .btn-flat[disabled]:focus, .btn-flat[disabled]:hover, .btn-flat[disabled]:active, .btn-flat[disabled]:hover:active {
-  background: transparent;
-  outline: none !important;
-  box-shadow: none;
-  text-transform: uppercase;
+	background: transparent;
+	outline: none !important;
+	box-shadow: none;
+	text-transform: uppercase;
 }
 
 .btn-flat.btn-default, .btn-flat.btn-default:focus, .btn-flat.btn-default:hover {
-  color: $colorText;
+	color: $colorText;
 }
 
 .btn-flat.btn-default:active, .btn-flat.btn-default:active:hover {
-  background: mix(transparent, $colorText, 70%);
+	background: mix(transparent, $colorText, 70%);
 }
 
 .btn-flat.btn-primary, .btn-flat.btn-primary:focus, .btn-flat.btn-primary:hover {
-  color: $colorPrimary;
+	color: $colorPrimary;
 }
 
 .btn-flat.btn-primary:active, .btn-flat.btn-primary:active:hover {
-  background: mix(transparent, $colorPrimary, 70%);
+	background: mix(transparent, $colorPrimary, 70%);
 }
 
 .btn-flat.btn-success, .btn-flat.btn-success:focus, .btn-flat.btn-success:hover {
-  color: $colorSuccess;
+	color: $colorSuccess;
 }
 
 .btn-flat.btn-success:active, .btn-flat.btn-success:active:hover {
-  background: mix(transparent, $colorSuccess, 70%);
+	background: mix(transparent, $colorSuccess, 70%);
 }
 
 .btn-flat.btn-info, .btn-flat.btn-info:focus, .btn-flat.btn-info:hover {
-  color: $colorInfo;
+	color: $colorInfo;
 }
 
 .btn-flat.btn-info:active, .btn-flat.btn-info:active:hover {
-  background: mix(transparent, $colorInfo, 70%);
+	background: mix(transparent, $colorInfo, 70%);
 }
 
 .btn-flat.btn-warning, .btn-flat.btn-warning:focus, .btn-flat.btn-warning:hover {
-  color: $colorWarning;
+	color: $colorWarning;
 }
 
 .btn-flat.btn-warning:active, .btn-warning.btn-warning:active:hover {
-  background: mix(transparent, $colorWarning, 70%);
+	background: mix(transparent, $colorWarning, 70%);
 }
 
 .btn-flat.btn-danger, .btn-flat.btn-danger:focus, .btn-flat.btn-danger:hover {
-  color: $colorDanger;
+	color: $colorDanger;
 }
 
 .btn-flat.btn-danger:active, .btn-info.btn-danger:active:hover {
-  background: mix(transparent, $colorDanger, 70%);
+	background: mix(transparent, $colorDanger, 70%);
 }
 
 .btn {
-  height: 36px;
-  min-width: 64px;
-  padding-left: 16px;
-  padding-right: 16px;
-  margin: 5px !important;
-  border: none;
-  border-radius: 2px;
-  text-transform: uppercase;
-  font-size: 14px;
-  -webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  -moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  -ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  -o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-  transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	height: 36px;
+	min-width: 64px;
+	padding-left: 16px;
+	padding-right: 16px;
+	margin: 5px !important;
+	border: none;
+	border-radius: 2px;
+	text-transform: uppercase;
+	font-size: 14px;
+	-webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	-moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	-ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	-o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
 .btn:focus, .btn:active, .btn:focus:active {
-  outline: none;
+	outline: none;
 }
 
 .btn:not(.btn-flat) {
-  @extend .depth-1;
+	@extend .depth-1;
 }
 
 .btn:not(.btn-flat):hover {
-  @extend .depth-2;
+	@extend .depth-2;
 }
 
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
+	border-top-right-radius: 2px;
+	border-bottom-right-radius: 2px;
 }
 
 .btn-group > .btn:last-child:not(:first-child), .btn-group > .dropdown-toggle:not(:first-child) {
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
+	border-top-left-radius: 2px;
+	border-bottom-left-radius: 2px;
 }
 
 .container {
-  position: relative;
+	position: relative;
 }
 
 .btn-fab {
-  position: fixed;
-  right: 20px;
-  bottom: 20px;
-  background: $colorAccent;
-  padding-left: 0;
-  padding-right: 0;
-  color: $colorAccentText;
-  height: 54px;
-  width: 54px;
-  min-width: initial;
-  border-radius: 100%;
-  z-index: 999;
+	position: fixed;
+	right: 20px;
+	bottom: 20px;
+	background: $colorAccent;
+	padding-left: 0;
+	padding-right: 0;
+	color: $colorAccentText;
+	height: 54px;
+	width: 54px;
+	min-width: initial;
+	border-radius: 100%;
+	z-index: 999;
 }
 
 .btn-fab:focus, .btn-fab:hover {
-  color: $colorAccentText;
+	color: $colorAccentText;
 }
 
 .btn-fab:active, .btn-fab:active:hover {
-  background-color: mix($colorAccent, $colorAccentText, 70%);
+	background-color: mix($colorAccent, $colorAccentText, 70%);
 }
 
 a.btn-block {
-  width: auto;
+	width: auto;
 }
 
 .progress {
-  border: none;
-  border-radius: 0;
-  box-shadow: none;
-  background: transparent;
+	border: none;
+	border-radius: 0;
+	box-shadow: none;
+	background: transparent;
 }
 
 .progress-bar {
-  background-color: $colorPrimary;
+	background-color: $colorPrimary;
 }
 
 .progress-bar-success {
-  background-color: $colorSuccess;
+	background-color: $colorSuccess;
 }
 
 .progress-bar-info {
-  background-color: $colorInfo;
+	background-color: $colorInfo;
 }
 
 .progress-bar-warning {
-  background-color: $colorWarning;
+	background-color: $colorWarning;
 }
 
 .progress-bar-danger {
-  background-color: $colorDanger;
+	background-color: $colorDanger;
 }
 
 .progress-bar {
-  -webkit-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -moz-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -ms-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -o-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-webkit-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-moz-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-ms-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-o-transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	transition: width 600ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
 
 .row-margin {
-  margin-top: 10px;
+	margin-top: 10px;
 }
 
 /* SHADOWS */
 
 .depth-0 {
-  box-shadow: none;
+	box-shadow: none;
 }
 
 .depth-1 {
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12), 0 1px 2px rgba(0, 0, 0, 0.24);
 }
 
 .depth-2 {
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.16), 0 4px 6px rgba(0, 0, 0, 0.23);
+	box-shadow: 0 4px 6px rgba(0, 0, 0, 0.16), 0 4px 6px rgba(0, 0, 0, 0.23);
 }
 
 .depth-3 {
-  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
+	box-shadow: 0 10px 20px rgba(0, 0, 0, 0.19), 0 6px 6px rgba(0, 0, 0, 0.23);
 }
 
 .depth-4 {
-  box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
+	box-shadow: 0 14px 28px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .depth-5 {
-  box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
+	box-shadow: 0 19px 38px rgba(0, 0, 0, 0.30), 0 15px 12px rgba(0, 0, 0, 0.22);
 }
 
 /* Tabs */
 
 .nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:hover {
-  border: none;
-  border-radius: 0;
+	border: none;
+	border-radius: 0;
 }
 
 .nav-tabs.nav-justified > li {
-  display: table-cell;
-  width: 1%;
+	display: table-cell;
+	width: 1%;
 }
 
 .nav-tabs.nav-justified > li > a {
-  border-bottom: none;
-  border-radius: 0;
-  margin-bottom: 0;
+	border-bottom: none;
+	border-radius: 0;
+	margin-bottom: 0;
 }
 
 .tab-pane {
-  padding: 20px 20px;
+	padding: 20px 20px;
 }
 
 /* NAVBAR */
 
 .navbar-default {
-  background-color: $colorTheme;
-  border: none;
-  border-radius: 0;
-  overflow-y: hidden;
-  @extend .depth-2;
+	background-color: $colorTheme;
+	border: none;
+	border-radius: 0;
+	overflow-y: hidden;
+	@extend .depth-2;
 }
 
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover,
 .navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > .active > a,
 .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
-  color: $colorThemeText;
+	color: $colorThemeText;
 }
 
 .navbar-default .navbar-nav > li > a:active, .navbar-default .navbar-nav > li > a:active:hover {
-  background: mix(transparent, $colorThemeText, 70%);
+	background: mix(transparent, $colorThemeText, 70%);
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
-  background-color: transparent;
-  border-bottom: solid 2px $colorThemeText;
+	background-color: transparent;
+	border-bottom: solid 2px $colorThemeText;
 }
 
 .navbar-default .navbar-nav > li > a {
-  background: transparent;
-  border: none;
-  border-bottom: solid 2px transparent;
-  -webkit-transition: border 200ms ease, background 300ms linear;
-  -moz-transition: border 200ms ease, background 300ms linear;
-  -ms-transition: border 200ms ease, background 300ms linear;
-  -o-transition: border 200ms ease, background 300ms linear;
-  transition: border 200ms ease, background 300ms linear;
+	background: transparent;
+	border: none;
+	border-bottom: solid 2px transparent;
+	-webkit-transition: border 200ms ease, background 300ms linear;
+	-moz-transition: border 200ms ease, background 300ms linear;
+	-ms-transition: border 200ms ease, background 300ms linear;
+	-o-transition: border 200ms ease, background 300ms linear;
+	transition: border 200ms ease, background 300ms linear;
 }
 
 .navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover,
 .navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
-  color: $colorThemeText;
-  background-color: transparent;
-  border-bottom: solid 2px $colorThemeText;
+	color: $colorThemeText;
+	background-color: transparent;
+	border-bottom: solid 2px $colorThemeText;
 }
 
 .navbar-right > li > a, .navbar-right > li > a:focus, .navbar-right > li > a:hover,
 .navbar-right > .dropdown > a, .navbar-right > .dropdown > a:focus, .navbar-right > .dropdown > a:hover,
 .navbar-right > .open > a, .navbar-right > .open > a:focus, .navbar-right > .open > a:hover {
-  color: $colorThemeText !important;
-  background-color: transparent !important;
-  border-radius: 100%;
-  border-bottom: none !important;
-  width: 54px;
-  height: 54px;
-  padding: 15px;
+	color: $colorThemeText !important;
+	background-color: transparent !important;
+	border-radius: 100%;
+	border-bottom: none !important;
+	width: 54px;
+	height: 54px;
+	padding: 15px;
 }
 
 .navbar-right > li > a:active, .navbar-right > li > a:active:hover,
 .navbar-right > .dropdown > a:active, .navbar-right > .dropdown > a:active:hover,
 .navbar-right > .open > a:active, .navbar-right > .open > a:active:hover {
-  background-color: mix(transparent, $colorThemeText, 70%) !important;
+	background-color: mix(transparent, $colorThemeText, 70%) !important;
 }
 
 .navbar-nav {
-  margin: 0 auto;
-  display: table;
-  table-layout: fixed;
-  float: none;
+	margin: 0 auto;
+	display: table;
+	table-layout: fixed;
+	float: none;
 }
 
 .navbar-nav > li {
-  float: left;
+	float: left;
 }
 
 .navbar-right {
-  float: right !important;
-  margin-right: -15px;
+	float: right !important;
+	margin-right: -15px;
 }
 
 .container-fluid > .navbar-collapse, .container-fluid > .navbar-header, .container > .navbar-collapse, .container > .navbar-header {
-  margin-right: 0;
-  margin-left: 0;
+	margin-right: 0;
+	margin-left: 0;
 }
 
 .navbar-header {
-  float: left;
+	float: left;
 }
 
 .navbar-right .dropdown-menu {
-  top: 2px;
-  right: 2px;
-  left: auto;
+	top: 2px;
+	right: 2px;
+	left: auto;
 }
 
 .navbar-nav .open .dropdown-menu, .contextmenu.open .dropdown-menu {
-  position: absolute;
-  float: left;
-  width: 200px;
-  margin-top: 0;
-  background-color: $colorForeground;
-  border-radius: 0;
-  border: none;
-  top: 2px;
-  right: 2px;
-  @extend .depth-3;
+	position: absolute;
+	float: left;
+	width: 200px;
+	margin-top: 0;
+	background-color: $colorForeground;
+	border-radius: 0;
+	border: none;
+	top: 2px;
+	right: 2px;
+	@extend .depth-3;
 }
 
 .dropdown.open .dropdown-menu {
-  animation: dropdownIn ease 200ms;
+	animation: dropdownIn ease 200ms;
 }
 
 .dropdown.open .dropdown-menu > li {
-  opacity: 0;
-  animation: dropdownItemsIn ease 300ms forwards;
+	opacity: 0;
+	animation: dropdownItemsIn ease 300ms forwards;
 }
 
 @media (max-width: 767px) {
-  .navbar-default .navbar-nav .open .dropdown-menu > li > a {
-    color: $colorText;
-  }
-  .navbar-nav .open .dropdown-menu > li > a {
-    line-height: 1.42857143;
-  }
-  .navbar-nav .open .dropdown-menu .dropdown-header, .navbar-nav .open .dropdown-menu > li > a {
-    padding: 3px 20px;
-  }
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: $colorText;
+	}
+	.navbar-nav .open .dropdown-menu > li > a {
+		line-height: 1.42857143;
+	}
+	.navbar-nav .open .dropdown-menu .dropdown-header, .navbar-nav .open .dropdown-menu > li > a {
+		padding: 3px 20px;
+	}
 
-  .navbar-nav .open .dropdown-menu {
-    position: absolute;
-    float: left;
-    width: 200px;
-    background-color: $colorForeground;
-    border: none;
-  }
+	.navbar-nav .open .dropdown-menu {
+		position: absolute;
+		float: left;
+		width: 200px;
+		background-color: $colorForeground;
+		border: none;
+	}
 }
 
 /* FOOTER */
 .footer {
-  position: absolute;
-  right: 0;
-  bottom: 0;
-  left: 0;
+	position: absolute;
+	right: 0;
+	bottom: 0;
+	left: 0;
 }
 
 /* INPUTS */
 
 .text {
-  padding-top: 15px;
+	padding-top: 15px;
 }
 
 .text:last-of-type {
-  padding-bottom: 15px;
+	padding-bottom: 15px;
 }
 
 .text > .form-control {
-  height: 30px;
-  display: block;
-  padding: 0 10px;
-  border: none;
-  border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
-  border-radius: 0;
-  box-shadow: none;
-  line-height: 26px;
-  font-size: 18px;
-  margin: 5px 0 0;
+	height: 30px;
+	display: block;
+	padding: 0 10px;
+	border: none;
+	border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
+	border-radius: 0;
+	box-shadow: none;
+	line-height: 26px;
+	font-size: 18px;
+	margin: 5px 0 0;
 }
 
 .text > label {
-  color: $colorSecondaryText;
-  font-size: 18px;
-  font-weight: normal;
-  position: absolute;
-  pointer-events: none;
-  transform: translate(10px, -27px);
-  -webkit-transition: all 0.2s ease;
-  -moz-transition: all 0.2s ease;
-  -ms-transition: all 0.2s ease;
-  -o-transition: all 0.2s ease;
-  transition: all 0.2s ease;
+	color: $colorSecondaryText;
+	font-size: 18px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	transform: translate(10px, -27px);
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	-ms-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	transition: all 0.2s ease;
 }
 
 .text > input:focus ~ label, .text > input.hastext ~ label {
-  transform: translate(5px, -44px);
-  font-size: 14px;
-  color: $colorAccent;
+	transform: translate(5px, -44px);
+	font-size: 14px;
+	color: $colorAccent;
 }
 
 .text > .form-control:focus {
-  box-shadow: none;
-  border-bottom-color: $colorAccent;
+	box-shadow: none;
+	border-bottom-color: $colorAccent;
 }
 
 .text > .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
-  background-color: transparent;
-  opacity: 0.5;
+	background-color: transparent;
+	opacity: 0.5;
 }
 
 // MODALS
 .modal.fade, .modal.in, .modal.fade .modal-dialog, .modal.in .modal-dialog {
-  transform: none;
-  -webkit-transition: opacity 100ms linear;
-  -moz-transition: opacity 100ms linear;
-  -ms-transition: opacity 100ms linear;
-  -o-transition: opacity 100ms linear;
-  transition: opacity 100ms linear;
+	transform: none;
+	-webkit-transition: opacity 100ms linear;
+	-moz-transition: opacity 100ms linear;
+	-ms-transition: opacity 100ms linear;
+	-o-transition: opacity 100ms linear;
+	transition: opacity 100ms linear;
 }
 
 .modal-backdrop.in {
-  filter: alpha(opacity=20);
-  opacity: 0.2;
+	filter: alpha(opacity=20);
+	opacity: 0.2;
 }
 
 .modal-header {
-  background-color: $colorForeground;
-  border-bottom: none;
-  padding: 24px 24px 0 24px;
-  border-radius: 2px;
+	background-color: $colorForeground;
+	border-bottom: none;
+	padding: 24px 24px 0 24px;
+	border-radius: 2px;
 }
 
 .modal-title {
-  color: $colorText;
+	color: $colorText;
 }
 
 .modal-body {
-  padding: 20px 24px 24px 24px;
+	padding: 20px 24px 24px 24px;
 }
 
 .modal-body > p {
-  color: lighten($colorText, 20%);
+	color: lighten($colorText, 20%);
 }
 
 .modal-footer {
-  border-top: none;
-  padding: 8px 8px 8px 24px;
+	border-top: none;
+	padding: 8px 8px 8px 24px;
 }
 
 .modal-footer > .btn-flat {
-  padding-left: 8px;
-  padding-right: 8px;
-  margin: 0 0 0 8px !important;
+	padding-left: 8px;
+	padding-right: 8px;
+	margin: 0 0 0 8px !important;
 }
 
 .modal-content {
-  border-radius: 2px;
-  border: none;
-  @extend .depth-4;
+	border-radius: 2px;
+	border: none;
+	@extend .depth-4;
 }
 
 // SPINNER
 .spinner {
-  animation: spinnerRotate $durationSpinner linear infinite;
+	animation: spinnerRotate $durationSpinner linear infinite;
 }
 
 .spinner .path {
-  stroke-dasharray: $offsetSpinnerStroke;
-  stroke-dashoffset: 0;
-  transform-origin: center;
-  stroke: $colorText;
-  animation: spinnerDash $durationSpinner cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
+	stroke-dasharray: $offsetSpinnerStroke;
+	stroke-dashoffset: 0;
+	transform-origin: center;
+	stroke: $colorText;
+	animation: spinnerDash $durationSpinner cubic-bezier(0.445, 0.05, 0.55, 0.95) infinite;
 }
 
 .spinner.primary .path {
-  stroke: $colorAccent;
+	stroke: $colorAccent;
 }
 
 .load-spinner {
-  position: fixed;
-  left: 50%;
-  color: $colorForeground;
-  border-radius: 100%;
-  transform: translate(-50%, -100%) scale(0);
-  height: 40px;
-  width: 40px;
-  padding: 10px;
-  -webkit-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -moz-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -ms-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  -o-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
-  @extend .depth-2;
+	position: fixed;
+	left: 50%;
+	color: $colorForeground;
+	border-radius: 100%;
+	transform: translate(-50%, -100%) scale(0);
+	height: 40px;
+	width: 40px;
+	padding: 10px;
+	-webkit-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-moz-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-ms-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	-o-transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	transition: transform 200ms cubic-bezier(0.165, 0.84, 0.44, 1);
+	@extend .depth-2;
 }
 
 .load-spinner.shown {
-  transform: translate(-50%, 0) scale(1);
+	transform: translate(-50%, 0) scale(1);
 }
 
 /* STATUS MESSAGE */
 .statusMessageContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: mix(transparent, invert($colorForeground), 70%);
-  position: fixed;
-  top: 0;
-  left: 0;
-  height: 100vh;
-  width: 100vw;
-  z-index: 999999;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	background-color: mix(transparent, invert($colorForeground), 70%);
+	position: fixed;
+	top: 0;
+	left: 0;
+	height: 100vh;
+	width: 100vw;
+	z-index: 999999;
 
-  .statusMessage {
-    background-color: $colorForeground;
-    padding: 20px;
-    @extend .depth-3;
-  }
+	.statusMessage {
+		background-color: $colorForeground;
+		padding: 20px;
+		@extend .depth-3;
+	}
 }
 
 /* MISC */
 .material-icons {
-  vertical-align: middle;
-  font-size: 24px;
-  direction: ltr;
+	vertical-align: middle;
+	font-size: 24px;
+	direction: ltr;
 }
 
 .contextmenu {
-  position: fixed;
-  z-index: 9000;
-  top: 0;
-  left: 0;
+	position: fixed;
+	z-index: 9000;
+	top: 0;
+	left: 0;
 }
 
 .contextmenu.open > .dropdown-menu {
-  animation: contextMenuIn ease 200ms;
+	animation: contextMenuIn ease 200ms;
 }
 
 .spin {
-  animation: infinite spin 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
+	animation: infinite spin 1s cubic-bezier(0.455, 0.03, 0.515, 0.955);
 }
 
 .table > tbody > tr:after {
-  content: '';
-  display: inline-block;
-  height: 64px;
-  width: 0;
+	content: '';
+	display: inline-block;
+	height: 64px;
+	width: 0;
 }
 
 .table td, .table th {
-  vertical-align: middle !important;
-  border-top: 1px solid $colorDivider !important;
-  font-weight: normal !important;
+	vertical-align: middle !important;
+	border-top: 1px solid $colorDivider !important;
+	font-weight: normal !important;
 }
 
 .table th {
-  text-align: center;
-  color: rgba($colorText, .75);
+	text-align: center;
+	color: rgba($colorText, .75);
 }
 
 .table td.number {
-  text-align: right;
+	text-align: right;
 }
 
 .table > thead > tr {
-  height: 56px;
+	height: 56px;
 }
 
 .dropdown-menu {
-  @extend .depth-3;
+	@extend .depth-3;
 }
 
 .contextmenu > .dropdown-menu {
-  @extend .depth-5;
+	@extend .depth-5;
 }
 
 .g-recaptcha {
-  padding-top: 15px;
+	padding-top: 15px;
 }
 
 @media screen and (max-width: 767px) {
-  .table-responsive {
-    border: none;
-  }
+	.table-responsive {
+		border: none;
+	}
 }
 
 @keyframes spin {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(360deg);
+	}
 
 }
 
 @keyframes dropdownIn {
-  0% {
-    transform: translate(50%, -50%) scale(0, 0);
-    opacity: 0;
-  }
+	0% {
+		transform: translate(50%, -50%) scale(0, 0);
+		opacity: 0;
+	}
 
-  100% {
-    transform: translate(0, 0) scale(1, 1);
-    opacity: 1;
-  }
+	100% {
+		transform: translate(0, 0) scale(1, 1);
+		opacity: 1;
+	}
 }
 
 @keyframes dropdownOut {
-  0% {
-    opacity: 1;
-  }
+	0% {
+		opacity: 1;
+	}
 
-  100% {
-    opacity: 0;
-  }
+	100% {
+		opacity: 0;
+	}
 }
 
 @keyframes dropdownItemsIn {
-  0% {
-    transform: translateY(-50%);
-    opacity: 0;
-  }
+	0% {
+		transform: translateY(-50%);
+		opacity: 0;
+	}
 
-  100% {
-    transform: translateY(0);
-    opacity: 1;
-  }
+	100% {
+		transform: translateY(0);
+		opacity: 1;
+	}
 }
 
 @keyframes contextMenuIn {
-  0% {
-    transform: translate(-50%, -50%) scale(0, 0);
-    opacity: 0;
-  }
+	0% {
+		transform: translate(-50%, -50%) scale(0, 0);
+		opacity: 0;
+	}
 
-  100% {
-    transform: translate(0, 0) scale(1, 1);
-    opacity: 1;
-  }
+	100% {
+		transform: translate(0, 0) scale(1, 1);
+		opacity: 1;
+	}
 }
 
 @keyframes spinnerRotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(270deg);
-  }
+	0% {
+		transform: rotate(0deg);
+	}
+	100% {
+		transform: rotate(270deg);
+	}
 }
 
 @keyframes spinnerDash {
-  0% {
-    stroke-dashoffset: $offsetSpinnerStroke;
-  }
-  50% {
-    stroke-dashoffset: $offsetSpinnerStroke/4;
-    transform: rotate(135deg);
-  }
-  100% {
-    stroke-dashoffset: $offsetSpinnerStroke;
-    transform: rotate(450deg);
-  }
+	0% {
+		stroke-dashoffset: $offsetSpinnerStroke;
+	}
+	50% {
+		stroke-dashoffset: $offsetSpinnerStroke/4;
+		transform: rotate(135deg);
+	}
+	100% {
+		stroke-dashoffset: $offsetSpinnerStroke;
+		transform: rotate(450deg);
+	}
 }

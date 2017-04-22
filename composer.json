@@ -1,15 +1,16 @@
 {
-  "name": "scrumplex/passy",
-  "description": "Open Source password manager",
-  "minimum-stability": "dev",
-  "license": "Apache License 2.0",
-  "authors": [
-    {
-      "name": "Scrumplex",
-      "email": "contact@scrumplex.net"
-    }
-  ],
-  "require": {
-    "google/recaptcha": "1.1.2"
-  }
+	"name": "scrumplex/passy",
+	"description": "Open Source password manager",
+	"minimum-stability": "dev",
+	"license": "Apache License 2.0",
+	"authors": [
+		{
+			"name": "Scrumplex",
+			"email": "contact@scrumplex.net"
+		}
+	],
+	"require": {
+		"google/recaptcha": "1.1.2",
+		"defuse/php-encryption": "2.0.3"
+	}
 }

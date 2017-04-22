@@ -5,16 +5,15 @@ A web based password manager with multiple user accounts.
 
 ## Requirements
  - MYSQL Server
- - PHP 7/7.1 (PHP 5 not tested, PHP 7.2 not working)
+ - PHP 7/7.1 (PHP 5 not tested)
  - Web Server
- - PHP 7 mcrypt module
+ - PHP 7 openssl module
  - PHP 7 mysql module
- - PHP 7 apc module (needed if account locking enabled)
  
 ## Installation
  - Download a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
- - Edit the `config.inc.php` in the folder `includes`
+ - Edit the `config.inc.php`
  
 ## Contributing
 Of course you can help make PASSY a better project. You can search and find bugs and report them in GitHub's issue system.
