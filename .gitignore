@@ -1,2 +1,3 @@
 *.css.map
 .idea
+vendor/

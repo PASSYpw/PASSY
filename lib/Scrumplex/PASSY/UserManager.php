@@ -21,7 +21,7 @@ class UserManager
 	}
 
 	/**
-	 *
+	 * Tracks user activity. Used for logging user out after 300s.
 	 */
 	function trackActivity()
 	{
@@ -29,7 +29,7 @@ class UserManager
 	}
 
 	/**
-	 *
+	 * If user is inactive too long he will be logged out
 	 */
 	function checkSessionExpiration()
 	{
@@ -39,6 +39,7 @@ class UserManager
 	}
 
 	/**
+	 * Checks user credentials. If credentials are correct it will create a valid session.
 	 * @param $username string
 	 * @param $password string
 	 * @return Response
@@ -104,12 +105,23 @@ class UserManager
 	function changeUsername($userId, $newUsername)
 	{
 		$mysql = $this->database->getInstance();
-		$ps = $mysql->prepare("UPDATE `users` SET `USERNAME` = (?) WHERE `USERID` = (?)");
-		$ps->bind_param("ss", $newUsername, $userId);
+		$ps = $mysql->prepare("SELECT `USERID` FROM `users` WHERE `USERNAME` = (?)");
+		$ps->bind_param("s", $newUsername);
 		$succeeded = $ps->execute();
+		$result = $ps->get_result();
 		$ps->close();
-		if ($succeeded)
-			return new Response(true, null);
+		if ($succeeded) {
+			if ($result->num_rows == 0) {
+				$ps = $mysql->prepare("UPDATE `users` SET `USERNAME` = (?) WHERE `USERID` = (?)");
+				$ps->bind_param("ss", $newUsername, $userId);
+				$succeeded = $ps->execute();
+				$ps->close();
+				if ($succeeded)
+					return new Response(true, null);
+				return new Response(false, "database_error");
+			}
+			return new Response(false, "username_exists");
+		}
 		return new Response(false, "database_error");
 	}
 
@@ -132,11 +144,8 @@ class UserManager
 			$ps = $mysql->prepare("UPDATE `users` SET `PASSWORD` = (?) WHERE `USERID` = (?)");
 			$ps->bind_param("ss", $hashedPassword, $userId);
 			$succeeded = $ps->execute();
-			if ($succeeded) {
-				$this->passwords->reencryptPasswords($userId, $masterPassword, $newPassword);
-			}
-
-
+			if ($succeeded)
+				return $this->passwords->reencryptPasswords($userId, $masterPassword, $newPassword);
 			return new Response(true, null);
 		}
 		return new Response(false, "database_error");
@@ -144,9 +153,9 @@ class UserManager
 
 	function logout()
 	{
-		if (session_status() != PHP_SESSION_NONE) {
+		if (session_status() != PHP_SESSION_NONE)
 			session_destroy();
-		}
+
 		return new Response(true, null);
 	}
 
@@ -173,6 +182,8 @@ class UserManager
 
 	function isAuthenticated()
 	{
+		if (session_status() == PHP_SESSION_NONE)
+			return false;
 		if (!isset($_SESSION["username"]) || !isset($_SESSION["master_password"]) || !isset($_SESSION["userId"]) || !isset($_SESSION["ip"]) || !isset($_SESSION["last_activity"]))
 			return false;
 		if ($_SESSION["ip"] != $_SERVER["REMOTE_ADDR"])

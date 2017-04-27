@@ -9,10 +9,12 @@ A web based password manager with multiple user accounts.
  - Web Server
  - PHP 7 openssl module
  - PHP 7 mysql module
+ - Composer (`apt install composer`) [Learn more](https://getcomposer.org/download/)
  
 ## Installation
  - Download a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
+ - Run the following command: `composer install`
  - Edit the `config.inc.php`
  
 ## Contributing

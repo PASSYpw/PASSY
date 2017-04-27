@@ -519,6 +519,8 @@
 						}
 						if (startsWith(data.msg, "database_")) {
 							showAlert($("#errorChangeEmailDatabase"), 3000)
+						} else if (data.msg == "username_exists") {
+							showAlert($("#error_username_exists"), 3000)
 						} else {
 							showAlert($("#errorChangeEmailUnknown"), 3000)
 						}

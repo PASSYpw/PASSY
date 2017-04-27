@@ -73,15 +73,15 @@ class Passwords
 	 * Queries info about given password
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
 	 * @param $passwordId
-	 * @param mixed $masterPassword used to decrypt passwords. If false or null it won't decrypt.
+	 * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
 	 * @return Response
 	 */
-	function query($passwordId, $masterPassword = false)
+	function query($passwordId, $masterPassword = null)
 	{
 
 		$mysql = $this->database->getInstance();
 		$query = "SELECT `ID`, `USERID`, `USERNAME`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `ID` = (?)";
-		if ($masterPassword !== null && $masterPassword !== false)
+		if (isset($masterPassword))
 			$query = "SELECT `ID`, `USERID`, `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `ID` = (?)";
 		$ps = $mysql->prepare($query);
 		$ps->bind_param("s", $passwordId);
@@ -112,7 +112,7 @@ class Passwords
 				"date_archived_readable" => Format::formatTime($row["ARCHIVED_DATE"])
 			);
 
-			if ($masterPassword !== null && $masterPassword !== false) {
+			if (isset($masterPassword)) {
 				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 				$entry["password"] = $decryptedPassword;
 			}
@@ -121,12 +121,18 @@ class Passwords
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Queries all passwords from user.
+	 * @param $userId
+	 * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
+	 * @return Response
+	 */
 	function queryAll($userId, $masterPassword = null)
 	{
 
 		$mysql = $this->database->getInstance();
 		$query = "SELECT `ID`, `USERID`, `USERNAME`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
-		if ($masterPassword !== false)
+		if (isset($masterPassword))
 			$query = "SELECT `ID`, `USERID`, `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
 		$ps = $mysql->prepare($query);
 		$ps->bind_param("s", $userId);
@@ -158,7 +164,7 @@ class Passwords
 						"date_archived_readable" => Format::formatTime($row["ARCHIVED_DATE"])
 					);
 
-					if ($masterPassword !== false) {
+					if (isset($masterPassword)) {
 						$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 						$entry["password"] = $decryptedPassword;
 					}
@@ -170,6 +176,13 @@ class Passwords
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Undocumented
+	 * @param $userId
+	 * @param $oldMasterPassword
+	 * @param $newMasterPassword
+	 * @return Response
+	 */
 	function reencryptPasswords($userId, $oldMasterPassword, $newMasterPassword)
 	{
 		$mysql = $this->database->getInstance();
@@ -197,6 +210,11 @@ class Passwords
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Adds the flag archived to a password
+	 * @param $passwordId
+	 * @return Response
+	 */
 	function archive($passwordId)
 	{
 		$archivedDate = time();
@@ -211,6 +229,11 @@ class Passwords
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Removes the flag archived to a password
+	 * @param $passwordId
+	 * @return Response
+	 */
 	function restore($passwordId)
 	{
 		$archivedDate = null;
@@ -225,6 +248,11 @@ class Passwords
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Permanently deletes password
+	 * @param $passwordId
+	 * @return Response
+	 */
 	function delete($passwordId)
 	{
 

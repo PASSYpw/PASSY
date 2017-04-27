@@ -29,13 +29,16 @@
 				</form>
 			</div>
 			<div class="col-xs-12">
-				<h3>Change email</h3>
+				<h3>Change username</h3>
 				<form id="form_change_username" action="action.php" method="post">
 					<input type="hidden" name="a" value="user/changeUsername">
 					<div class="text">
 						<input type="text" class="form-control" title="New username" name="new_username" required
 						       autocomplete="off"/>
 						<label>New username</label>
+					</div>
+					<div class="alert alert-danger" id="error_username_exists" style="display: none">
+						<strong>Error!</strong> User with username already exists.
 					</div>
 					<button type="submit" class="btn btn-primary pull-right">Apply</button>
 				</form>
