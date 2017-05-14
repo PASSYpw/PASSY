@@ -43,6 +43,33 @@
 					<button type="submit" class="btn btn-primary pull-right">Apply</button>
 				</form>
 			</div>
+            <div class="col-xs-12">
+                <h3>Export</h3>
+                <br />
+                <p>Export passwords</p>
+                <small>This will initialize a download of a file!</small>
+                <form action="action.php" method="post">
+                    <input type="hidden" name="a" value="misc/export">
+                    <button type="submit"  class="btn btn-primary">Export</button>
+                </form>
+
+            </div>
+            <div class="col-xs-12">
+                <h3>Import</h3>
+                <p>Import passwords</p>
+                <small>From here you can easy import passwords, exported otherwhere</small>
+                <form id="form_import" action="action.php", enctype="multipart/form-data" method="post">
+                    <input type="hidden" name="a" value="misc/import">
+                    <input type="file" name="parse-file">
+                    <button type="submit" class="btn btn-primary">Import</button>
+                </form>
+                <div class="alert alert-success" id="successImported" style="display: none">
+                    <strong>Success!</strong> Passwords have been imported.
+                </div>
+                <div class="alert alert-danger" id="errorImported" style="display: none">
+                    <strong>Error!</strong> An error Occurred.
+                </div>
+            </div>
 		</div>
 	</div>
 </div>

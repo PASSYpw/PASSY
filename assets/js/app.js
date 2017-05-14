@@ -200,7 +200,8 @@
 			archivedPasswordTable = $('#tbodyArchivedPasswords'),
 			anchor = location.href.substring(location.href.indexOf("#")),
 			inputs = $(".text > input"),
-			contextMenu = $("#dropdownContextMenu");
+			contextMenu = $("#dropdownContextMenu"),
+			searchField = $("#search-field");
 
 		if (anchor == "#!r") {
 			location.replace("#");
@@ -294,6 +295,47 @@
 				toPage = currentPage;
 			loadPage(toPage);
 		});
+
+		$("#form_import").submit(function (ev) {
+			ev.preventDefault();
+            $.ajax({
+				url: 'action.php',
+                type: 'POST',
+				data: new FormData($('#form_import')[0]),
+				cache: false,
+                contentType: false,
+                processData: false,
+				xhr: function() {
+                    var myXhr = $.ajaxSettings.xhr();
+                    if (myXhr.upload) {
+                        myXhr.upload.addEventListener('progress', function(e) {
+                            if (e.lengthComputable) {
+                                $('progress').attr({
+                                    value: e.loaded,
+                                    max: e.total
+                                });
+                            }
+                        } , false);
+                    }
+                    return myXhr;
+                },
+				success: function (data) {
+					if(data.success) {
+						$("#successImported").fadeIn(220);
+						setTimeout(
+							function () {
+								loadPage("password_list");
+                            }, 800)
+					} else {
+                        $("#errorImported").fadeIn(220);
+
+                    }
+                },
+				error: function (data) {
+					console.log(data);
+                }
+            });
+        });
 
 		$("#loginForm").submit(function (e) {
 			var me = $(this);
@@ -588,6 +630,7 @@
 			})
 
 		});
+
 		passwordTable.on('click', '*[data-password-action="share"]', function (e) {
 			e.preventDefault();
 			alert("Not implemented yet!");
@@ -695,6 +738,37 @@
 		var timerId = setInterval(timer, 1000);
 	}
 
+
+	function registerSearch(field, tableBody) {
+
+        field.keyup(function () {
+			var searched =  field.val();
+
+			tableBody.children("tr").each(function (index, item) {
+
+				const vis = $(item).attr("data-visible") == "true";
+				const rId = item.id;
+				const userName = $("#" + rId + "-name").text();
+                const description = $("#" + rId + "-description").text();
+
+				if(userName != "None" || description != "None") {
+                    if(!userName.includes(searched) && !description.includes(searched)) {
+                        if(vis) {
+                            $(item).hide();
+                            $(item).attr("data-visible","false");
+                        }
+                    } else {
+                        if(!vis) {
+                            $(item).show();
+                            $(item).attr("data-visible","true");
+                        }
+                    }
+                }
+			})
+        });
+
+    }
+
 	function fetchPasswords(callbackDone) {
 		var tableBody = $("#tbodyPasswords");
 		var tableArchivedBody = $("#tbodyArchivedPasswords");
@@ -716,12 +790,12 @@
 							username = item.username;
 						}
 
-						var row = "<tr id='" + item.password_id + "'>";
+						var row = "<tr data-visible='true' id='" + item.password_id + "'>";
 						if (!item.archived) {
 							//Passwords page
-							row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
+							row += "<td><span id='" + item.password_id + "-name' class='selectable no-contextmenu'>" + username + "</span></td>";
 							row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
-							row += "<td>" + description + "</td>";
+							row += "<td id='" + item.password_id + "-description'>" + description + "</td>";
 							row += "<td>" + item.date_added_readable + "</td>";
 							row += "<td>" +
 								"<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
@@ -764,7 +838,8 @@
 					if (callbackDone != null)
 						callbackDone(data.msg);
 				}
-			},
+                registerSearch($("#search-field"), tableBody);
+            },
 			error: function (xhr, error) {
 				tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td><td></td></tr>");
 				if (callbackDone != null)

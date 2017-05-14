@@ -6,6 +6,15 @@
 				<p>Add new passwords or view your saved passwords.</p>
 			</div>
 		</div>
+        <div class="row">
+
+                <div class="text" style="max-width: 230px">
+                    <input id="search-field" type="text" class="form-control" title="Search"
+                           autocomplete="on"/>
+                    <label>Search a password</label>
+                </div>
+
+        </div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
 				<div class="table-responsive">
