@@ -332,9 +332,10 @@
 				success: function (data) {
 					if (data.success) {
 						if(data.data.imported == 0) {
-							$("#successImported").html("No passwords to import!")
+							showAlert($("#errorImportedEmpty"),5000);
+						} else {
+							showAlert($("#successImported"),5000);
 						}
-						showAlert($("#successImported"),5000);
 						setTimeout(
 							function () {
 								loadPage("password_list");

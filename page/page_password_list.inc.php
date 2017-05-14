@@ -6,21 +6,25 @@
 				<p>Add new passwords or view your saved passwords.</p>
 			</div>
 		</div>
-        <div class="row">
+		<div class="row">
 
-                <div class="text">
-                    <input id="search-field" type="text" class="form-control" title="Search"
-                           autocomplete="on"/>
-                    <label>Search a password</label>
-                </div>
+			<div class="text">
+				<input id="search-field" type="text" class="form-control" title="Search"
+					   autocomplete="on"/>
+				<label>Search a password</label>
+			</div>
 
-        </div>
+		</div>
 		<div class="row">
 			<div class="alert alert-success" id="successImported" style="display: none">
 				<strong>Success!</strong> Passwords have been imported.
 			</div>
 			<div class="alert alert-danger" id="errorImported" style="display: none">
 				<strong>Error!</strong> An error Occurred.
+			</div>
+			<div class="alert alert-danger" id="errorImportedEmpty" style="display: none">
+				<strong>Error!</strong> No passwords have been imported, because the file was empty or because the file
+				is not formatted right.
 			</div>
 		</div>
 		<div class="row row-margin">
@@ -63,17 +67,17 @@
 						<div class="form-group">
 							<div class="text">
 								<input type="text" class="form-control" title="Username" name="username"
-								       autocomplete="off"/>
+									   autocomplete="off"/>
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
 								<input type="password" class="form-control" title="Password" name="password" required
-								       autocomplete="off"/>
+									   autocomplete="off"/>
 								<label>Password</label>
 							</div>
 							<div class="text">
 								<input type="text" class="form-control" title="Website" name="description"
-								       autocomplete="off"/>
+									   autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
 						</div>
@@ -109,19 +113,19 @@
 						<div class="form-group">
 							<div class="text">
 								<input id="formEditPasswordUsername" type="text" class="form-control" title="Username"
-								       name="username"
-								       autocomplete="off"/>
+									   name="username"
+									   autocomplete="off"/>
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
 								<input id="formEditPasswordPassword" type="text" class="form-control" title="Password"
-								       name="password" required autocomplete="off"/>
+									   name="password" required autocomplete="off"/>
 								<label>Password</label>
 							</div>
 							<div class="text">
 								<input id="formEditPasswordDescription" type="text" class="form-control"
-								       title="Description"
-								       name="description" autocomplete="off"/>
+									   title="Description"
+									   name="description" autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
 						</div>

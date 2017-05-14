@@ -69,7 +69,14 @@ class Passwords
 		return $response;
 	}
 
-
+	/**
+	 * Import passwords that have been exported before, the data is in JSON Format
+	 * @author Liz3(Yann HN) <info@liz3.de>
+	 * @param string $data
+	 * @param string $userId
+	 * @param string $masterPassword
+	 * @return Response
+	 */
 	function importPasswords($data, $userId, $masterPassword)
 	{
 
@@ -96,7 +103,14 @@ class Passwords
 
 	}
 
-	function queryExport($userId, $masterPassword = null)
+	/**
+	 * Export all Passwords, the passwords are written in plain Text.
+	 * @author Liz3(Yann HN) <info@liz3.de>
+	 * @param string $userId
+	 * @param string $masterPassword
+	 * @return Response
+	 */
+	function queryExport($userId, $masterPassword)
 	{
 		$data = array();
 		$mysql = $this->database->getInstance();
