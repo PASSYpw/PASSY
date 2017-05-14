@@ -158,6 +158,30 @@
 	$(document).ready(function () {
 		currentPage = getCurrentPage();
 
+		$("#search-field").keyup(function () {
+			var searched = $("#search-field").val();
+
+			$("#tbodyPasswords").children("tr").each(function (index, item) {
+
+				const vis = $(item).attr("data-visible") == "true";
+				const userName = $(item).children(0).text();
+				const description = $(item).children(2).text();
+
+				if (userName != "None" || description != "None") {
+					if (!userName.includes(searched) && !description.includes(searched)) {
+						if (vis) {
+							$(item).hide();
+							$(item).attr("data-visible", "false");
+						}
+					} else {
+						if (!vis) {
+							$(item).show();
+							$(item).attr("data-visible", "true");
+						}
+					}
+				}
+			})
+		});
 		$.ajax({
 			url: "action.php",
 			method: "POST",
@@ -298,44 +322,33 @@
 
 		$("#form_import").submit(function (ev) {
 			ev.preventDefault();
-            $.ajax({
+			$.ajax({
 				url: 'action.php',
-                type: 'POST',
+				type: 'POST',
 				data: new FormData($('#form_import')[0]),
 				cache: false,
-                contentType: false,
-                processData: false,
-				xhr: function() {
-                    var myXhr = $.ajaxSettings.xhr();
-                    if (myXhr.upload) {
-                        myXhr.upload.addEventListener('progress', function(e) {
-                            if (e.lengthComputable) {
-                                $('progress').attr({
-                                    value: e.loaded,
-                                    max: e.total
-                                });
-                            }
-                        } , false);
-                    }
-                    return myXhr;
-                },
+				contentType: false,
+				processData: false,
 				success: function (data) {
-					if(data.success) {
-						$("#successImported").fadeIn(220);
+					if (data.success) {
+						if(data.data.imported == 0) {
+							$("#successImported").html("No passwords to import!")
+						}
+						showAlert($("#successImported"),5000);
 						setTimeout(
 							function () {
 								loadPage("password_list");
-                            }, 800)
+							}, 800)
 					} else {
-                        $("#errorImported").fadeIn(220);
+						showAlert($("#errorImported"), 5000);
 
-                    }
-                },
+					}
+				},
 				error: function (data) {
 					console.log(data);
-                }
-            });
-        });
+				}
+			});
+		});
 
 		$("#loginForm").submit(function (e) {
 			var me = $(this);
@@ -739,35 +752,6 @@
 	}
 
 
-	function registerSearch(field, tableBody) {
-
-        field.keyup(function () {
-			var searched =  field.val();
-
-			tableBody.children("tr").each(function (index, item) {
-
-				const vis = $(item).attr("data-visible") == "true";
-				const rId = item.id;
-				const userName = $("#" + rId + "-name").text();
-                const description = $("#" + rId + "-description").text();
-
-				if(userName != "None" || description != "None") {
-                    if(!userName.includes(searched) && !description.includes(searched)) {
-                        if(vis) {
-                            $(item).hide();
-                            $(item).attr("data-visible","false");
-                        }
-                    } else {
-                        if(!vis) {
-                            $(item).show();
-                            $(item).attr("data-visible","true");
-                        }
-                    }
-                }
-			})
-        });
-
-    }
 
 	function fetchPasswords(callbackDone) {
 		var tableBody = $("#tbodyPasswords");
@@ -793,9 +777,9 @@
 						var row = "<tr data-visible='true' id='" + item.password_id + "'>";
 						if (!item.archived) {
 							//Passwords page
-							row += "<td><span id='" + item.password_id + "-name' class='selectable no-contextmenu'>" + username + "</span></td>";
+							row += "<td><span class='selectable no-contextmenu'>" + username + "</span></td>";
 							row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
-							row += "<td id='" + item.password_id + "-description'>" + description + "</td>";
+							row += "<td>" + description + "</td>";
 							row += "<td>" + item.date_added_readable + "</td>";
 							row += "<td>" +
 								"<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
@@ -838,8 +822,7 @@
 					if (callbackDone != null)
 						callbackDone(data.msg);
 				}
-                registerSearch($("#search-field"), tableBody);
-            },
+			},
 			error: function (xhr, error) {
 				tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td><td></td></tr>");
 				if (callbackDone != null)

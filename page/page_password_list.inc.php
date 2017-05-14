@@ -8,13 +8,21 @@
 		</div>
         <div class="row">
 
-                <div class="text" style="max-width: 230px">
+                <div class="text">
                     <input id="search-field" type="text" class="form-control" title="Search"
                            autocomplete="on"/>
                     <label>Search a password</label>
                 </div>
 
         </div>
+		<div class="row">
+			<div class="alert alert-success" id="successImported" style="display: none">
+				<strong>Success!</strong> Passwords have been imported.
+			</div>
+			<div class="alert alert-danger" id="errorImported" style="display: none">
+				<strong>Error!</strong> An error Occurred.
+			</div>
+		</div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
 				<div class="table-responsive">
