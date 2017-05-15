@@ -1,5 +1,5 @@
 /*!
- * PASSY 2.0.0
+ * PASSY 2.x.x
  * Copyright 2017 Sefa Eyeoglu
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -565,6 +565,8 @@ var setOption = (function () {
 						}
 						if (startsWith(data.msg, "database_")) {
 							showAlert($("#errorChangePasswordDatabase"), 3000)
+						} else if (data.msg == "invalid_credentials"){
+							showAlert($("#errorChangePasswordInvalidCredentials"), 3000)
 						} else {
 							showAlert($("#errorChangePasswordUnknown"), 3000)
 						}
@@ -597,6 +599,8 @@ var setOption = (function () {
 							showAlert($("#errorChangeEmailDatabase"), 3000)
 						} else if (data.msg == "username_exists") {
 							showAlert($("#error_username_exists"), 3000)
+						} else if (data.msg == "invalid_credentials"){
+							showAlert($("#errorChangeEmailInvalidCredentials"), 3000)
 						} else {
 							showAlert($("#errorChangeEmailUnknown"), 3000)
 						}

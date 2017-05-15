@@ -8,7 +8,6 @@ use Scrumplex\PASSY\UserManager;
 use Scrumplex\PASSY\Passwords;
 use Scrumplex\PASSY\IPLog;
 use Scrumplex\PASSY\Response;
-use Scrumplex\PASSY\Util;
 
 $unauthenticatedActions = array(
 	"user/login",
@@ -128,12 +127,12 @@ if (in_array($action, $unauthenticatedActions)) {
 
 			case "misc/import":
 				$content = $_FILES['parse-file']['tmp_name'];
-				$result = $passwords->importPasswords(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
+				$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
 
 			case "misc/export":
-				$result = $passwords->queryExport($userManager->getUserID(), $userManager->getMasterPassword());
+				$result = $passwords->exportAll($userManager->getUserID(), $userManager->getMasterPassword());
 				$json = $result->getJSONResponse();
 				header('Content-Description: File Transfer');
 				header('Content-Type: application/octet-stream');
@@ -179,14 +178,24 @@ if (in_array($action, $unauthenticatedActions)) {
 				break;
 
 			case "user/changeUsername":
+				$password = $_POST["password"];
 				$newUsername = $_POST["new_username"];
+				if(!$userManager->checkPassword($password)) {
+					$response = new Response(false, "invalid_credentials");
+					die($response->getJSONResponse());
+				}
 				$result = $userManager->changeUsername($userManager->getUserID(), $newUsername);
 				die($result->getJSONResponse());
 				break;
 
 			case "user/changePassword":
+				$password = $_POST["password"];
 				$newPassword = $_POST["new_password"];
 				$newPassword2 = $_POST["new_password2"];
+				if(!$userManager->checkPassword($password)) {
+					$response = new Response(false, "invalid_credentials");
+					die($response->getJSONResponse());
+				}
 				if ($newPassword != $newPassword2) {
 					$response = new Response(false, "passwords_not_matching");
 					die($response->getJSONResponse());
@@ -202,5 +211,5 @@ if (in_array($action, $unauthenticatedActions)) {
 	}
 }
 
-$response = new Response(false, "no_handler");
+$response = new Response(false, "invalid_request");
 die($response->getJSONResponse());

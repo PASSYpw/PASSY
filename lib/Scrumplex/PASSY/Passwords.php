@@ -73,14 +73,14 @@ class Passwords
 	}
 
 	/**
-	 * Import passwords that have been exported before, the data is in JSON Format
+	 * Imports passwords, which will be encrypted with $masterPassword and assigned to $userId.
 	 * @author Liz3(Yann HN) <info@liz3.de>
 	 * @param string $data
 	 * @param string $userId
 	 * @param string $masterPassword
 	 * @return Response
 	 */
-	function importPasswords($data, $userId, $masterPassword)
+	function import($data, $userId, $masterPassword)
 	{
 
 
@@ -90,7 +90,7 @@ class Passwords
 		$data = $arr["data"];
 		foreach ($data as $item) {
 
-			if($item["pass"] == null) {
+			if ($item["pass"] == null) {
 				$failed++;
 				continue;
 			}
@@ -107,13 +107,13 @@ class Passwords
 	}
 
 	/**
-	 * Export all Passwords, the passwords are written in plain Text.
+	 * Export all passwords from $userId, which will be decrypted with $masterPassword.
 	 * @author Liz3(Yann HN) <info@liz3.de>
 	 * @param string $userId
 	 * @param string $masterPassword
 	 * @return Response
 	 */
-	function queryExport($userId, $masterPassword)
+	function exportAll($userId, $masterPassword)
 	{
 		$data = array();
 		$mysql = $this->database->getInstance();

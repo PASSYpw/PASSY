@@ -196,6 +196,17 @@ class UserManager
 		return new Response(true, null);
 	}
 
+	/**
+	 * Checks if given $password is the same as password used to login and en/decrypt.
+	 * @param $password
+	 * @return bool
+	 */
+	function checkPassword($password) {
+		if($this->getMasterPassword() == null)
+			return false;
+		return $password == $this->getMasterPassword();
+	}
+
 	function getUserID()
 	{
 		if ($this->isAuthenticated())

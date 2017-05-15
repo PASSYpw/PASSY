@@ -7,13 +7,12 @@
 			</div>
 		</div>
 		<div class="row">
-
-			<div class="text">
-				<input id="search-field" type="text" class="form-control" title="Search"
-					   autocomplete="on"/>
-				<label>Search a password</label>
+			<div class="col-xs-12">
+				<div class="text">
+					<input id="search-field" type="text" class="form-control" title="Search" autocomplete="on"/>
+					<label>Search a password</label>
+				</div>
 			</div>
-
 		</div>
 		<div class="row">
 			<div class="alert alert-success" id="successImported" style="display: none">
@@ -67,18 +66,20 @@
 						<div class="form-group">
 							<div class="text">
 								<input type="text" class="form-control" title="Username" name="username"
-									   autocomplete="off"/>
+								       autocomplete="off"/>
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
-								<input type="password" id="addPasswordInput" class="form-control" title="Password" name="password" required
-									   autocomplete="off"/>
+								<input type="password" id="addPasswordInput" class="form-control" title="Password"
+								       name="password" required autocomplete="off"/>
 								<label>Password</label>
 							</div>
-							<button type="button" class="btn btn-flat btn-primary" data-random-value="#addPasswordInput">Generate</button>
+							<button type="button" class="btn btn-flat btn-primary"
+							        data-random-value="#addPasswordInput">Generate
+							</button>
 							<div class="text">
 								<input type="text" class="form-control" title="Website" name="description"
-									   autocomplete="off"/>
+								       autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
 						</div>
@@ -114,19 +115,19 @@
 						<div class="form-group">
 							<div class="text">
 								<input id="formEditPasswordUsername" type="text" class="form-control" title="Username"
-									   name="username"
-									   autocomplete="off"/>
+								       name="username"
+								       autocomplete="off"/>
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
 								<input id="formEditPasswordPassword" type="text" class="form-control" title="Password"
-									   name="password" required autocomplete="off"/>
+								       name="password" required autocomplete="off"/>
 								<label>Password</label>
 							</div>
 							<div class="text">
 								<input id="formEditPasswordDescription" type="text" class="form-control"
-									   title="Description"
-									   name="description" autocomplete="off"/>
+								       title="Description"
+								       name="description" autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
 						</div>

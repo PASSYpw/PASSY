@@ -1,8 +1,8 @@
 {
 	"name": "scrumplex/passy",
-	"description": "Open Source password manager",
+	"description": "Modern password manager",
 	"minimum-stability": "dev",
-	"license": "Apache License 2.0",
+	"license": "Apache-2.0",
 	"authors": [
 		{
 			"name": "Scrumplex",
