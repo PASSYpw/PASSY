@@ -1,7 +1,7 @@
 <?php
 define("END", "FRONT");
 require_once __DIR__ . "/config.inc.php";
-if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HTTPS'] == "off"){
+if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HTTPS'] == "off") {
 	$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	header('Location: ' . $redirect);
 	die();
@@ -57,7 +57,6 @@ if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HT
 						<?php
 					}
 					?>
-
 				</ul>
 			</li>
 		</ul>
@@ -128,7 +127,6 @@ if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HT
 	?>
 </div>
 
-
 <!-- CONTEXTMENU -->
 <div class="dropdown contextmenu" id="dropdownContextMenu">
 	<ul class="dropdown-menu">
@@ -139,6 +137,15 @@ if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HT
 		</li>
 	</ul>
 </div>
+
+<!-- SNACKBAR
+<div class="snackbar-container">
+	<div class="snackbar">
+		Test
+		<button class="btn btn-primary btn-flat">Undo</button>
+	</div>
+</div>
+-->
 
 <div class="footer">
 	<div class="container">

@@ -8,6 +8,7 @@ use Scrumplex\PASSY\UserManager;
 use Scrumplex\PASSY\Passwords;
 use Scrumplex\PASSY\IPLog;
 use Scrumplex\PASSY\Response;
+use Scrumplex\PASSY\Util;
 
 $unauthenticatedActions = array(
 	"user/login",
@@ -46,9 +47,14 @@ if (in_array($action, $unauthenticatedActions)) {
 			$username = $_POST["username"];
 			$password = $_POST["password"];
 
+			$persistent = isset($_POST["persistent"]) && $_POST["persistent"] == "on";
+
 			$result = $userManager->login($username, $password);
-			if ($result->wasSuccess())
+			if ($result->wasSuccess()) {
 				$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+				if ($persistent)
+					$userManager->setSessionExpirationTime(0);
+			}
 
 			die($result->getJSONResponse());
 			break;
@@ -83,9 +89,16 @@ if (in_array($action, $unauthenticatedActions)) {
 			break;
 
 		case "status":
+
+			if ($userManager->getSessionExpirationTime() != 0)
+				$ttl = $userManager->getSessionExpirationTime() - (time() - $userManager->getLastActivity());
+			else
+				$ttl = 0;
+
 			$response = new Response(true, array(
 				"logged_in" => $userManager->isAuthenticated(),
 				"last_activity" => $userManager->getLastActivity(),
+				"ttl" => $ttl,
 				"user_id" => $userManager->getUserID()
 			));
 			die($response->getJSONResponse());

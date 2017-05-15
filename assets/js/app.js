@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-(function () {
+var setOption = (function () {
 	//##################################################################################################################
 	//GLOBAL VARS
 	//##################################################################################################################
@@ -24,6 +24,9 @@
 		currentAlert = null,
 		currentAlertHider = null,
 		switchingPage = false,
+		options = {
+			"fade_on_focus_loss": true
+		},
 		spinnerSVG = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>',
 		rippleSettings = {
 			debug: false,
@@ -54,6 +57,22 @@
 		});
 	}
 
+	function hideAllModals() {
+		if ($("body").hasClass("modal-open")) {
+			$('.modal').modal('hide');
+		}
+	}
+
+	function randomPassword(length) {
+		var alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789#-.,+*$%&!",
+			string = "";
+		for (var i = 0; i < length; i++) {
+			var position = Math.floor(Math.random() * alphabet.length);
+			string += alphabet.charAt(position);
+		}
+		return string;
+	}
+
 	function startsWith(haystack, needle) {
 		return haystack.substr(0, needle.length) == needle;
 	}
@@ -73,6 +92,7 @@
 		var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
 		currentPage = page;
 		changePageScope(newPage.attr("data-apply-page-scope"));
+		hideAllModals();
 
 		spinner.addClass("shown");
 
@@ -224,7 +244,13 @@
 				me.removeClass("hastext");
 		});
 
-
+		$("*[data-random-value]").click(function (e) {
+			var me = $(this),
+				target = $(me.data("random-value"));
+			target.val(randomPassword(20));
+			target.attr("type", "text");
+			target.change();
+		});
 		var delay = 100;
 		$(".dropdown-menu").find("li").each(function (index, item) {
 			item = $(item);
@@ -251,8 +277,12 @@
 		});
 
 		$(window).focus(function () {
+			if (!options.fade_on_focus_loss && $(".content").css('display') !== "none")
+				return;
 			$(".content").fadeIn(300);
 		}).blur(function () {
+			if (!options.fade_on_focus_loss)
+				return;
 			if (!$('iframe').is(':focus'))
 				$(".content").fadeOut(300);
 		});
@@ -313,15 +343,9 @@
 					} else {
 						if (data.msg == "already_logged_in") {
 							loadPage("password_list");
-						} else if (data.msg == "missing_arguments") {
-							showAlert($("#errorLoginFormInvalid"), 3000);
-						} else if (data.msg == "account_locked") {
-							showAlert($("#errorAccountLocked"), 3000);
-						} else if (data.msg == "invalid_email") {
-							showAlert($("#errorLoginEmailInvalid"), 3000);
 						} else if (data.msg == "invalid_credentials") {
 							showAlert($("#errorInvalidCredentials"), 3000);
-						} else if (startsWith(data.msg, "database_")) {
+						} else if (data.msg == "database_error") {
 							showAlert($("#errorLoginDatabase"), 3000);
 						}
 					}
@@ -359,17 +383,13 @@
 					} else {
 						if (data.msg == "already_logged_in") {
 							loadPage("password_list");
-						} else if (data.msg == "missing_arguments") {
-							showAlert($("#errorFormInvalid"), 3000);
 						} else if (data.msg == "passwords_not_matching") {
 							showAlert($("#errorPasswordsNotMatch"), 3000);
 						} else if (data.msg == "recaptcha_fail") {
 							showAlert($("#errorVerification"), 3000);
-						} else if (data.msg == "invalid_email") {
-							showAlert($("#errorEmailInvalid"), 3000);
-						} else if (data.msg == "already_registered") {
+						} else if (data.msg == "username_exists") {
 							showAlert($("#errorAccountRegistered"), 3000);
-						} else if (startsWith(data.msg, "database_")) {
+						} else if (data.msg == "database_error") {
 							showAlert($("#errorDatabase"), 3000);
 						}
 					}
@@ -542,7 +562,7 @@
 				data: "a=password/query&id=" + encodeURIComponent(passwordId),
 				success: function (data) {
 					if (data.success) {
-						parent.html("<span class='selectable no-contextmenu'>" + data.data.password + "</span>");
+						parent.html("<span class='selectable no-contextmenu'>" + data.data.password_safe + "</span>");
 						timeoutPassword(parent, passwordId);
 					} else {
 						if (data.msg == "not_authenticated") {
@@ -707,14 +727,14 @@
 					var jsonData = data.data, tbody = "", tbodyArchived = "";
 					$.each(jsonData, function (index, item) {
 						var description = "<i>None</i>";
-						if (item.description !== null) {
-							description = item.description;
-						}
+						if (item.description !== null)
+							description = item.description_safe;
+
 
 						var username = "<i>None</i>";
-						if (item.username !== null) {
-							username = item.username;
-						}
+						if (item.username !== null)
+							username = item.username_safe;
+
 
 						var row = "<tr id='" + item.password_id + "'>";
 						if (!item.archived) {
@@ -752,22 +772,22 @@
 					}
 					tableBody.html(tbody);
 					tableArchivedBody.html(tbodyArchived);
-					if (callbackDone != null)
+					if (callbackDone !== null)
 						callbackDone();
 				} else {
-					if (data.msg == "not_authenticated") {
+					if (data.msg === "not_authenticated") {
 						sessionExpired();
 						return;
 					}
 
 					tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td><td></td></tr>");
-					if (callbackDone != null)
+					if (callbackDone !== null)
 						callbackDone(data.msg);
 				}
 			},
 			error: function (xhr, error) {
 				tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td><td></td></tr>");
-				if (callbackDone != null)
+				if (callbackDone !== null)
 					callbackDone(error);
 			}
 		})
@@ -817,4 +837,9 @@
 		})
 	}
 
+	return function (option, value) {
+		var previousValue = options[option];
+		options[option] = value;
+		return "Previous value was " + previousValue;
+	}
 })();

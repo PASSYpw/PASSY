@@ -5,7 +5,13 @@ namespace Scrumplex\PASSY;
 
 class UserManager
 {
+	/**
+	 * @var Database
+	 */
 	private $database;
+	/**
+	 * @var Passwords
+	 */
 	private $passwords;
 
 	/**
@@ -17,6 +23,8 @@ class UserManager
 	{
 		$this->database = $database;
 		$this->passwords = $passwords;
+		ini_set('session.cookie_lifetime', 60 * 60 * 24 * 90); // 90 days
+		ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 90); // 90 days
 		session_start();
 	}
 
@@ -33,9 +41,22 @@ class UserManager
 	 */
 	function checkSessionExpiration()
 	{
-		if (isset($_SESSION["last_activity"]) && (time() - $_SESSION["last_activity"]) >= 300) {
+		if (isset($_SESSION["last_activity"]) && $this->getSessionExpirationTime() != 0 && (time() - $_SESSION["last_activity"]) >= $this->getSessionExpirationTime()) {
 			$this->logout();
 		}
+	}
+
+	/**
+	 * Time the session will take to expire in seconds.
+	 * 0 = until the session cookie expires.
+	 * @param $seconds
+	 */
+	function setSessionExpirationTime($seconds) {
+		$_SESSION["session_expiration"] = $seconds;
+	}
+
+	function getSessionExpirationTime() {
+		return $_SESSION["session_expiration"];
 	}
 
 	/**
@@ -61,6 +82,7 @@ class UserManager
 					$_SESSION["master_password"] = $password;
 					$_SESSION["userId"] = $row['USERID'];
 					$_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
+					$_SESSION["session_expiration"] = 300; // 5 mins
 					$this->trackActivity();
 					return new Response(true, null);
 				}
@@ -71,6 +93,7 @@ class UserManager
 	}
 
 	/**
+	 * Creates a user with specified $username and $password.
 	 * @param $username string
 	 * @param $password string
 	 * @return Response
@@ -102,6 +125,12 @@ class UserManager
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Updates username of $userId
+	 * @param $userId
+	 * @param $newUsername
+	 * @return Response
+	 */
 	function changeUsername($userId, $newUsername)
 	{
 		$mysql = $this->database->getInstance();
@@ -125,11 +154,15 @@ class UserManager
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Updates password of $userId. Re encrypts all passwords with new passwords.
+	 * @param $userId
+	 * @param $masterPassword
+	 * @param $newPassword
+	 * @return Response
+	 */
 	function changePassword($userId, $masterPassword, $newPassword)
 	{
-		return new Response(false, "not_implemented");
-		//TODO: Not working.
-
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT `SALT` FROM `users` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);
@@ -151,6 +184,10 @@ class UserManager
 		return new Response(false, "database_error");
 	}
 
+	/**
+	 * Destroys current session, if present.
+	 * @return Response
+	 */
 	function logout()
 	{
 		if (session_status() != PHP_SESSION_NONE)

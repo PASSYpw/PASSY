@@ -206,7 +206,7 @@ button {
 	min-width: 64px;
 	padding-left: 16px;
 	padding-right: 16px;
-	margin: 5px !important;
+	margin: 5px;
 	border: none;
 	border-radius: 2px;
 	text-transform: uppercase;
@@ -502,6 +502,11 @@ a.btn-block {
 
 /* INPUTS */
 
+
+label {
+	font-weight: normal;
+}
+
 .text {
 	padding-top: 15px;
 }
@@ -511,25 +516,26 @@ a.btn-block {
 }
 
 .text > .form-control {
-	height: 30px;
+	height: 24px;
 	display: block;
-	padding: 0 10px;
+	padding: 0;
 	border: none;
 	border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
 	border-radius: 0;
 	box-shadow: none;
-	line-height: 26px;
-	font-size: 18px;
+	line-height: 24px;
+	font-size: 14px;
 	margin: 5px 0 0;
 }
 
 .text > label {
 	color: $colorSecondaryText;
-	font-size: 18px;
+	font-size: 14px;
 	font-weight: normal;
 	position: absolute;
 	pointer-events: none;
-	transform: translate(10px, -27px);
+	transform-origin: bottom left;
+	transform: translateY(-24px);
 	-webkit-transition: all 0.2s ease;
 	-moz-transition: all 0.2s ease;
 	-ms-transition: all 0.2s ease;
@@ -538,8 +544,7 @@ a.btn-block {
 }
 
 .text > input:focus ~ label, .text > input.hastext ~ label {
-	transform: translate(5px, -44px);
-	font-size: 14px;
+	transform: scale(.8) translateY(-53px);
 	color: $colorAccent;
 }
 
@@ -662,6 +667,32 @@ a.btn-block {
 	}
 }
 
+/* SNACKBAR */
+.snackbar-container {
+	position: fixed;
+	left: 40px;
+	bottom: 20px;
+}
+.snackbar {
+	position: relative;
+	width: auto;
+	height: 48px;
+	min-width: 288px;
+	max-width: 568px;
+	padding: 14px 24px;
+	border-radius: 2px;
+	color: #fff;
+	background: #212121;
+}
+
+.snackbar > .btn-flat {
+	padding: 0;
+	margin: 0 0 0 48px;
+	min-width: 0;
+	height: auto;
+	float: right;
+}
+
 /* MISC */
 .material-icons {
 	vertical-align: middle;
@@ -698,7 +729,6 @@ a.btn-block {
 }
 
 .table th {
-	text-align: center;
 	color: rgba($colorText, .75);
 }
 

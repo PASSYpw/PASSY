@@ -10,6 +10,9 @@ namespace Scrumplex\PASSY;
 class IPLog
 {
 
+	/**
+	 * @var Database
+	 */
 	private $database;
 
 	/**
@@ -57,7 +60,7 @@ class IPLog
 	{
 		$mysql = $this->database->getInstance();
 
-		$ps = $mysql->prepare("SELECT * FROM `iplog` WHERE `USERID` = (?)");
+		$ps = $mysql->prepare("SELECT * FROM `iplog` WHERE `USERID` = (?) ORDER BY `DATE` DESC");
 		$ps->bind_param("s", $userId);
 		$succeeded = $ps->execute();
 		$result = $ps->get_result();

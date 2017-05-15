@@ -36,8 +36,8 @@ $generalConfig = array(
 );
 
 $passyMetadata = array(
-	"version" => "2.0.1",
-	"build" => 201,
+	"version" => "2.0.2",
+	"build" => 202,
 	"github" => "https://github.com/Scrumplex/PASSY",
 	"issues" => "https://github.com/Scrumplex/PASSY/issues"
 );

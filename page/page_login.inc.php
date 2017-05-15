@@ -25,6 +25,8 @@ include_once __DIR__ . "/../config.inc.php";
 							       required/>
 							<label>Password</label>
 						</div>
+						<input id="checkboxPersistent" type="checkbox" title="Stay logged in" name="persistent">
+						<label for="checkboxPersistent">Stay logged in</label>
 					</div>
 					<div class="form-group">
 						<button type="submit" class="btn btn-success pull-right">Login</button>
@@ -41,16 +43,6 @@ include_once __DIR__ . "/../config.inc.php";
 				</div>
 				<div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
 					<strong>Error!</strong> The entered credentials do not match any account.
-				</div>
-				<div class="alert alert-danger" id="errorAccountLocked" style="display: none">
-					<strong>Error!</strong> The account you are trying to access has been locked. Please contact the
-					administrator.
-				</div>
-				<div class="alert alert-danger" id="errorLoginEmailInvalid" style="display: none">
-					<strong>Error!</strong> The specified email is invalid.
-				</div>
-				<div class="alert alert-danger" id="errorLoginFormInvalid" style="display: none">
-					<strong>Error!</strong> The form is invalid.
 				</div>
 				<div class="alert alert-danger" id="errorLoginServer" style="display: none">
 					<strong>Error!</strong> There has been a problem with the server. Please contact the administrator.

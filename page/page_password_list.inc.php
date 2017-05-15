@@ -50,10 +50,11 @@
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
-								<input type="password" class="form-control" title="Password" name="password" required
+								<input type="password" id="addPasswordInput" class="form-control" title="Password" name="password" required
 								       autocomplete="off"/>
 								<label>Password</label>
 							</div>
+							<button type="button" class="btn btn-flat btn-primary" data-random-value="#addPasswordInput">Generate</button>
 							<div class="text">
 								<input type="text" class="form-control" title="Website" name="description"
 								       autocomplete="off"/>

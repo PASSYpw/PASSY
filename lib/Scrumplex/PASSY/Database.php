@@ -13,7 +13,13 @@ use mysqli;
 class Database
 {
 
+	/**
+	 * @var array
+	 */
 	private $mysqlConfig;
+	/**
+	 * @var mysqli
+	 */
 	private $mysql;
 
 	/**

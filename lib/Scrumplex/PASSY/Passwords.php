@@ -8,6 +8,9 @@ require_once __DIR__ . '/../../../vendor/autoload.php';
 
 class Passwords
 {
+	/**
+	 * @var Database
+	 */
 	private $database;
 
 	/**
@@ -101,9 +104,12 @@ class Passwords
 
 			$entry = array(
 				"password" => null,
+				"password_safe" => null,
 				"password_id" => $row["ID"],
 				"username" => $username,
+				"username_safe" => Util::filterBadChars($username),
 				"description" => $description,
+				"description_safe" => Util::filterBadChars($description),
 				"date_added" => $row["DATE"],
 				"date_added_readable" => Format::formatTime($row["DATE"]),
 				"user_id" => $row["USERID"],
@@ -115,6 +121,7 @@ class Passwords
 			if (isset($masterPassword)) {
 				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 				$entry["password"] = $decryptedPassword;
+				$entry["password_safe"] = Util::filterBadChars($decryptedPassword);
 			}
 			return new Response(true, $entry);
 		}
@@ -153,9 +160,12 @@ class Passwords
 
 					$entry = array(
 						"password" => null,
+						"password_safe" => null,
 						"password_id" => $row["ID"],
 						"username" => $username,
+						"username_safe" => Util::filterBadChars($username),
 						"description" => $description,
+						"description_safe" => Util::filterBadChars($description),
 						"date_added" => $row["DATE"],
 						"date_added_readable" => Format::formatTime($row["DATE"]),
 						"user_id" => $row["USERID"],
@@ -167,6 +177,7 @@ class Passwords
 					if (isset($masterPassword)) {
 						$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 						$entry["password"] = $decryptedPassword;
+						$entry["password_safe"] = Util::filterBadChars($decryptedPassword);
 					}
 					array_push($data, $entry);
 				}
@@ -193,7 +204,7 @@ class Passwords
 		$ps->close();
 		if ($succeeded) {
 			if ($result->num_rows > 0) {
-				$ps->prepare("UPDATE `passwords` SET `PASSWORD` = (?) WHERE `ID` = (?)");
+				$ps = $mysql->prepare("UPDATE `passwords` SET `PASSWORD` = (?) WHERE `ID` = (?)");
 				while ($row = $result->fetch_assoc()) {
 					$passwordId = $row["ID"];
 					$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $oldMasterPassword);

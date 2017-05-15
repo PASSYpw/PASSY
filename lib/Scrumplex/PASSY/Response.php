@@ -6,7 +6,13 @@ namespace Scrumplex\PASSY;
 class Response
 {
 
+	/**
+	 * @var bool
+	 */
 	private $success;
+	/**
+	 * @var mixed
+	 */
 	private $data;
 
 	/**
