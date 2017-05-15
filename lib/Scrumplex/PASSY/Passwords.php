@@ -73,6 +73,98 @@ class Passwords
 	}
 
 	/**
+	 * Import passwords that have been exported before, the data is in JSON Format
+	 * @author Liz3(Yann HN) <info@liz3.de>
+	 * @param string $data
+	 * @param string $userId
+	 * @param string $masterPassword
+	 * @return Response
+	 */
+	function importPasswords($data, $userId, $masterPassword)
+	{
+
+
+		$arr = json_decode($data, true);
+		$count = 0;
+		$failed = 0;
+		$data = $arr["data"];
+		foreach ($data as $item) {
+
+			if($item["pass"] == null) {
+				$failed++;
+				continue;
+			}
+			$pass = $item["pass"];
+			$this->create($item["username"], $pass, $item["description"], $userId, $masterPassword);
+			$count++;
+		}
+
+		return new Response(true, array(
+			"imported" => $count,
+			"failed" => $failed
+		));
+
+	}
+
+	/**
+	 * Export all Passwords, the passwords are written in plain Text.
+	 * @author Liz3(Yann HN) <info@liz3.de>
+	 * @param string $userId
+	 * @param string $masterPassword
+	 * @return Response
+	 */
+	function queryExport($userId, $masterPassword)
+	{
+		$data = array();
+		$mysql = $this->database->getInstance();
+		$query = "SELECT `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
+		$ps = $mysql->prepare($query);
+		$ps->bind_param("s", $userId);
+		$succeeded = $ps->execute();
+		$result = $ps->get_result();
+		$ps->close();
+		if ($succeeded && $result->num_rows > 0) {
+			while ($row = $result->fetch_assoc()) {
+				$username = $row["USERNAME"];
+				$description = $row["DESCRIPTION"];
+				$date = $row["DATE"];
+				$archived = false;
+				$archived_date = "";
+				if ($row["ARCHIVED_DATE"] != null) {
+					$archived = true;
+					$archived_date = $row["ARCHIVED_DATE"];
+				}
+				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
+
+				if ($archived) {
+					array_push($data, array(
+						"username" => $username,
+						"description" => $description,
+						"date" => $date,
+						"archived" => $archived,
+						"date_archived" => $archived_date,
+						"pass" => $decryptedPassword
+
+					));
+				} else {
+					array_push($data, array(
+						"username" => $username,
+						"description" => $description,
+						"date" => $date,
+						"archived" => $archived,
+						"pass" => $decryptedPassword
+
+					));
+				}
+			}
+
+			return new Response(true, $data);
+		}
+
+		return new Response(false, "database_error");
+	}
+
+	/**
 	 * Queries info about given password
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
 	 * @param $passwordId

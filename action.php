@@ -27,7 +27,9 @@ $authenticatedActions = array(
 	"password/delete",
 	"iplog/queryAll",
 	"user/changeUsername",
-	"user/changePassword"
+	"user/changePassword",
+	"misc/export",
+	"misc/import"
 );
 
 $db = new Database($mysqlConfig);
@@ -124,6 +126,24 @@ if (in_array($action, $unauthenticatedActions)) {
 				die($result->getJSONResponse());
 				break;
 
+			case "misc/import":
+				$content = $_FILES['parse-file']['tmp_name'];
+				$result = $passwords->importPasswords(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
+				die($result->getJSONResponse());
+				break;
+
+			case "misc/export":
+				$result = $passwords->queryExport($userManager->getUserID(), $userManager->getMasterPassword());
+				$json = $result->getJSONResponse();
+				header('Content-Description: File Transfer');
+				header('Content-Type: application/octet-stream');
+				header('Content-Disposition: attachment; filename=PASSY-Export-' . time() . ".json");
+				header('Expires: 0');
+				header('Cache-Control: must-revalidate');
+				header('Pragma: public');
+				header('Content-Length: ' . strlen($json));
+				die($json);
+				break;
 			case "password/query":
 				$passwordId = $_POST["id"];
 				$result = $passwords->query($passwordId, $userManager->getMasterPassword());
