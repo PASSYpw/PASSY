@@ -8,6 +8,7 @@ use Scrumplex\PASSY\UserManager;
 use Scrumplex\PASSY\Passwords;
 use Scrumplex\PASSY\IPLog;
 use Scrumplex\PASSY\Response;
+use Scrumplex\PASSY\Util;
 
 $unauthenticatedActions = array(
 	"user/login",
@@ -127,6 +128,10 @@ if (in_array($action, $unauthenticatedActions)) {
 
 			case "misc/import":
 				$content = $_FILES['parse-file']['tmp_name'];
+				if (!Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
+					$response = new Response(false, "file_not_compatible");
+					die($response->getJSONResponse());
+				}
 				$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
@@ -136,7 +141,7 @@ if (in_array($action, $unauthenticatedActions)) {
 				$json = $result->getJSONResponse();
 				header('Content-Description: File Transfer');
 				header('Content-Type: application/octet-stream');
-				header('Content-Disposition: attachment; filename=PASSY-Export-' . time() . ".json");
+				header('Content-Disposition: attachment; filename=PASSY-Export-' . time() . ".passy-json");
 				header('Expires: 0');
 				header('Cache-Control: must-revalidate');
 				header('Pragma: public');
@@ -180,7 +185,7 @@ if (in_array($action, $unauthenticatedActions)) {
 			case "user/changeUsername":
 				$password = $_POST["password"];
 				$newUsername = $_POST["new_username"];
-				if(!$userManager->checkPassword($password)) {
+				if (!$userManager->checkPassword($password)) {
 					$response = new Response(false, "invalid_credentials");
 					die($response->getJSONResponse());
 				}
@@ -192,7 +197,7 @@ if (in_array($action, $unauthenticatedActions)) {
 				$password = $_POST["password"];
 				$newPassword = $_POST["new_password"];
 				$newPassword2 = $_POST["new_password2"];
-				if(!$userManager->checkPassword($password)) {
+				if (!$userManager->checkPassword($password)) {
 					$response = new Response(false, "invalid_credentials");
 					die($response->getJSONResponse());
 				}

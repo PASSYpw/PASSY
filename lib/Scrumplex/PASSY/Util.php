@@ -18,11 +18,7 @@ class Util
 		return $length == 0 ? true : (substr($haystack, -$length) === $needle);
 	}
 
-	static function validateURL($string) {
-		return filter_var($string, FILTER_VALIDATE_URL) !== false;
-	}
-
-	static function filterBadChars($string) {
+	static function filterStrings($string) {
 		return htmlspecialchars($string);
 	}
 

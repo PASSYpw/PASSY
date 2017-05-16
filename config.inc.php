@@ -10,25 +10,29 @@ $mysqlConfig = array(
 );
 
 $customizationConfig = array(
-	"title" => "PASSY"
+	"title" => "PASSY" // Will be shown in titlebar and footer.
 );
 
 $generalConfig = array(
 
-	"redirect_ssl" => false,
+	"redirect_ssl" => false, // Redirects from HTTP to HTTPS. May not work on every setup.
+
+	"security" => array(
+		"lock_session_to_ip" => true // If your IP changes you will be logged out. This is necessary if there is a MITM and someone steals your cookie.
+	),
 
 	"registration" => array(
 
-		"enabled" => true
+		"enabled" => true // Enable / Disable registration.
 
 	),
 	"login_history" => array(
 
-		"enabled" => true
+		"enabled" => true // Logs IP and User-Agent on every login.
 
 	),
 	"recaptcha" => array(
-		"enabled" => false,
+		"enabled" => false, // Prevent spam registrations
 		"website_key" => "",
 		"private_key" => ""
 	)
@@ -36,8 +40,8 @@ $generalConfig = array(
 );
 
 $passyMetadata = array(
-	"version" => "2.0.2",
-	"build" => 202,
+	"version" => "2.0.3",
+	"build" => 203,
 	"github" => "https://github.com/Scrumplex/PASSY",
 	"issues" => "https://github.com/Scrumplex/PASSY/issues"
 );

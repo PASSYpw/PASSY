@@ -41,22 +41,10 @@ class UserManager
 	 */
 	function checkSessionExpiration()
 	{
-		if (isset($_SESSION["last_activity"]) && $this->getSessionExpirationTime() != 0 && (time() - $_SESSION["last_activity"]) >= $this->getSessionExpirationTime()) {
+		if (!$this->isAuthenticated())
+			return;
+		if ($this->getSessionExpirationTime() != 0 && (time() - $_SESSION["last_activity"]) >= $this->getSessionExpirationTime())
 			$this->logout();
-		}
-	}
-
-	/**
-	 * Time the session will take to expire in seconds.
-	 * 0 = until the session cookie expires.
-	 * @param $seconds
-	 */
-	function setSessionExpirationTime($seconds) {
-		$_SESSION["session_expiration"] = $seconds;
-	}
-
-	function getSessionExpirationTime() {
-		return $_SESSION["session_expiration"];
 	}
 
 	/**
@@ -201,10 +189,28 @@ class UserManager
 	 * @param $password
 	 * @return bool
 	 */
-	function checkPassword($password) {
-		if($this->getMasterPassword() == null)
+	function checkPassword($password)
+	{
+		if ($this->getMasterPassword() == null)
 			return false;
 		return $password == $this->getMasterPassword();
+	}
+
+	/**
+	 * Time the session will take to expire in seconds.
+	 * 0 = until the session cookie expires.
+	 * @param $seconds
+	 */
+	function setSessionExpirationTime($seconds)
+	{
+		$_SESSION["session_expiration"] = $seconds;
+	}
+
+	function getSessionExpirationTime()
+	{
+		if ($this->isAuthenticated())
+			return $_SESSION["session_expiration"];
+		return null;
 	}
 
 	function getUserID()
@@ -232,7 +238,7 @@ class UserManager
 	{
 		if (session_status() == PHP_SESSION_NONE)
 			return false;
-		if (!isset($_SESSION["username"]) || !isset($_SESSION["master_password"]) || !isset($_SESSION["userId"]) || !isset($_SESSION["ip"]) || !isset($_SESSION["last_activity"]))
+		if (!isset($_SESSION["username"]) || !isset($_SESSION["master_password"]) || !isset($_SESSION["userId"]) || !isset($_SESSION["ip"]) || !isset($_SESSION["last_activity"]) || !isset($_SESSION["session_expiration"]))
 			return false;
 		if ($_SESSION["ip"] != $_SERVER["REMOTE_ADDR"])
 			return false;

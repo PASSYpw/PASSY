@@ -82,8 +82,6 @@ class Passwords
 	 */
 	function import($data, $userId, $masterPassword)
 	{
-
-
 		$arr = json_decode($data, true);
 		$count = 0;
 		$failed = 0;
@@ -103,7 +101,6 @@ class Passwords
 			"imported" => $count,
 			"failed" => $failed
 		));
-
 	}
 
 	/**
@@ -199,9 +196,9 @@ class Passwords
 				"password_safe" => null,
 				"password_id" => $row["ID"],
 				"username" => $username,
-				"username_safe" => Util::filterBadChars($username),
+				"username_safe" => Util::filterStrings($username),
 				"description" => $description,
-				"description_safe" => Util::filterBadChars($description),
+				"description_safe" => Util::filterStrings($description),
 				"date_added" => $row["DATE"],
 				"date_added_readable" => Format::formatTime($row["DATE"]),
 				"user_id" => $row["USERID"],
@@ -213,7 +210,7 @@ class Passwords
 			if (isset($masterPassword)) {
 				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 				$entry["password"] = $decryptedPassword;
-				$entry["password_safe"] = Util::filterBadChars($decryptedPassword);
+				$entry["password_safe"] = Util::filterStrings($decryptedPassword);
 			}
 			return new Response(true, $entry);
 		}
@@ -255,9 +252,9 @@ class Passwords
 						"password_safe" => null,
 						"password_id" => $row["ID"],
 						"username" => $username,
-						"username_safe" => Util::filterBadChars($username),
+						"username_safe" => Util::filterStrings($username),
 						"description" => $description,
-						"description_safe" => Util::filterBadChars($description),
+						"description_safe" => Util::filterStrings($description),
 						"date_added" => $row["DATE"],
 						"date_added_readable" => Format::formatTime($row["DATE"]),
 						"user_id" => $row["USERID"],
@@ -269,7 +266,7 @@ class Passwords
 					if (isset($masterPassword)) {
 						$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 						$entry["password"] = $decryptedPassword;
-						$entry["password_safe"] = Util::filterBadChars($decryptedPassword);
+						$entry["password_safe"] = Util::filterStrings($decryptedPassword);
 					}
 					array_push($data, $entry);
 				}

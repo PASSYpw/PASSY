@@ -1,7 +1,7 @@
 <?php
 define("END", "FRONT");
 require_once __DIR__ . "/config.inc.php";
-if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HTTPS'] == "off") {
+if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTTPS'] == "off") {
 	$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	header('Location: ' . $redirect);
 	die();
@@ -49,7 +49,7 @@ if ($generalConfig["redirect_ssl"] && !empty($_SERVER['HTTPS']) && !$_SERVER['HT
 					<?php
 					if ($generalConfig["login_history"]["enabled"]) {
 						?>
-						<li style="animation-delay: 100ms">
+						<li>
 							<a href="#!p=login_history" data-to-page="login_history">
 								<i class="material-icons">list</i> Login History
 							</a>
