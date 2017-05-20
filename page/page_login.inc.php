@@ -6,13 +6,13 @@ include_once __DIR__ . "/../config.inc.php";
 		<div class="row">
 			<div class="col-xs-12">
 				<h2 class="text-center">Login</h2>
-				<p>Welcome to <?php echo $customizationConfig["title"] ?>. You will need an account to use this
-					service.</p>
+				<p>Welcome to <?= $customizationConfig["title"] ?>. You need an account to use this password
+					manager.</p>
 			</div>
 		</div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
-				<form id="loginForm" method="POST" action="action.php">
+				<form id="page_login_form_login" method="POST" action="action.php">
 					<input type="hidden" name="a" value="user/login" readonly style="display: none">
 					<div class="form-group">
 						<div class="text">

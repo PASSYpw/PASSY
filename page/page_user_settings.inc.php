@@ -10,7 +10,7 @@
 		<div class="row row-margin">
 			<div class="col-xs-12">
 				<h3>Change password</h3>
-				<form id="form_change_password" action="action.php" method="post">
+				<form id="page_user_settings_form_change_password" action="action.php" method="post">
 					<input type="hidden" name="a" value="user/changePassword">
 					<div class="text">
 						<input type="password" class="form-control" title="Current Password" name="password"
@@ -39,7 +39,7 @@
 			</div>
 			<div class="col-xs-12">
 				<h3>Change username</h3>
-				<form id="form_change_username" action="action.php" method="post">
+				<form id="page_user_settings_form_change_username" action="action.php" method="post">
 					<input type="hidden" name="a" value="user/changeUsername">
 					<div class="text">
 						<input type="password" class="form-control" title="Current Password" name="password"
@@ -64,7 +64,7 @@
 			<div class="col-xs-12">
 				<h3>Export</h3>
 				<p>This will put all your passwords into a file, so you can import them later in any PASSY server.</p>
-				<form action="action.php" method="post">
+				<form id="page_user_settings_form_export" action="action.php" method="post">
 					<input type="hidden" name="a" value="misc/export">
 					<select name="format">
 						<option value="passy">PASSY</option>
@@ -80,7 +80,7 @@
 			<div class="col-xs-12">
 				<h3>Import</h3>
 				<p>Import your previously exported passwords.</p>
-				<form id="form_import" action="action.php" enctype="multipart/form-data" method="post">
+				<form id="page_user_settings_form_import" action="action.php" enctype="multipart/form-data" method="post">
 					<input type="hidden" name="a" value="misc/import">
 					<input type="file" name="parse-file">
 					<button type="submit" class="btn btn-primary pull-right">Import</button>

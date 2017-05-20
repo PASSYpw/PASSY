@@ -59,7 +59,7 @@ var setOption = (function () {
 
 	function hideAllModals() {
 		if ($("body").hasClass("modal-open")) {
-			$('.modal').modal('hide');
+			$('.modal.fade.in').modal('hide');
 		}
 	}
 
@@ -118,9 +118,9 @@ var setOption = (function () {
 		};
 
 		oldPage.fadeOut(300, function () {
-			if (page == "password_list" || page == "archived_password_list") {
+			if (page === "password_list" || page === "archived_password_list") {
 				fetchPasswords(show);
-			} else if (page == "login_history") {
+			} else if (page === "login_history") {
 				fetchIPLog(show);
 			} else {
 				show();
@@ -172,85 +172,62 @@ var setOption = (function () {
 		loadPage("login");
 	}
 
+	function request(data, onSuccess, onFailure, options) {
+		if (data === null || onSuccess === null) {
+			return null;
+		}
+
+		if (onFailure === null) {
+			onFailure = function () {
+				console.error("An error occurred, while attempting an AJAX request.")
+			}
+		}
+
+		if (options === null || options === undefined)
+			options = {};
+
+		options.url = "action.php";
+		options.method = "POST";
+		options.data = data;
+		options.success = onSuccess;
+		options.error = onFailure;
+		return $.ajax(options);
+	}
+
 	//##################################################################################################################
 	//DOCUMENT LOAD
 	//##################################################################################################################
 	$(document).ready(function () {
 		currentPage = getCurrentPage();
+		request("a=status", function (data) {
+			if (data.data.logged_in && currentScope === "logged_out") {
+				currentPage = "password_list"; // load password list if already authenticated
 
-		$("#search-field").keyup(function () {
-			var searched = $("#search-field").val();
+			} else if (!data.data.logged_in && currentScope === "logged_in")
+				sessionExpired(); // session expired
 
-			$("#tbodyPasswords").children("tr").each(function (index, item) {
+			loadPage(currentPage);
 
-				const vis = $(item).attr("data-visible") == "true";
-				const userName = $(item).children(0).text();
-				const description = $(item).children(2).text();
+			registerPageListeners();
 
-				if (userName != "None" || description != "None") {
-					if (!userName.includes(searched) && !description.includes(searched)) {
-						if (vis) {
-							$(item).hide();
-							$(item).attr("data-visible", "false");
-						}
-					} else {
-						if (!vis) {
-							$(item).show();
-							$(item).attr("data-visible", "true");
-						}
-					}
-				}
-			})
-		});
-		$.ajax({
-			url: "action.php",
-			method: "POST",
-			data: "a=status",
-			success: function (data) {
-				if (data.data.logged_in && currentScope == "logged_out") {
-					currentPage = "password_list";
-				} else if (!data.data.logged_in && currentScope == "logged_in") {
-					sessionExpired();
-				}
-				loadPage(currentPage);
-				registerPageListeners();
-
-				setInterval(function () {
-					$.ajax({
-						url: "action.php",
-						method: "POST",
-						data: "a=status",
-						success: function (data) {
-							if (!data.success)
-								return;
-
-							if (!data.data.logged_in && currentScope == "logged_in")
-								sessionExpired();
-
-							if (data.data.logged_in) {
-								const inputCurrentEmail = $("#inputCurrentEmail");
-								inputCurrentEmail.val(data.data.user_email);
-								inputCurrentEmail.change();
-							}
-						}
-					});
-				}, 2000);
-			}
+			//Enable timer, to check login state.
+			setInterval(function () {
+				request("a=status", function (data) {
+					if (!data.success)
+						return;
+					// Session expired
+					if (!data.data.logged_in && currentScope === "logged_in")
+						sessionExpired();
+				});
+			}, 2000);
 		});
 	});
 
 	function registerPageListeners() {
 		var passwordTable = $('#tbodyPasswords'),
 			archivedPasswordTable = $('#tbodyArchivedPasswords'),
-			anchor = location.href.substring(location.href.indexOf("#")),
 			inputs = $(".text > input"),
-			contextMenu = $("#dropdownContextMenu"),
-			searchField = $("#search-field");
-
-		if (anchor == "#!r") {
-			location.replace("#");
-			location.reload(true)
-		}
+			contextMenu = $("#dropdownContextMenu");
 
 		$.ripple(".nav > li > a", rippleSettings);
 		$.ripple(".btn:not([disabled])", rippleSettings);
@@ -269,18 +246,50 @@ var setOption = (function () {
 				me.removeClass("hastext");
 		});
 
-		$("*[data-random-value]").click(function (e) {
+		$("*[data-random-value]").click(function () {
 			var me = $(this),
 				target = $(me.data("random-value"));
 			target.val(randomPassword(20));
 			target.attr("type", "text");
 			target.change();
 		});
+
 		var delay = 100;
 		$(".dropdown-menu").find("li").each(function (index, item) {
 			item = $(item);
 			item.css({"animation-delay": delay + "ms"});
 			delay += 25;
+		});
+
+		$("input[data-search-in]").on("keyup", function () {
+			console.log("change");
+			var me = $(this),
+				query = me.val(),
+				target = $(me.attr("data-search-in"));
+
+			if (target.is("table"))
+				target = target.find("tbody");
+
+
+			target.children("tr").each(function (index, child) {
+				var elem = $(child);
+
+				const visible = elem.attr("data-visible") === "true";
+				const userName = elem.children(0).text();
+				const description = elem.children(2).text();
+
+				if ((userName !== "None" && userName.indexOf(query) !== -1) || (description !== "None" && description.indexOf(query) !== -1)) {
+					if (!visible) {
+						elem.show();
+						elem.attr("data-visible", "true");
+					}
+				} else {
+					if (visible) {
+						elem.hide();
+						elem.attr("data-visible", "false");
+					}
+				}
+			});
 		});
 
 		var lastHeight = 0;
@@ -313,7 +322,7 @@ var setOption = (function () {
 		});
 
 		$(document).on("keydown", function (e) {
-			if ((e.which || e.keyCode) == 116) {
+			if ((e.which || e.keyCode) === 116) {
 				e.preventDefault();
 				if (e.shiftKey)
 					location.reload(true);
@@ -322,17 +331,18 @@ var setOption = (function () {
 			}
 		});
 
-		$(document).mouseup(function (e) {
-			if (e.which == 1)
+		$(document).on("mouseup", function (e) {
+			if (e.which === 1)
 				contextMenu.removeClass("open");
 		});
 
 		$(document).bind("contextmenu", function (e) {
 			if (e.shiftKey)
 				return;
-			var x = e.clientX, y = e.clientY;
-			var hoverObject = $(document.elementFromPoint(x, y));
-			if (hoverObject.hasClass("no-contextmenu") || hoverObject.parents(".no-contextmenu").length > 0)
+			var x = e.clientX,
+				y = e.clientY;
+			var elementUnderMouse = $(document.elementFromPoint(x, y));
+			if (elementUnderMouse.hasClass("no-contextmenu") || elementUnderMouse.parents(".no-contextmenu").length > 0)
 				return;
 			e.preventDefault();
 			contextMenu.removeClass("open");
@@ -343,28 +353,27 @@ var setOption = (function () {
 		});
 
 		$("*[data-to-page]").click(function (e) {
-			var me = $(this), toPage = me.attr("data-to-page");
+			var me = $(this),
+				targetPage = me.attr("data-to-page");
 			e.preventDefault();
-			if (toPage == "refresh")
-				toPage = currentPage;
-			loadPage(toPage);
+			if (targetPage === "refresh")
+				targetPage = currentPage;
+			loadPage(targetPage);
 		});
 
-		$("#form_import").submit(function (ev) {
+		$("#page_user_settings_form_import").submit(function (ev) {
+			var me = $(this);
 			ev.preventDefault();
 			$.ajax({
 				url: 'action.php',
 				type: 'POST',
-				data: new FormData($('#form_import')[0]),
-				cache: false,
-				contentType: false,
-				processData: false,
+				data: new FormData(me[0]),
 				success: function (data) {
 					if (data.success) {
-						if(data.data.imported == 0) {
-							showAlert($("#errorImportedEmpty"),5000);
+						if (data.data.imported == 0) {
+							showAlert($("#errorImportedEmpty"), 5000);
 						} else {
-							showAlert($("#successImported"),5000);
+							showAlert($("#successImported"), 5000);
 						}
 						setTimeout(
 							function () {
@@ -381,7 +390,7 @@ var setOption = (function () {
 			});
 		});
 
-		$("#loginForm").submit(function (e) {
+		$("#page_login_form_login").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var data = me.serialize();
@@ -420,7 +429,7 @@ var setOption = (function () {
 			})
 		});
 
-		$("#registerForm").submit(function (e) {
+		$("#page_register_form_register").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var data = me.serialize();
@@ -466,22 +475,7 @@ var setOption = (function () {
 			})
 		});
 
-		$("#btnAdd").click(function (e) {
-			e.preventDefault();
-			$("#modalAdd").modal('toggle');
-		});
-
-		$("#btnLogout").click(function (e) {
-			e.preventDefault();
-			logout();
-		});
-
-		$("#aRefresh").click(function (e) {
-			e.preventDefault();
-			refresh();
-		});
-
-		$("#formAddPassword").submit(function (e) {
+		$("#page_password_list_form_add").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var btn = me.find("button");
@@ -496,7 +490,7 @@ var setOption = (function () {
 						me[0].reset();
 						me.find("input.hastext").removeClass("hastext");
 						refresh();
-						$(".modal.fade.in").modal("hide");
+						hideAllModals();
 					} else {
 						if (data.msg == "not_authenticated") {
 							sessionExpired();
@@ -512,7 +506,7 @@ var setOption = (function () {
 			})
 		});
 
-		$("#formEditPassword").submit(function (e) {
+		$("#page_password_list_form_edit").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var btn = me.find("button");
@@ -527,7 +521,7 @@ var setOption = (function () {
 						me[0].reset();
 						me.find("input").change();
 						refresh();
-						$(".modal.fade.in").modal("hide");
+						hideAllModals();
 					} else {
 						if (data.msg == "not_authenticated") {
 							sessionExpired();
@@ -543,7 +537,7 @@ var setOption = (function () {
 			})
 		});
 
-		$("#form_change_password").submit(function (e) {
+		$("#page_user_settings_form_change_password").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var btn = me.find("button");
@@ -565,7 +559,7 @@ var setOption = (function () {
 						}
 						if (startsWith(data.msg, "database_")) {
 							showAlert($("#errorChangePasswordDatabase"), 3000)
-						} else if (data.msg == "invalid_credentials"){
+						} else if (data.msg == "invalid_credentials") {
 							showAlert($("#errorChangePasswordInvalidCredentials"), 3000)
 						} else {
 							showAlert($("#errorChangePasswordUnknown"), 3000)
@@ -575,7 +569,7 @@ var setOption = (function () {
 			})
 		});
 
-		$("#form_change_username").submit(function (e) {
+		$("#page_user_settings_form_change_username").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
 			var btn = me.find("button");
@@ -599,7 +593,7 @@ var setOption = (function () {
 							showAlert($("#errorChangeEmailDatabase"), 3000)
 						} else if (data.msg == "username_exists") {
 							showAlert($("#error_username_exists"), 3000)
-						} else if (data.msg == "invalid_credentials"){
+						} else if (data.msg == "invalid_credentials") {
 							showAlert($("#errorChangeEmailInvalidCredentials"), 3000)
 						} else {
 							showAlert($("#errorChangeEmailUnknown"), 3000)
@@ -609,146 +603,119 @@ var setOption = (function () {
 			})
 		});
 
-		//PASSWORD ACTIONS
+		$("#btnLogout").click(function (e) {
+			e.preventDefault();
+			logout();
+		});
 
+		//PASSWORD ACTIONS
 		passwordTable.on('click', '*[data-password-action="show"]', function (e) {
 			var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			$.ajax({
-				url: "action.php",
-				method: "POST",
-				data: "a=password/query&id=" + encodeURIComponent(passwordId),
-				success: function (data) {
-					if (data.success) {
-						parent.html("<span class='selectable no-contextmenu'>" + data.data.password_safe + "</span>");
-						timeoutPassword(parent, passwordId);
-					} else {
-						if (data.msg == "not_authenticated") {
-							sessionExpired();
-							return;
-						}
-						me.html("<i class='material-icons'>error</i>")
+			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
+				if (data.success) {
+					parent.html("<span class='selectable no-contextmenu'>" + data.data.password_safe + "</span>");
+					timeoutPassword(parent, passwordId);
+				} else {
+					if (data.msg === "not_authenticated") {
+						sessionExpired();
+						return;
 					}
+					me.html("<i class='material-icons'>error</i>")
 				}
-			})
+			}, function () {
+				me.html("<i class='material-icons'>error</i>")
+			});
 		});
+
 		passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id");
+			var me = $(this), passwordId = me.data("password-id"), targetForm = $("page_password_list_form_edit");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			$.ajax({
-				url: "action.php",
-				method: "POST",
-				data: "a=password/query&id=" + encodeURIComponent(passwordId),
-				success: function (data) {
-					if (data.success) {
-						me.html("<i class='material-icons'>edit</i>");
-						me.attr("disabled", null);
-						var password = data.data.password;
-						password = password.replace(/&lt;/g, '<').replace(/&gt;/g, '>').replace(/&amp;/g, '&');
-						$("#formEditPasswordId").val(passwordId);
-						$("#formEditPasswordPassword").val(password).change();
-						$("#formEditPasswordUsername").val(data.data.username).change();
-						$("#formEditPasswordDescription").val(data.data.description).change();
-						$("#modalEdit").modal("show");
-					} else {
-						if (data.msg == "not_authenticated") {
-							sessionExpired();
-							return;
-						}
-						me.html("<i class='material-icons'>error</i>")
+			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
+				if (data.success) {
+					me.html("<i class='material-icons'>edit</i>");
+					me.attr("disabled", null);
+					targetForm.find("input[name='id']").val(passwordId);
+					targetForm.find("input[name='username']").val(data.data.username).change();
+					targetForm.find("input[name='password']").val(data.data.password).change();
+					targetForm.find("input[name='description']").val(data.data.description).change();
+					$("#page_password_list_modal_edit").modal("show");
+				} else {
+					if (data.msg == "not_authenticated") {
+						sessionExpired();
+						return;
 					}
-				},
-				error: function () {
 					me.html("<i class='material-icons'>error</i>")
 				}
-			})
-
+			}, function () {
+				me.html("<i class='material-icons'>error</i>")
+			});
 		});
 
-		passwordTable.on('click', '*[data-password-action="share"]', function (e) {
-			e.preventDefault();
-			alert("Not implemented yet!");
-		});
 		passwordTable.on('click', '*[data-password-action="archive"]', function (e) {
 			var me = $(this), passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			$.ajax({
-				url: "action.php",
-				method: "POST",
-				data: "a=password/archive&id=" + encodeURIComponent(passwordId),
-				success: function (data) {
-					if (data.success) {
-						refresh();
-					} else {
-						if (data.msg == "not_authenticated") {
-							sessionExpired();
-							return;
-						}
-						me.html("<i class='material-icons'>error</i>")
+			request("a=password/archive&id=" + encodeURIComponent(passwordId), function (data ) {
+				if (data.success) {
+					refresh();
+				} else {
+					if (data.msg == "not_authenticated") {
+						sessionExpired();
+						return;
 					}
-				},
-				error: function () {
 					me.html("<i class='material-icons'>error</i>")
 				}
-			})
+			}, function () {
+				me.html("<i class='material-icons'>error</i>")
+			});
 		});
+
 		archivedPasswordTable.on('click', '*[data-password-action="restore"]', function (e) {
 			var me = $(this), passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			$.ajax({
-				url: "action.php",
-				method: "POST",
-				data: "a=password/restore&id=" + encodeURIComponent(passwordId),
-				success: function (data) {
-					if (data.success) {
-						refresh();
-					} else {
-						if (data.msg == "not_authenticated") {
-							sessionExpired();
-							return;
-						}
-						me.html("<i class='material-icons'>error</i>")
+			request("a=password/restore&id=" + encodeURIComponent(passwordId), function (data ) {
+				if (data.success) {
+					refresh();
+				} else {
+					if (data.msg == "not_authenticated") {
+						sessionExpired();
+						return;
 					}
-				},
-				error: function () {
 					me.html("<i class='material-icons'>error</i>")
 				}
-			})
+			}, function () {
+				me.html("<i class='material-icons'>error</i>")
+			});
 		});
+
 		archivedPasswordTable.on('click', '*[data-password-action="delete"]', function (e) {
 			var me = $(this), passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			$.ajax({
-				url: "action.php",
-				method: "POST",
-				data: "a=password/delete&id=" + encodeURIComponent(passwordId),
-				success: function (data) {
-					if (data.success) {
-						refresh();
-					} else {
-						if (data.msg == "not_authenticated") {
-							sessionExpired();
-							return;
-						}
-						me.html("<i class='material-icons'>error</i>")
+			request("a=password/delete&id=" + encodeURIComponent(passwordId), function (data ) {
+				if (data.success) {
+					refresh();
+				} else {
+					if (data.msg == "not_authenticated") {
+						sessionExpired();
+						return;
 					}
-				},
-				error: function () {
 					me.html("<i class='material-icons'>error</i>")
 				}
-			})
+			}, function () {
+				me.html("<i class='material-icons'>error</i>")
+			});
 		});
-	}
+	} // END registerPageListeners()
 
 
 	//##################################################################################################################
@@ -762,10 +729,10 @@ var setOption = (function () {
 
 		var timer = function () {
 			timeLeftDisplay.html(timeLeft);
-			if (timeLeft == 10) {
+			if (timeLeft === 10) {
 				timeLeftDisplay.addClass("text-danger");
 				timeLeftDisplay.removeClass("text-muted");
-			} else if (timeLeft == 0) {
+			} else if (timeLeft === 0) {
 				clearInterval(timerId);
 				passwordObject.html("<a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + passwordId + "'><i class='material-icons'>remove_red_eye</i></a>");
 			}
@@ -775,7 +742,6 @@ var setOption = (function () {
 
 		var timerId = setInterval(timer, 1000);
 	}
-
 
 
 	function fetchPasswords(callbackDone) {

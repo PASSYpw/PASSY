@@ -7,6 +7,15 @@
 					You can restore them or delete them immediately.</p>
 			</div>
 		</div>
+		<div class="row">
+			<div class="col-xs-12">
+				<div class="text">
+					<input type="text" class="form-control" title="Search" data-search-in="#tableArchivedPasswords"
+					       autocomplete="on"/>
+					<label>Search</label>
+				</div>
+			</div>
+		</div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
 				<div class="table-responsive">

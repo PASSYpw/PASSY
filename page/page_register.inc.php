@@ -11,7 +11,7 @@ include_once __DIR__ . "/../config.inc.php";
 		</div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
-				<form id="registerForm" method="POST" action="action.php">
+				<form id="page_register_form_register" method="POST" action="action.php">
 					<input type="hidden" name="a" value="user/register" readonly style="display: none">
 					<div class="form-group">
 						<div class="text">

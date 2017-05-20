@@ -14,7 +14,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<meta name="theme-color" content="#ff5722">
-	<title><?php echo $customizationConfig["title"] ?></title>
+	<title><?= $customizationConfig["title"] ?></title>
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/material-icons.min.css" rel="stylesheet">
 	<link href="assets/css/ripple.min.css" rel="stylesheet">
@@ -25,7 +25,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 	<div class="container">
 		<div class="navbar-header">
 			<!-- @formatter:off -->
-            <span class="navbar-brand"><?php echo $customizationConfig["title"] ?></span>
+            <span class="navbar-brand"><?= $customizationConfig["title"] ?></span>
             <!-- @formatter:on -->
 		</div>
 		<ul class="nav navbar-nav navbar-right">
@@ -131,7 +131,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 <div class="dropdown contextmenu" id="dropdownContextMenu">
 	<ul class="dropdown-menu">
 		<li>
-			<a href="#" id="aRefresh">
+			<a href="#" data-to-page="refresh">
 				<i class="material-icons">refresh</i> Refresh
 			</a>
 		</li>
@@ -159,7 +159,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 						<tspan>PASSY</tspan>
 					</text>
 				</svg>
-				<span class="text-muted hidden-xs"><?php echo $passyMetadata["version"] ?></span>
+				<span class="text-muted hidden-xs"><?= $passyMetadata["version"] ?></span>
 
 			</div>
 		</div>
@@ -171,8 +171,8 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 			</div>
 			<div class="col-sm-6 col-xs-12 text-right">
 				<ul class="list-inline">
-					<li><a href="<?php echo $passyMetadata["github"] ?>" target="_blank">GitHub</a></li>
-					<li><a href="<?php echo $passyMetadata["issues"] ?>" target="_blank">Bug report</a></li>
+					<li><a href="<?= $passyMetadata["github"] ?>" target="_blank">GitHub</a></li>
+					<li><a href="<?= $passyMetadata["issues"] ?>" target="_blank">Bug report</a></li>
 				</ul>
 			</div>
 		</div>
@@ -181,7 +181,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 <script src="assets/js/jquery.min.js "></script>
 <script src="assets/js/bootstrap.min.js "></script>
 <script src="assets/js/ripple.min.js"></script>
-<script src="assets/js/app.js"></script>
+<script src="assets/js/passy.js"></script>
 <?php
 if ($generalConfig["recaptcha"]["enabled"]) {
 	?>
