@@ -15,7 +15,7 @@
  * limitations under the License.
  */
 
-var setOption = (function () {
+var passy = (function () {
 	//##################################################################################################################
 	//GLOBAL VARS
 	//##################################################################################################################
@@ -25,7 +25,7 @@ var setOption = (function () {
 		currentAlertHider = null,
 		switchingPage = false,
 		options = {
-			"fade_on_focus_loss": true
+			fade_on_focus_loss: true
 		},
 		spinnerSVG = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>',
 		rippleSettings = {
@@ -661,7 +661,7 @@ var setOption = (function () {
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			request("a=password/archive&id=" + encodeURIComponent(passwordId), function (data ) {
+			request("a=password/archive&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
 					refresh();
 				} else {
@@ -681,7 +681,7 @@ var setOption = (function () {
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			request("a=password/restore&id=" + encodeURIComponent(passwordId), function (data ) {
+			request("a=password/restore&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
 					refresh();
 				} else {
@@ -701,7 +701,7 @@ var setOption = (function () {
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
-			request("a=password/delete&id=" + encodeURIComponent(passwordId), function (data ) {
+			request("a=password/delete&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
 					refresh();
 				} else {
@@ -854,21 +854,23 @@ var setOption = (function () {
 					}
 
 					tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td></tr>");
-					if (callbackDone != null)
+					if (callbackDone !== null)
 						callbackDone(data.msg);
 				}
 			},
 			error: function (xhr, error) {
 				tableBody.html("<tr><td>Error: " + error + "</td><td></td><td></td><td></td></tr>");
-				if (callbackDone != null)
+				if (callbackDone !== null)
 					callbackDone(error);
 			}
 		})
 	}
 
-	return function (option, value) {
-		var previousValue = options[option];
-		options[option] = value;
-		return "Previous value was " + previousValue;
+	return {
+		setOption: function (option, value) {
+			var previousValue = options[option];
+			options[option] = value;
+			return "Previous value was " + previousValue;
+		}
 	}
 })();

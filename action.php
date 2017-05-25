@@ -1,14 +1,16 @@
 <?php
-require_once __DIR__ . "/lib/autoload.php";
+require_once __DIR__ . "/src/autoload.php";
 require_once __DIR__ . "/vendor/autoload.php";
 require_once __DIR__ . "/config.inc.php";
+require_once __DIR__ . "/meta.inc.php";
 
-use Scrumplex\PASSY\Database;
-use Scrumplex\PASSY\UserManager;
-use Scrumplex\PASSY\Passwords;
-use Scrumplex\PASSY\IPLog;
-use Scrumplex\PASSY\Response;
-use Scrumplex\PASSY\Util;
+use PASSY\Database;
+use PASSY\UserManager;
+use PASSY\Passwords;
+use PASSY\IPLog;
+use PASSY\Response;
+use PASSY\Util;
+
 
 $unauthenticatedActions = array(
 	"user/login",

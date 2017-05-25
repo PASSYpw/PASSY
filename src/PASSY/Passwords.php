@@ -1,6 +1,6 @@
 <?php
 
-namespace Scrumplex\PASSY;
+namespace PASSY;
 
 use Defuse\Crypto\Crypto;
 
