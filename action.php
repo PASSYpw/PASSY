@@ -128,12 +128,17 @@ if (in_array($action, $unauthenticatedActions)) {
 
 			case "misc/import":
 				$content = $_FILES['parse-file']['tmp_name'];
-				if (!Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
-					$response = new Response(false, "file_not_compatible");
-					die($response->getJSONResponse());
+				if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
+					$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
+					die($result->getJSONResponse());
+				} elseif (Util::endsWith($_FILES['parse-file']['name'], ".csv")) {
+					$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), "CSV");
+					die($result->getJSONResponse());
+				} else {
+					$result = new Response(false, array("not_supported_format"));
+					die($result->getJSONResponse());
 				}
-				$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
-				die($result->getJSONResponse());
+
 				break;
 
 			case "misc/export":

@@ -7,10 +7,15 @@
 		{
 			"name": "Scrumplex",
 			"email": "contact@scrumplex.net"
+		},
+		{
+			"name": "Liz3",
+			"email": "info@liz3.de"
 		}
 	],
 	"require": {
 		"google/recaptcha": "1.1.2",
-		"defuse/php-encryption": "2.0.3"
+		"defuse/php-encryption": "2.0.3",
+		"league/csv": "8.x-dev"
 	}
 }

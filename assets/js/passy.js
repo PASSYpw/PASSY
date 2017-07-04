@@ -362,12 +362,22 @@ var setOption = (function () {
 		});
 
 		$("#page_user_settings_form_import").submit(function (ev) {
-			var me = $(this);
+
+			ev.preventDefault();
+
+			var data = new FormData();
+			data.append("a", "misc/import");
+			jQuery.each(jQuery('#import-file')[0].files, function(i, file) {
+				data.append("parse-file", file);
+			});
 			ev.preventDefault();
 			$.ajax({
 				url: 'action.php',
 				type: 'POST',
-				data: new FormData(me[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				data: data,
 				success: function (data) {
 					if (data.success) {
 						if (data.data.imported == 0) {
