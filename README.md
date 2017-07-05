@@ -14,7 +14,7 @@ A web based password manager with multiple user accounts.
  - Composer (`apt install composer`) [Learn more](https://getcomposer.org/download/)
  
 ## Installation
- - [Download](/releases) a version of PASSY in your preferred format (zip / tar.gz).
+ - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
  - Run the following command: `composer install`
  - Edit the `config.inc.php`
