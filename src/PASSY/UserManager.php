@@ -18,13 +18,17 @@ class UserManager
 	 * UserManager constructor.
 	 * @param Database $database
 	 * @param Passwords $passwords
+	 * @param boolean $forceSSL if true, session will only be allowed over HTTPS
 	 */
-	function __construct(Database $database, Passwords $passwords)
+	function __construct(Database $database, Passwords $passwords, $forceSSL)
 	{
 		$this->database = $database;
 		$this->passwords = $passwords;
 		ini_set('session.cookie_lifetime', 60 * 60 * 24 * 90); // 90 days
 		ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 90); // 90 days
+		if ($forceSSL)
+			ini_set("session.cookie_secure", true);
+
 		session_start();
 	}
 
@@ -72,7 +76,7 @@ class UserManager
 					$_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
 					$_SESSION["session_expiration"] = 300; // 5 mins
 					$this->trackActivity();
-					return new Response(true, null);
+					return new Response(true, array());
 				}
 			}
 			return new Response(false, "invalid_credentials");
@@ -105,12 +109,50 @@ class UserManager
 				$succeeded = $ps->execute();
 				$ps->close();
 				if ($succeeded)
-					return new Response(true, null);
+					return new Response(true, array());
 				return new Response(false, "database_error");
 			}
 			return new Response(false, "username_exists");
 		}
 		return new Response(false, "database_error");
+	}
+
+	function status() {
+
+		if ($this->getSessionExpirationTime() != 0)
+			$ttl = $this->getSessionExpirationTime() - (time() - $this->getLastActivity());
+		else
+			$ttl = 0;
+
+		$twoFactor = array();
+
+		$mysql = $this->database->getInstance();
+		$ps = $mysql->prepare("SELECT * FROM `twofactor` WHERE `USERID` = (?)");
+		$ps->bind_param("s", $this->getUserID());
+		$succeeded = $ps->execute();
+		$result = $ps->get_result();
+		$ps->close();
+		if ($succeeded) {
+			$enabled = $result->num_rows > 0;
+			$date = null;
+			if ($enabled) {
+				$row = $result->fetch_assoc();
+				$date = $row["DATE"];
+			}
+			$twoFactor = array(
+				"enabled" => $enabled,
+				"date" => $date
+			);
+		}
+
+		$response = new Response(true, array(
+			"logged_in" => $this->isAuthenticated(),
+			"last_activity" => $this->getLastActivity(),
+			"ttl" => $ttl,
+			"user_id" => $this->getUserID(),
+			"two_factor" => $twoFactor
+		));
+		return $response;
 	}
 
 	/**
@@ -134,7 +176,7 @@ class UserManager
 				$succeeded = $ps->execute();
 				$ps->close();
 				if ($succeeded)
-					return new Response(true, null);
+					return new Response(true, array());
 				return new Response(false, "database_error");
 			}
 			return new Response(false, "username_exists");
@@ -166,8 +208,8 @@ class UserManager
 			$ps->bind_param("ss", $hashedPassword, $userId);
 			$succeeded = $ps->execute();
 			if ($succeeded)
-				return $this->passwords->reencryptPasswords($userId, $masterPassword, $newPassword);
-			return new Response(true, null);
+				return $this->passwords->reEncryptPasswords($userId, $masterPassword, $newPassword);
+			return new Response(true, array());
 		}
 		return new Response(false, "database_error");
 	}
@@ -181,7 +223,7 @@ class UserManager
 		if (session_status() != PHP_SESSION_NONE)
 			session_destroy();
 
-		return new Response(true, null);
+		return new Response(true, array());
 	}
 
 	/**

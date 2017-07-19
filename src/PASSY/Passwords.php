@@ -5,7 +5,7 @@ namespace PASSY;
 use Defuse\Crypto\Crypto;
 use League\Csv\Reader;
 
-require_once __DIR__ . '/../../../vendor/autoload.php';
+require_once __DIR__ . '/../../vendor/autoload.php';
 
 class Passwords
 {
@@ -84,10 +84,10 @@ class Passwords
 	 */
 	function import($data, $userId, $masterPassword, $type = "passy")
 	{
-		if($type == "passy") {
+		$count = 0;
+		$failed = 0;
+		if ($type == "passy") {
 			$arr = json_decode($data, true);
-			$count = 0;
-			$failed = 0;
 			$data = $arr["data"];
 			foreach ($data as $item) {
 
@@ -104,14 +104,12 @@ class Passwords
 				"imported" => $count,
 				"failed" => $failed
 			));
-		} elseif($type == "CSV") {
+		} else if ($type == "CSV") {
 
 			$csv = Reader::createFromString($data);
-			$count = 0;
-			$failed = 0;
-			foreach($csv->getIterator() as $item) {
+			foreach ($csv->getIterator() as $item) {
 
-				if(count($item) < 4) {
+				if (count($item) < 4) {
 					$failed++;
 				}
 				$username = $item[2];
@@ -120,16 +118,13 @@ class Passwords
 				$this->create($username, $password, $description, $userId, $masterPassword);
 				$count++;
 			}
-
-
-			return new Response(true, array(
-				"imported" => $count,
-				"failed" => $failed
-			));
-
+		} else {
+			return null;
 		}
-
-		return null;
+		return new Response(true, array(
+			"imported" => $count,
+			"failed" => $failed
+		));
 	}
 
 	/**
@@ -149,38 +144,40 @@ class Passwords
 		$succeeded = $ps->execute();
 		$result = $ps->get_result();
 		$ps->close();
-		if ($succeeded && $result->num_rows > 0) {
-			while ($row = $result->fetch_assoc()) {
-				$username = $row["USERNAME"];
-				$description = $row["DESCRIPTION"];
-				$date = $row["DATE"];
-				$archived = false;
-				$archived_date = "";
-				if ($row["ARCHIVED_DATE"] != null) {
-					$archived = true;
-					$archived_date = $row["ARCHIVED_DATE"];
-				}
-				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
+		if ($succeeded) {
+			if ($result->num_rows > 0) {
+				while ($row = $result->fetch_assoc()) {
+					$username = $row["USERNAME"];
+					$description = $row["DESCRIPTION"];
+					$date = $row["DATE"];
+					$archived = false;
+					$archived_date = "";
+					if ($row["ARCHIVED_DATE"] != null) {
+						$archived = true;
+						$archived_date = $row["ARCHIVED_DATE"];
+					}
+					$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 
-				if ($archived) {
-					array_push($data, array(
-						"username" => $username,
-						"description" => $description,
-						"date" => $date,
-						"archived" => $archived,
-						"date_archived" => $archived_date,
-						"pass" => $decryptedPassword
+					if ($archived) {
+						array_push($data, array(
+							"username" => $username,
+							"description" => $description,
+							"date" => $date,
+							"archived" => $archived,
+							"date_archived" => $archived_date,
+							"pass" => $decryptedPassword
 
-					));
-				} else {
-					array_push($data, array(
-						"username" => $username,
-						"description" => $description,
-						"date" => $date,
-						"archived" => $archived,
-						"pass" => $decryptedPassword
+						));
+					} else {
+						array_push($data, array(
+							"username" => $username,
+							"description" => $description,
+							"date" => $date,
+							"archived" => $archived,
+							"pass" => $decryptedPassword
 
-					));
+						));
+					}
 				}
 			}
 

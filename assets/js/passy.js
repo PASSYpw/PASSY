@@ -85,7 +85,7 @@ var passy = (function () {
 		return currentPage;
 	}
 
-	function loadPage(page, callback) {
+	function loadPage(page, callback, pushHistory) {
 		if (switchingPage)
 			return;
 		switchingPage = true;
@@ -110,6 +110,8 @@ var passy = (function () {
 					elem.addClass("active");
 				}
 			});
+			if (pushHistory !== false)
+				history.pushState({"page": currentPage, "scope": currentScope}, "PASSY", "#!p=" + currentPage);
 			spinner.removeClass("shown");
 			newPage.fadeIn(300);
 			switchingPage = false;
@@ -169,7 +171,9 @@ var passy = (function () {
 	function sessionExpired() {
 		showAlert($("#warningInactive"), 0);
 		switchingPage = false;
-		loadPage("login");
+		loadPage("login", function () {
+			history.replaceState({"page": currentPage, "scope": currentScope}, "PASSY", "#!p=" + currentPage);
+		}, false);
 	}
 
 	function request(data, onSuccess, onFailure, options) {
@@ -201,12 +205,34 @@ var passy = (function () {
 		currentPage = getCurrentPage();
 		request("a=status", function (data) {
 			if (data.data.logged_in && currentScope === "logged_out") {
-				currentPage = "password_list"; // load password list if already authenticated
+				if (currentPage == "login" || currentPage == "register")
+					currentPage = "password_list"; // load password list if already authenticated
 
-			} else if (!data.data.logged_in && currentScope === "logged_in")
-				sessionExpired(); // session expired
+			} else if (!data.data.logged_in && currentScope === "logged_in") {
+				sessionExpired();
+			}
 
-			loadPage(currentPage);
+			// 2fa Status
+			var twoFactorEnableButton = $("#btn_2fa_modal_toggle");
+			var twoFactorDisableButton = $("#btn_2fa_disable");
+			var twoFactorStatus = $("#text_2fa_status");
+			if (data.data.two_factor.enabled) {
+				twoFactorStatus.html("Enabled");
+				twoFactorStatus.removeClass("text-danger");
+				twoFactorStatus.addClass("text-success");
+				twoFactorEnableButton.hide();
+				twoFactorDisableButton.show();
+			} else {
+				twoFactorStatus.html("Disabled");
+				twoFactorStatus.removeClass("text-success");
+				twoFactorStatus.addClass("text-danger");
+				twoFactorEnableButton.show();
+				twoFactorDisableButton.hide();
+			}
+
+			loadPage(currentPage, function () {
+				history.replaceState({"page": currentPage, "scope": currentScope}, "PASSY", "#!p=" + currentPage);
+			}, false);
 
 			registerPageListeners();
 
@@ -216,8 +242,24 @@ var passy = (function () {
 					if (!data.success)
 						return;
 					// Session expired
-					if (!data.data.logged_in && currentScope === "logged_in")
+					if (!data.data.logged_in && currentScope === "logged_in") {
 						sessionExpired();
+					}
+
+					// 2fa Status
+					if (data.data.two_factor.enabled) {
+						twoFactorStatus.html("Enabled");
+						twoFactorStatus.removeClass("text-danger");
+						twoFactorStatus.addClass("text-success");
+						twoFactorEnableButton.hide();
+						twoFactorDisableButton.show();
+					} else {
+						twoFactorStatus.html("Disabled");
+						twoFactorStatus.removeClass("text-success");
+						twoFactorStatus.addClass("text-danger");
+						twoFactorEnableButton.show();
+						twoFactorDisableButton.hide();
+					}
 				});
 			}, 2000);
 		});
@@ -252,6 +294,27 @@ var passy = (function () {
 			target.val(randomPassword(20));
 			target.attr("type", "text");
 			target.change();
+		});
+
+		$("*[data-next='tab']").click(function (e) {
+			e.preventDefault();
+			var me = $(this);
+			$(me.data("target") + ' > .active').next('li').find('a').trigger('click');
+		});
+
+		$("*[data-hide]").click(function () {
+			var me = $(this);
+			$(me.data("hide")).hide();
+		});
+
+		$("*[data-show]").click(function () {
+			var me = $(this);
+			$(me.data("show")).show();
+		});
+
+		$("*[data-submit]").click(function () {
+			var me = $(this);
+			$(me.data("submit")).submit();
 		});
 
 		var delay = 100;
@@ -358,8 +421,22 @@ var passy = (function () {
 			e.preventDefault();
 			if (targetPage === "refresh")
 				targetPage = currentPage;
+
 			loadPage(targetPage);
 		});
+
+		$(window).on('popstate', function (e) {
+			console.log(e);
+			var state = e.originalEvent.state;
+			if (currentScope === state.scope)
+				loadPage(state.page, null, false);
+			else {
+				history.replaceState({"page": currentPage, "scope": currentScope}, "PASSY", "#!p=" + currentPage);
+				e.preventDefault();
+			}
+		});
+
+		// FORMS
 
 		$("#page_user_settings_form_import").submit(function (ev) {
 
@@ -367,7 +444,7 @@ var passy = (function () {
 
 			var data = new FormData();
 			data.append("a", "misc/import");
-			jQuery.each(jQuery('#import-file')[0].files, function(i, file) {
+			jQuery.each(jQuery('#import-file')[0].files, function (i, file) {
 				data.append("parse-file", file);
 			});
 			ev.preventDefault();
@@ -400,6 +477,32 @@ var passy = (function () {
 			});
 		});
 
+		$("#page_user_settings_form_2fa_setup").submit(function (e) {
+			var me = $(this);
+			e.preventDefault();
+			var modal_content = me.parent().parent().parent().parent().parent();
+			var btn = modal_content.find("button");
+			btn.attr("disabled", "");
+			$.ajax({
+				url: me.attr("action"),
+				method: me.attr("method"),
+				data: me.serialize(),
+				success: function (data) {
+					btn.attr("disabled", null);
+					if (data.success) {
+						me[0].reset();
+						me.find("input.hastext").removeClass("hastext");
+						$('#tab_2fa').find('a:last').click();
+					} else {
+						if (data.msg == "not_authenticated") {
+							sessionExpired();
+							return;
+						}
+					}
+				}
+			})
+		});
+
 		$("#page_login_form_login").submit(function (e) {
 			var me = $(this);
 			e.preventDefault();
@@ -413,8 +516,11 @@ var passy = (function () {
 				method: me.attr("method"),
 				data: data,
 				success: function (data) {
+					var modal = $("#page_login_modal_2fa"),
+						reset = true;
 					if (data.success) {
 						loadPage("password_list");
+						modal.find("input").attr("disabled", "");
 					} else {
 						if (data.msg == "already_logged_in") {
 							loadPage("password_list");
@@ -422,11 +528,21 @@ var passy = (function () {
 							showAlert($("#errorInvalidCredentials"), 3000);
 						} else if (data.msg == "database_error") {
 							showAlert($("#errorLoginDatabase"), 3000);
+						} else if (data.msg == "two_factor_needed") {
+							modal.find("input").attr("disabled", null);
+							modal.modal("show");
+							reset = false;
+						} else if (data.msg == "invalid_code") {
+							showAlert($("#errorWrongCode"), 3000);
+							modal.find("input").attr("disabled", null);
+							reset = false;
 						}
 					}
-					me[0].reset();
+					if (reset)
+						me[0].reset();
 					me.find("input").change();
-					me.find("input").attr("disabled", null);
+
+					me.find("input").not(".modal input").attr("disabled", null);
 					me.find("button").attr("disabled", null);
 				},
 				error: function () {
@@ -618,6 +734,21 @@ var passy = (function () {
 			logout();
 		});
 
+		$("#btn_2fa_disable").click(function (e) {
+			var me = $(this);
+			e.preventDefault();
+			me.attr("disabled", "");
+			request("a=user/2faDisable", function (data) {
+				me.attr("disabled", null);
+				if(data.success) {
+					showAlert($("#success_2fa_disabled"), 3000);
+					me.hide();
+				} else {
+					showAlert($("#error_2fa_server"), 5000);
+				}
+			});
+		});
+
 		//PASSWORD ACTIONS
 		passwordTable.on('click', '*[data-password-action="show"]', function (e) {
 			var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
@@ -725,6 +856,37 @@ var passy = (function () {
 				me.html("<i class='material-icons'>error</i>")
 			});
 		});
+
+
+		// MODALS
+		$('.modal').on('shown.bs.modal', function () {
+			var me = $(this);
+			me.find('input[type=text],textarea,select').filter(':visible:first').focus();
+		});
+
+		$('#page_user_settings_modal_2fa_setup').on('show.bs.modal', function () {
+			var me = $(this);
+			$('#tab_2fa').find('a:first').tab('show');
+			me.find("form").each(function (i, elem) {
+				elem.reset();
+			});
+			$("#btn_2fa_next").show();
+			$("#btn_2fa_enable_submit").hide();
+			$("#btn_2fa_finish").hide();
+			request("a=user/2faGenerateKey", function (data) {
+				if (data.success) {
+					$("#pre_2fa_key").text(data.data.privateKey);
+					$("#pre_2fa_key2").text(data.data.privateKey);
+					$("#img_2fa_key").attr("src", data.data.qrCodeUrl);
+					me.find("input[name='2faPrivateKey']").val(data.data.privateKey).change();
+				} else {
+					if (data.msg === "not_authenticated") {
+						sessionExpired();
+					}
+				}
+			});
+
+		})
 	} // END registerPageListeners()
 
 
@@ -830,6 +992,7 @@ var passy = (function () {
 					callbackDone(error);
 			}
 		})
+
 	}
 
 	function fetchIPLog(callbackDone) {

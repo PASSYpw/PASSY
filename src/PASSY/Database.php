@@ -61,6 +61,9 @@ class Database
 		if (!($this->mysql->query("CREATE TABLE IF NOT EXISTS `metadata` (`KEY` VARCHAR(64) NOT NULL, `VALUE` VARCHAR(64)) ENGINE=InnoDB DEFAULT CHARSET=utf8;")))
 			throw new Exception("Could not create table \"metadata\"");
 
+		if (!($this->mysql->query("CREATE TABLE IF NOT EXISTS `twofactor` (`USERID` VARCHAR(18) NOT NULL, `SECRETKEY` TEXT, `DATE` INT(11) NOT NULL) ENGINE=InnoDB DEFAULT CHARSET=utf8;")))
+			throw new Exception("Could not create table \"metadata\"");
+
 		if (!($this->containsMetadata("db_version"))) {
 			$this->addMetadata("db_version", PASSY_BUILD);
 		}

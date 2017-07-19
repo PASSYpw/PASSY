@@ -69,14 +69,16 @@ class Format
 
 	/**
 	 * Returns a string of the given number.
-	 * Numbers from 1 to 12 are written (1: one, 2: two...)
+	 * Numbers from 0 to 12 are written (e.g. 1: one, 2: two...)
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
-	 * @param $number number to format
-	 * @return string written number (1:12) or $number
+	 * @param $number int number to format
+	 * @return string|int written number (0:12) or $number
 	 */
 	static function writtenNumber($number)
 	{
 		switch ($number) {
+			case 0:
+				return "zero";
 			case 1:
 				return "one";
 			case 2:

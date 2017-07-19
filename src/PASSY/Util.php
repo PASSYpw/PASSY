@@ -22,19 +22,4 @@ class Util
 		return htmlspecialchars($string);
 	}
 
-	static function getSize($arr) {
-		$tot = 0;
-		foreach($arr as $a) {
-			if (is_array($a)) {
-				$tot += Util::getSize($a);
-			}
-			if (is_string($a)) {
-				$tot += strlen($a);
-			}
-			if (is_int($a)) {
-				$tot += PHP_INT_SIZE;
-			}
-		}
-		return $tot;
-	}
 }

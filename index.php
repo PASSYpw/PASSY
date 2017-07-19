@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . "/config.inc.php";
 require_once __DIR__ . "/meta.inc.php";
-if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTTPS'] == "off") {
+if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTPS'] == "off") {
 	$redirect = 'https://' . $_SERVER['HTTP_HOST'] . $_SERVER['REQUEST_URI'];
 	header('Location: ' . $redirect);
 	die();
@@ -159,7 +159,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && !$_SERVER['HTT
 						<tspan>PASSY</tspan>
 					</text>
 				</svg>
-				<span class="text-muted hidden-xs"><?= PASSY_VERSION ?></span>
+				<span class="text-muted hidden-xs" title="Build <?= PASSY_BUILD ?>"><?= PASSY_VERSION ?></span>
 			</div>
 		</div>
 		<div class="row">

@@ -5,6 +5,7 @@ require_once __DIR__ . "/config.inc.php";
 require_once __DIR__ . "/meta.inc.php";
 
 use PASSY\Database;
+use PASSY\TwoFactor;
 use PASSY\UserManager;
 use PASSY\Passwords;
 use PASSY\IPLog;
@@ -30,13 +31,17 @@ $authenticatedActions = array(
 	"iplog/queryAll",
 	"user/changeUsername",
 	"user/changePassword",
+	"user/2faGenerateKey",
+	"user/2faEnable",
+	"user/2faDisable",
 	"misc/export",
 	"misc/import"
 );
 
 $db = new Database($mysqlConfig);
 $passwords = new Passwords($db);
-$userManager = new UserManager($db, $passwords);
+$userManager = new UserManager($db, $passwords, $generalConfig["redirect_ssl"]);
+$twoFactor = new TwoFactor($db);
 $ipLog = new IPLog($db);
 
 $action = @$_POST["a"];
@@ -55,6 +60,38 @@ if (in_array($action, $unauthenticatedActions)) {
 
 			$result = $userManager->login($username, $password);
 			if ($result->wasSuccess()) {
+				if ($twoFactor->_enabled($_SESSION["userId"])) {
+					if (isset($_POST["2faCode"])) {
+						$twoFactorCode = $_POST["2faCode"];
+						$twoFactorCode = trim($twoFactorCode);
+						if (strlen($twoFactorCode) == 6) {
+							$result = $twoFactor->checkCode($_SESSION["userId"], $password, $twoFactorCode);
+							if ($result->wasSuccess()) {
+								$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+								if ($persistent)
+									$userManager->setSessionExpirationTime(0);
+								die($result->getJSONResponse());
+							}
+						} else if (strlen($twoFactorCode) > 6) {
+							if ($twoFactor->_checkPrivateKey($_SESSION["userId"], $password, $twoFactorCode)) {
+								$twoFactor->disable2FA($_SESSION["userId"]);
+								$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+								if ($persistent)
+									$userManager->setSessionExpirationTime(0);
+								$response = new Response(true, array());
+								die($response->getJSONResponse());
+							}
+						} else {
+							$result = new Response(false, "invalid_code");
+						}
+						$userManager->logout();
+						die($result->getJSONResponse());
+					}
+					$userManager->logout();
+					$response = new Response(false, "two_factor_needed");
+					die($response->getJSONResponse());
+				}
+
 				$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
 				if ($persistent)
 					$userManager->setSessionExpirationTime(0);
@@ -93,19 +130,7 @@ if (in_array($action, $unauthenticatedActions)) {
 			break;
 
 		case "status":
-
-			if ($userManager->getSessionExpirationTime() != 0)
-				$ttl = $userManager->getSessionExpirationTime() - (time() - $userManager->getLastActivity());
-			else
-				$ttl = 0;
-
-			$response = new Response(true, array(
-				"logged_in" => $userManager->isAuthenticated(),
-				"last_activity" => $userManager->getLastActivity(),
-				"ttl" => $ttl,
-				"user_id" => $userManager->getUserID()
-			));
-			die($response->getJSONResponse());
+			die($userManager->status()->getJSONResponse());
 			break;
 	}
 } else if (in_array($action, $authenticatedActions)) {
@@ -214,6 +239,30 @@ if (in_array($action, $unauthenticatedActions)) {
 				}
 
 				$result = $userManager->changePassword($userManager->getUserID(), $userManager->getMasterPassword(), $newPassword);
+				die($result->getJSONResponse());
+				break;
+
+			case "user/2faGenerateKey":
+				if ($twoFactor->_enabled($_SESSION["userId"])) {
+					$response = new Response(false, "2fa_enabled");
+					die($response->getJSONResponse());
+				}
+				die($twoFactor->generateSecretKey($_SESSION["username"])->getJSONResponse());
+				break;
+
+			case "user/2faEnable":
+				if ($twoFactor->_enabled($_SESSION["userId"])) {
+					$response = new Response(false, "2fa_enabled");
+					die($response->getJSONResponse());
+				}
+				$privateKey = $_POST["2faPrivateKey"];
+				$code = $_POST["2faCode"];
+				$result = $twoFactor->enable2FA($_SESSION["userId"], $_SESSION["master_password"], $privateKey, $code);
+				die($result->getJSONResponse());
+				break;
+
+			case "user/2faDisable":
+				$result = $twoFactor->disable2FA($_SESSION["userId"]);
 				die($result->getJSONResponse());
 				break;
 		}

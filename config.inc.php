@@ -1,4 +1,9 @@
 <?php
+require_once __DIR__ . "/meta.inc.php";
+
+// #############################################################
+// Edit under this line
+// 
 
 $mysqlConfig = array(
 
@@ -39,9 +44,12 @@ $generalConfig = array(
 
 );
 
+// Edit down to this line
+// #############################################################
+
 $passyMetadata = array(
-	"version" => "2.0.3",
-	"build" => 203,
+	"version" => PASSY_BUILD,
+	"build" => PASSY_VERSION,
 	"github" => "https://github.com/Scrumplex/PASSY",
 	"issues" => "https://github.com/Scrumplex/PASSY/issues"
 );

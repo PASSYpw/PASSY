@@ -3,8 +3,8 @@
 		<div class="row">
 			<div class="col-xs-12">
 				<h2 class="text-center">Archived Passwords</h2>
-				<p>The passwords listed here have been archived and will be deleted after 2 weeks.
-					You can restore them or delete them immediately.</p>
+				<p>The passwords listed here have been archived. You can restore them here if they have been archived by
+					accident.</p>
 			</div>
 		</div>
 		<div class="row">

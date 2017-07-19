@@ -17,7 +17,6 @@
 		"google/recaptcha": "1.1.2",
 		"defuse/php-encryption": "2.0.3",
 		"league/csv": "8.x-dev",
-		"defuse/php-encryption": "2.0.3",
 		"pragmarx/google2fa": "v1.0.1",
 		"bacon/bacon-qr-code": "1.0.1"
 	}
