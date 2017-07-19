@@ -3,6 +3,7 @@
 namespace PASSY;
 
 use Defuse\Crypto\Crypto;
+use League\Csv\Reader;
 
 require_once __DIR__ . '/../../../vendor/autoload.php';
 
@@ -78,29 +79,57 @@ class Passwords
 	 * @param string $data
 	 * @param string $userId
 	 * @param string $masterPassword
-	 * @return Response
+	 * @param string $type
+	 * @return Response|null
 	 */
-	function import($data, $userId, $masterPassword)
+	function import($data, $userId, $masterPassword, $type = "passy")
 	{
-		$arr = json_decode($data, true);
-		$count = 0;
-		$failed = 0;
-		$data = $arr["data"];
-		foreach ($data as $item) {
+		if($type == "passy") {
+			$arr = json_decode($data, true);
+			$count = 0;
+			$failed = 0;
+			$data = $arr["data"];
+			foreach ($data as $item) {
 
-			if ($item["pass"] == null) {
-				$failed++;
-				continue;
+				if ($item["pass"] == null) {
+					$failed++;
+					continue;
+				}
+				$pass = $item["pass"];
+				$this->create($item["username"], $pass, $item["description"], $userId, $masterPassword);
+				$count++;
 			}
-			$pass = $item["pass"];
-			$this->create($item["username"], $pass, $item["description"], $userId, $masterPassword);
-			$count++;
+
+			return new Response(true, array(
+				"imported" => $count,
+				"failed" => $failed
+			));
+		} elseif($type == "CSV") {
+
+			$csv = Reader::createFromString($data);
+			$count = 0;
+			$failed = 0;
+			foreach($csv->getIterator() as $item) {
+
+				if(count($item) < 4) {
+					$failed++;
+				}
+				$username = $item[2];
+				$password = $item[3];
+				$description = $item[0];
+				$this->create($username, $password, $description, $userId, $masterPassword);
+				$count++;
+			}
+
+
+			return new Response(true, array(
+				"imported" => $count,
+				"failed" => $failed
+			));
+
 		}
 
-		return new Response(true, array(
-			"imported" => $count,
-			"failed" => $failed
-		));
+		return null;
 	}
 
 	/**
@@ -365,4 +394,6 @@ class Passwords
 			return new Response(true, null);
 		return new Response(false, "database_error");
 	}
+
+
 }
