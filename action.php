@@ -14,28 +14,28 @@ use PASSY\Util;
 
 
 $unauthenticatedActions = array(
-	"user/login",
-	"user/logout",
-	"user/register",
-	"status"
+	"user/login" => true,
+	"user/logout" => true,
+	"user/register" => $generalConfig["registration"]["enabled"],
+	"status" => true
 );
 
 $authenticatedActions = array(
-	"password/create",
-	"password/edit",
-	"password/query",
-	"password/queryAll",
-	"password/archive",
-	"password/restore",
-	"password/delete",
-	"iplog/queryAll",
-	"user/changeUsername",
-	"user/changePassword",
-	"user/2faGenerateKey",
-	"user/2faEnable",
-	"user/2faDisable",
-	"misc/export",
-	"misc/import"
+	"password/create" => true,
+	"password/edit" => true,
+	"password/query" => true,
+	"password/queryAll" => true,
+	"password/archive" => true,
+	"password/restore" => true,
+	"password/delete" => true,
+	"iplog/queryAll" => $generalConfig["login_history"]["enabled"],
+	"user/changeUsername" => true,
+	"user/changePassword" => true,
+	"user/2faGenerateKey" => true,
+	"user/2faEnable" => true,
+	"user/2faDisable" => true,
+	"misc/export" => true,
+	"misc/import" => true
 );
 
 $db = new Database($mysqlConfig);
@@ -48,9 +48,15 @@ $action = @$_POST["a"];
 
 header("Content-Type: application/json; charset=UTF-8");
 
+// Report exceptions to error log and print error message
+set_exception_handler(function ($exception) {
+	error_log($exception);
+	$response = new Response(false, "server_error");
+	die($response->getJSONResponse());
+});
 $userManager->checkSessionExpiration();
 
-if (in_array($action, $unauthenticatedActions)) {
+if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$action]) {
 	switch ($action) {
 		case "user/login":
 			$username = $_POST["username"];
@@ -133,7 +139,7 @@ if (in_array($action, $unauthenticatedActions)) {
 			die($userManager->status()->getJSONResponse());
 			break;
 	}
-} else if (in_array($action, $authenticatedActions)) {
+} else if (in_array($action, $authenticatedActions) && $authenticatedActions[$action]) {
 	if ($userManager->isAuthenticated()) {
 		$userManager->trackActivity();
 		switch ($action) {
