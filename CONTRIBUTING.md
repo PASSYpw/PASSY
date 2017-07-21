@@ -23,4 +23,9 @@ Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in
 2. Add an example or reference to an other project's feature.
 3. Your idea may be reviewed by a maintainer and be accepted or closed.
 
+## Tips
+To setup a suitable test environment you can use the predefined `Vagrantfile` in combination with [Vagrant](https://www.vagrantup.com/).
+Execute the command `vagrant up` or use the frontend provided by your IDE, after [installing Vagrant](https://www.vagrantup.com/downloads.html).
+
+
 Last change: 21 July 2017

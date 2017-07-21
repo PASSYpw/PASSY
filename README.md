@@ -1,17 +1,17 @@
 # PASSY
 [Hosted Version](https://app.passy.pw)
 
-A web based password manager with multiple user accounts.
+A password manager written in PHP to serve you over the internet.
 
 ## Requirements
- - MYSQL Server (Maria DB not tested)
- - Web Server (nginx / Apache 2 / CaddyServer / ...)
+ - MySQL Server (Maria DB not tested)
+ - Web Server (nginx / Apache 2 / lighttpd / ...)
  - PHP 7.0 (PHP 5 not tested)
  - PHP 7.0 openssl module (often included with PHP 7.0)
  - PHP 7.0 mysql module
  - PHP 7.0 json module
- - PHP 7.0 curl module (for ReCaptcha support)
- - Composer (`apt install composer`) [Learn more](https://getcomposer.org/download/)
+ - PHP 7.0 curl module (only needed for ReCaptcha support)
+ - [Composer](https://getcomposer.org/download/) (For Ubuntu 16.04 and newer: `apt install composer`)
  
 ## Installation
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
@@ -20,11 +20,7 @@ A web based password manager with multiple user accounts.
  - Edit the `config.inc.php`
  
 ## Contributing
-Of course you can help make PASSY a better project. You can search and find bugs and report them in GitHub's issue system.
-If you are a developer you can also add code to PASSY.
-
-If you are a developer you can use the predefined `Vagrantfile` to deploy a suitable test environment.
-Just execute the following command `vagrant up` after [installing Vagrant](https://www.vagrantup.com/).
+More information on how to contribute to PASSY can be found under [CONTRIBUTING](CONTRIBUTING.md). Please also refer to the [CODE OF CONDUCT](CODE_OF_CONDUCT.md) file.
 
 ## License
 This project is licensed under the Apache License 2.0.
