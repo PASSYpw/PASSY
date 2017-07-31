@@ -241,9 +241,17 @@ button {
 .btn:not(.btn-flat) {
 	@extend .depth-1;
 }
-
 .btn:not(.btn-flat):hover {
 	@extend .depth-2;
+}
+
+.form-control, .btn {
+	-webkit-user-select: initial !important;
+	-khtml-user-select: initial !important;
+	-moz-user-select: initial !important;
+	-ms-user-select: initial !important;
+	user-select: initial !important;
+
 }
 
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
