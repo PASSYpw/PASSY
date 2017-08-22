@@ -1,4 +1,6 @@
 # PASSY
+[![Join our Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
+
 [Hosted Version](https://app.passy.pw)
 
 A password manager written in PHP to serve you over the internet.
