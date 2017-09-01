@@ -61,6 +61,9 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 		case "user/login":
 			$username = $_POST["username"];
 			$password = $_POST["password"];
+			$isHashed = isset($_POST["hashed"]) && $_POST["hashed"] == true;
+			$returnHash = isset($_POST["return-hash"]) && $_POST["return-hash"] == true;
+
 
 			$persistent = isset($_POST["persistent"]) && $_POST["persistent"] == "on";
 

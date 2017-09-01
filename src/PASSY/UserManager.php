@@ -55,9 +55,11 @@ class UserManager
 	 * Checks user credentials. If credentials are correct it will create a valid session.
 	 * @param $username string
 	 * @param $password string
+	 * @param bool $isHashed
+	 * @param bool $returnHash
 	 * @return Response
 	 */
-	function login($username, $password)
+	function login($username, $password, $isHashed = false, $returnHash = false)
 	{
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `users` WHERE `USERNAME` = (?)");
@@ -68,7 +70,7 @@ class UserManager
 		if ($succeeded) {
 			if ($result->num_rows > 0) {
 				$row = $result->fetch_assoc();
-				$hashedPassword = hash("SHA512", $password . $row["SALT"]);
+				$hashedPassword = $isHashed ? $password : hash("SHA512", $password . $row["SALT"]);
 				if ($hashedPassword == $row['PASSWORD']) {
 					$_SESSION["username"] = $username;
 					$_SESSION["master_password"] = $password;
@@ -76,7 +78,7 @@ class UserManager
 					$_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
 					$_SESSION["session_expiration"] = 300; // 5 mins
 					$this->trackActivity();
-					return new Response(true, array());
+					return new Response(true, $returnHash ? array("hash" => $hashedPassword) : array());
 				}
 			}
 			return new Response(false, "invalid_credentials");
@@ -117,7 +119,8 @@ class UserManager
 		return new Response(false, "database_error");
 	}
 
-	function status() {
+	function status()
+	{
 
 		if ($this->getSessionExpirationTime() != 0)
 			$ttl = $this->getSessionExpirationTime() - (time() - $this->getLastActivity());
