@@ -61,30 +61,27 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 		case "user/login":
 			$username = $_POST["username"];
 			$password = $_POST["password"];
-			$isHashed = isset($_POST["hashed"]) && $_POST["hashed"] == true;
-			$returnHash = isset($_POST["return-hash"]) && $_POST["return-hash"] == true;
-
 
 			$persistent = isset($_POST["persistent"]) && $_POST["persistent"] == "on";
 
-			$result = $userManager->login($username, $password);
+			$result = $userManager->_login($username, $password);
 			if ($result->wasSuccess()) {
-				if ($twoFactor->_enabled($_SESSION["userId"])) {
+				if ($twoFactor->enabled($_SESSION["userId"])) {
 					if (isset($_POST["2faCode"])) {
 						$twoFactorCode = $_POST["2faCode"];
 						$twoFactorCode = trim($twoFactorCode);
 						if (strlen($twoFactorCode) == 6) {
-							$result = $twoFactor->checkCode($_SESSION["userId"], $password, $twoFactorCode);
+							$result = $twoFactor->_checkCode($_SESSION["userId"], $password, $twoFactorCode);
 							if ($result->wasSuccess()) {
-								$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+								$ipLog->_logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
 								if ($persistent)
 									$userManager->setSessionExpirationTime(0);
 								die($result->getJSONResponse());
 							}
 						} else if (strlen($twoFactorCode) > 6) {
-							if ($twoFactor->_checkPrivateKey($_SESSION["userId"], $password, $twoFactorCode)) {
-								$twoFactor->disable2FA($_SESSION["userId"]);
-								$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+							if ($twoFactor->checkPrivateKey($_SESSION["userId"], $password, $twoFactorCode)) {
+								$twoFactor->_disable2FA($_SESSION["userId"]);
+								$ipLog->_logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
 								if ($persistent)
 									$userManager->setSessionExpirationTime(0);
 								$response = new Response(true, array());
@@ -93,15 +90,15 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 						} else {
 							$result = new Response(false, "invalid_code");
 						}
-						$userManager->logout();
+						$userManager->_logout();
 						die($result->getJSONResponse());
 					}
-					$userManager->logout();
+					$userManager->_logout();
 					$response = new Response(false, "two_factor_needed");
 					die($response->getJSONResponse());
 				}
 
-				$ipLog->logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
+				$ipLog->_logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
 				if ($persistent)
 					$userManager->setSessionExpirationTime(0);
 			}
@@ -110,7 +107,7 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 			break;
 
 		case "user/logout":
-			$result = $userManager->logout();
+			$result = $userManager->_logout();
 			die($result->getJSONResponse());
 			break;
 
@@ -133,13 +130,13 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 				die($response->getJSONResponse());
 			}
 
-			$result = $userManager->register($username, $password);
+			$result = $userManager->_register($username, $password);
 
 			die($result->getJSONResponse());
 			break;
 
 		case "status":
-			die($userManager->status()->getJSONResponse());
+			die($userManager->_status()->getJSONResponse());
 			break;
 	}
 } else if (in_array($action, $authenticatedActions) && $authenticatedActions[$action]) {
@@ -150,7 +147,7 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 				$username = $_POST["username"];
 				$password = $_POST["password"];
 				$description = $_POST["description"];
-				$result = $passwords->create($username, $password, $description, $userManager->getUserID(), $userManager->getMasterPassword());
+				$result = $passwords->_create($username, $password, $description, $userManager->getUserID(), $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
 			case "password/edit":
@@ -158,17 +155,17 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 				$username = $_POST["username"];
 				$password = $_POST["password"];
 				$description = $_POST["description"];
-				$result = $passwords->edit($passwordId, $username, $password, $description, $userManager->getMasterPassword());
+				$result = $passwords->_edit($passwordId, $username, $password, $description, $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
 
 			case "misc/import":
 				$content = $_FILES['parse-file']['tmp_name'];
 				if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
-					$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
+					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
 					die($result->getJSONResponse());
 				} elseif (Util::endsWith($_FILES['parse-file']['name'], ".csv")) {
-					$result = $passwords->import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), "CSV");
+					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), "CSV");
 					die($result->getJSONResponse());
 				} else {
 					$result = new Response(false, array("not_supported_format"));
@@ -178,7 +175,7 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 				break;
 
 			case "misc/export":
-				$result = $passwords->exportAll($userManager->getUserID(), $userManager->getMasterPassword());
+				$result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword());
 				$json = $result->getJSONResponse();
 				header('Content-Description: File Transfer');
 				header('Content-Type: application/octet-stream');
@@ -191,35 +188,35 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 				break;
 			case "password/query":
 				$passwordId = $_POST["id"];
-				$result = $passwords->query($passwordId, $userManager->getMasterPassword());
+				$result = $passwords->_query($passwordId, $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
 
 			case "password/queryAll":
-				$result = $passwords->queryAll($userManager->getUserID());
+				$result = $passwords->_queryAll($userManager->getUserID());
 				die($result->getJSONResponse());
 				break;
 
 			case "password/archive":
 				$passwordId = $_POST["id"];
-				$result = $passwords->archive($passwordId);
+				$result = $passwords->_archive($passwordId);
 				die($result->getJSONResponse());
 				break;
 
 			case "password/restore":
 				$passwordId = $_POST["id"];
-				$result = $passwords->restore($passwordId);
+				$result = $passwords->_restore($passwordId);
 				die($result->getJSONResponse());
 				break;
 
 			case "password/delete":
 				$passwordId = $_POST["id"];
-				$result = $passwords->delete($passwordId);
+				$result = $passwords->_delete($passwordId);
 				die($result->getJSONResponse());
 				break;
 
 			case "iplog/queryAll":
-				$result = $ipLog->queryAll($userManager->getUserID());
+				$result = $ipLog->_queryAll($userManager->getUserID());
 				die($result->getJSONResponse());
 				break;
 
@@ -230,7 +227,7 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 					$response = new Response(false, "invalid_credentials");
 					die($response->getJSONResponse());
 				}
-				$result = $userManager->changeUsername($userManager->getUserID(), $newUsername);
+				$result = $userManager->_changeUsername($userManager->getUserID(), $newUsername);
 				die($result->getJSONResponse());
 				break;
 
@@ -247,31 +244,31 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 					die($response->getJSONResponse());
 				}
 
-				$result = $userManager->changePassword($userManager->getUserID(), $userManager->getMasterPassword(), $newPassword);
+				$result = $userManager->_changePassword($userManager->getUserID(), $userManager->getMasterPassword(), $newPassword);
 				die($result->getJSONResponse());
 				break;
 
 			case "user/2faGenerateKey":
-				if ($twoFactor->_enabled($_SESSION["userId"])) {
+				if ($twoFactor->enabled($_SESSION["userId"])) {
 					$response = new Response(false, "2fa_enabled");
 					die($response->getJSONResponse());
 				}
-				die($twoFactor->generateSecretKey($_SESSION["username"])->getJSONResponse());
+				die($twoFactor->_generateSecretKey($_SESSION["username"])->getJSONResponse());
 				break;
 
 			case "user/2faEnable":
-				if ($twoFactor->_enabled($_SESSION["userId"])) {
+				if ($twoFactor->enabled($_SESSION["userId"])) {
 					$response = new Response(false, "2fa_enabled");
 					die($response->getJSONResponse());
 				}
 				$privateKey = $_POST["2faPrivateKey"];
 				$code = $_POST["2faCode"];
-				$result = $twoFactor->enable2FA($_SESSION["userId"], $_SESSION["master_password"], $privateKey, $code);
+				$result = $twoFactor->_enable2FA($_SESSION["userId"], $_SESSION["master_password"], $privateKey, $code);
 				die($result->getJSONResponse());
 				break;
 
 			case "user/2faDisable":
-				$result = $twoFactor->disable2FA($_SESSION["userId"]);
+				$result = $twoFactor->_disable2FA($_SESSION["userId"]);
 				die($result->getJSONResponse());
 				break;
 		}

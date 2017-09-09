@@ -48,18 +48,16 @@ class UserManager
 		if (!$this->isAuthenticated())
 			return;
 		if ($this->getSessionExpirationTime() != 0 && (time() - $_SESSION["last_activity"]) >= $this->getSessionExpirationTime())
-			$this->logout();
+			$this->_logout();
 	}
 
 	/**
 	 * Checks user credentials. If credentials are correct it will create a valid session.
 	 * @param $username string
 	 * @param $password string
-	 * @param bool $isHashed
-	 * @param bool $returnHash
 	 * @return Response
 	 */
-	function login($username, $password, $isHashed = false, $returnHash = false)
+	function _login($username, $password)
 	{
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `users` WHERE `USERNAME` = (?)");
@@ -70,7 +68,7 @@ class UserManager
 		if ($succeeded) {
 			if ($result->num_rows > 0) {
 				$row = $result->fetch_assoc();
-				$hashedPassword = $isHashed ? $password : hash("SHA512", $password . $row["SALT"]);
+				$hashedPassword = hash("SHA512", $password . $row["SALT"]);
 				if ($hashedPassword == $row['PASSWORD']) {
 					$_SESSION["username"] = $username;
 					$_SESSION["master_password"] = $password;
@@ -78,7 +76,7 @@ class UserManager
 					$_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
 					$_SESSION["session_expiration"] = 300; // 5 mins
 					$this->trackActivity();
-					return new Response(true, $returnHash ? array("hash" => $hashedPassword) : array());
+					return new Response(true, array());
 				}
 			}
 			return new Response(false, "invalid_credentials");
@@ -92,7 +90,7 @@ class UserManager
 	 * @param $password string
 	 * @return Response
 	 */
-	function register($username, $password)
+	function _register($username, $password)
 	{
 		$userId = uniqid("user_");
 		$salt = hash("SHA512", uniqid());
@@ -119,7 +117,12 @@ class UserManager
 		return new Response(false, "database_error");
 	}
 
-	function status()
+	/**
+	 * Collects data, about the current status of the user's session.
+	 *
+	 * @return Response
+	 */
+	function _status()
 	{
 
 		if ($this->getSessionExpirationTime() != 0)
@@ -129,9 +132,10 @@ class UserManager
 
 		$twoFactor = array();
 
+		$userId = $this->getUserID();
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `twofactor` WHERE `USERID` = (?)");
-		$ps->bind_param("s", $this->getUserID());
+		$ps->bind_param("s", $userId);
 		$succeeded = $ps->execute();
 		$result = $ps->get_result();
 		$ps->close();
@@ -164,7 +168,7 @@ class UserManager
 	 * @param $newUsername
 	 * @return Response
 	 */
-	function changeUsername($userId, $newUsername)
+	function _changeUsername($userId, $newUsername)
 	{
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT `USERID` FROM `users` WHERE `USERNAME` = (?)");
@@ -194,7 +198,7 @@ class UserManager
 	 * @param $newPassword
 	 * @return Response
 	 */
-	function changePassword($userId, $masterPassword, $newPassword)
+	function _changePassword($userId, $masterPassword, $newPassword)
 	{
 		$mysql = $this->database->getInstance();
 		$ps = $mysql->prepare("SELECT `SALT` FROM `users` WHERE `USERID` = (?)");
@@ -211,7 +215,7 @@ class UserManager
 			$ps->bind_param("ss", $hashedPassword, $userId);
 			$succeeded = $ps->execute();
 			if ($succeeded)
-				return $this->passwords->reEncryptPasswords($userId, $masterPassword, $newPassword);
+				return $this->passwords->_reencryptPasswords($userId, $masterPassword, $newPassword);
 			return new Response(true, array());
 		}
 		return new Response(false, "database_error");
@@ -221,7 +225,7 @@ class UserManager
 	 * Destroys current session, if present.
 	 * @return Response
 	 */
-	function logout()
+	function _logout()
 	{
 		if (session_status() != PHP_SESSION_NONE)
 			session_destroy();
