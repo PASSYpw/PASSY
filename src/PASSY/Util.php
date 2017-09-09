@@ -2,7 +2,11 @@
 
 namespace PASSY;
 
-
+/**
+ * Class Util
+ * @author Sefa Eyeoglu <contact@scrumplex.net>
+ * @package PASSY
+ */
 class Util
 {
 	static function startsWith($haystack, $needle)

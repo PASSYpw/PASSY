@@ -1,5 +1,4 @@
 <?php
-require_once __DIR__ . "/meta.inc.php";
 
 // #############################################################
 // Edit under this line
@@ -42,14 +41,4 @@ $generalConfig = array(
 		"private_key" => ""
 	)
 
-);
-
-// Edit down to this line
-// #############################################################
-
-$passyMetadata = array(
-	"version" => PASSY_BUILD,
-	"build" => PASSY_VERSION,
-	"github" => "https://github.com/Scrumplex/PASSY",
-	"issues" => "https://github.com/Scrumplex/PASSY/issues"
 );

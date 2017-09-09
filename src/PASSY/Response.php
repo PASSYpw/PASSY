@@ -3,6 +3,11 @@
 namespace PASSY;
 
 
+/**
+ * Class Response
+ * @author Sefa Eyeoglu <contact@scrumplex.net>
+ * @package PASSY
+ */
 class Response
 {
 

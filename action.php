@@ -5,6 +5,7 @@ require_once __DIR__ . "/config.inc.php";
 require_once __DIR__ . "/meta.inc.php";
 
 use PASSY\Database;
+use PASSY\Tasks;
 use PASSY\TwoFactor;
 use PASSY\UserManager;
 use PASSY\Passwords;
@@ -39,10 +40,11 @@ $authenticatedActions = array(
 );
 
 $db = new Database($mysqlConfig);
-$passwords = new Passwords($db);
-$userManager = new UserManager($db, $passwords, $generalConfig["redirect_ssl"]);
-$twoFactor = new TwoFactor($db);
-$ipLog = new IPLog($db);
+$ipLog = new IPLog();
+$passwords = new Passwords();
+$tasks = new Tasks();
+$twoFactor = new TwoFactor();
+$userManager = new UserManager($generalConfig["redirect_ssl"]);
 
 $action = @$_POST["a"];
 
@@ -54,9 +56,10 @@ set_exception_handler(function ($exception) {
 	$response = new Response(false, "server_error");
 	die($response->getJSONResponse());
 });
+
 $userManager->checkSessionExpiration();
 
-if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$action]) {
+if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedActions[$action]) {
 	switch ($action) {
 		case "user/login":
 			$username = $_POST["username"];
@@ -139,7 +142,7 @@ if (in_array($action, $unauthenticatedActions) && $unauthenticatedActions[$actio
 			die($userManager->_status()->getJSONResponse());
 			break;
 	}
-} else if (in_array($action, $authenticatedActions) && $authenticatedActions[$action]) {
+} else if (array_key_exists($action, $authenticatedActions) && $authenticatedActions[$action]) {
 	if ($userManager->isAuthenticated()) {
 		$userManager->trackActivity();
 		switch ($action) {

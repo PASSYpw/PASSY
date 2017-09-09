@@ -2,26 +2,27 @@
 
 namespace PASSY;
 
+require_once __DIR__ . '/../../vendor/autoload.php';
+
 use Defuse\Crypto\Crypto;
 use League\Csv\Reader;
 
-require_once __DIR__ . '/../../vendor/autoload.php';
-
+/**
+ * Class Passwords
+ * @author Sefa Eyeoglu <contact@scrumplex.net>
+ * @author Liz3(Yann HN) <info@liz3.de>
+ * @package PASSY
+ */
 class Passwords
 {
-	/**
-	 * @var Database
-	 */
-	private $database;
 
 	/**
 	 * Passwords constructor.
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
-	 * @param Database $database
 	 */
-	function __construct(Database $database)
+	function __construct()
 	{
-		$this->database = $database;
+		PASSY::$passwords = $this;
 	}
 
 	/**
@@ -34,14 +35,14 @@ class Passwords
 	 * @param $masterPassword
 	 * @return Response
 	 */
-	function create($username, $password, $description, $userId, $masterPassword)
+	function _create($username, $password, $description, $userId, $masterPassword)
 	{
 		$passwordId = uniqid("pass_");
 		$encryptedPassword = Crypto::encryptWithPassword($password, $masterPassword);
 		$date = time();
 		$archivedDate = null;
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("INSERT INTO `passwords` (`ID`, `USERID`, `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE`) VALUES (?, ?, ?, ?, ?, ?, ?)");
 		$ps->bind_param("sssssii", $passwordId, $userId, $username, $encryptedPassword, $description, $date, $archivedDate);
 		$succeeded = $ps->execute();
@@ -60,11 +61,11 @@ class Passwords
 	 * @param $masterPassword
 	 * @return Response
 	 */
-	function edit($passwordId, $username, $password, $description, $masterPassword)
+	function _edit($passwordId, $username, $password, $description, $masterPassword)
 	{
 		$encryptedPassword = Crypto::encryptWithPassword($password, $masterPassword);
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("UPDATE `passwords` SET `PASSWORD` = (?), `USERNAME` = (?), `DESCRIPTION` = (?) WHERE `ID` = (?)");
 		$ps->bind_param("ssss", $encryptedPassword, $username, $description, $passwordId);
 		$succeeded = $ps->execute();
@@ -82,7 +83,7 @@ class Passwords
 	 * @param string $type
 	 * @return Response|null
 	 */
-	function import($data, $userId, $masterPassword, $type = "passy")
+	function _import($data, $userId, $masterPassword, $type = "passy")
 	{
 		$count = 0;
 		$failed = 0;
@@ -96,14 +97,9 @@ class Passwords
 					continue;
 				}
 				$pass = $item["pass"];
-				$this->create($item["username"], $pass, $item["description"], $userId, $masterPassword);
+				$this->_create($item["username"], $pass, $item["description"], $userId, $masterPassword);
 				$count++;
 			}
-
-			return new Response(true, array(
-				"imported" => $count,
-				"failed" => $failed
-			));
 		} else if ($type == "CSV") {
 
 			$csv = Reader::createFromString($data);
@@ -115,7 +111,7 @@ class Passwords
 				$username = $item[2];
 				$password = $item[3];
 				$description = $item[0];
-				$this->create($username, $password, $description, $userId, $masterPassword);
+				$this->_create($username, $password, $description, $userId, $masterPassword);
 				$count++;
 			}
 		} else {
@@ -134,10 +130,10 @@ class Passwords
 	 * @param string $masterPassword
 	 * @return Response
 	 */
-	function exportAll($userId, $masterPassword)
+	function _exportAll($userId, $masterPassword)
 	{
 		$data = array();
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$query = "SELECT `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
 		$ps = $mysql->prepare($query);
 		$ps->bind_param("s", $userId);
@@ -180,10 +176,8 @@ class Passwords
 					}
 				}
 			}
-
 			return new Response(true, $data);
 		}
-
 		return new Response(false, "database_error");
 	}
 
@@ -194,10 +188,10 @@ class Passwords
 	 * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
 	 * @return Response
 	 */
-	function query($passwordId, $masterPassword = null)
+	function _query($passwordId, $masterPassword = null)
 	{
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$query = "SELECT `ID`, `USERID`, `USERNAME`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `ID` = (?)";
 		if (isset($masterPassword))
 			$query = "SELECT `ID`, `USERID`, `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `ID` = (?)";
@@ -249,10 +243,10 @@ class Passwords
 	 * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
 	 * @return Response
 	 */
-	function queryAll($userId, $masterPassword = null)
+	function _queryAll($userId, $masterPassword = null)
 	{
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$query = "SELECT `ID`, `USERID`, `USERNAME`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
 		if (isset($masterPassword))
 			$query = "SELECT `ID`, `USERID`, `USERNAME`, `PASSWORD`, `DESCRIPTION`, `DATE`, `ARCHIVED_DATE` FROM `passwords` WHERE `USERID` = (?)";
@@ -309,9 +303,9 @@ class Passwords
 	 * @param $newMasterPassword
 	 * @return Response
 	 */
-	function reencryptPasswords($userId, $oldMasterPassword, $newMasterPassword)
+	function _reencryptPasswords($userId, $oldMasterPassword, $newMasterPassword)
 	{
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT `ID`, `PASSWORD` FROM `passwords` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);
 		$succeeded = $ps->execute();
@@ -341,11 +335,11 @@ class Passwords
 	 * @param $passwordId
 	 * @return Response
 	 */
-	function archive($passwordId)
+	function _archive($passwordId)
 	{
 		$archivedDate = time();
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("UPDATE `passwords` SET `ARCHIVED_DATE` = (?) WHERE `ID` = (?)");
 		$ps->bind_param("is", $archivedDate, $passwordId);
 		$succeeded = $ps->execute();
@@ -360,11 +354,11 @@ class Passwords
 	 * @param $passwordId
 	 * @return Response
 	 */
-	function restore($passwordId)
+	function _restore($passwordId)
 	{
 		$archivedDate = null;
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("UPDATE `passwords` SET `ARCHIVED_DATE` = (?) WHERE `ID` = (?)");
 		$ps->bind_param("is", $archivedDate, $passwordId);
 		$succeeded = $ps->execute();
@@ -379,10 +373,10 @@ class Passwords
 	 * @param $passwordId
 	 * @return Response
 	 */
-	function delete($passwordId)
+	function _delete($passwordId)
 	{
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("DELETE FROM `passwords` WHERE `ID` = (?)");
 		$ps->bind_param("s", $passwordId);
 		$succeeded = $ps->execute();

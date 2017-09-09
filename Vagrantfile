@@ -4,8 +4,13 @@
 Vagrant.configure("2") do |config|
   # https://docs.vagrantup.com.
 
+
+  # LINUX ONLY! ADD # to disable
+  config.vm.provider "lxc"
+
+
+
   config.vm.box = "debian/jessie64"
-  config.vm.provider "lxc" # Comment this if you are on a non Linux OS
 
   config.vm.box_check_update = true
 
@@ -33,9 +38,11 @@ Vagrant.configure("2") do |config|
     phpenmod mysqli
     service apache2 restart
     mysql -uroot -e "CREATE DATABASE IF NOT EXISTS passy;"
-    mysql -uroot -e "CREATE USER 'passy'@'localhost' IDENTIFIED BY '';"
-    mysql -uroot -e "GRANT USAGE ON *.* TO 'passy'@'localhost' IDENTIFIED BY ''"
-    mysql -uroot -e "GRANT ALL PRIVILEGES ON passy.* TO 'passy'@'localhost';"
+    mysql -uroot -e "CREATE USER 'passy'@'%' IDENTIFIED BY '';"
+    mysql -uroot -e "GRANT USAGE ON *.* TO 'passy'@'%' IDENTIFIED BY ''"
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON passy.* TO 'passy'@'%';"
     mysql -uroot -e "FLUSH PRIVILEGES;"
+    sed -i "s/.*bind-address.*/bind-address = 0.0.0.0/" /etc/mysql/my.cnf
+    service mysql restart
   SHELL
 end

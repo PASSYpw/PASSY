@@ -39,21 +39,6 @@ include_once __DIR__ . "/../config.inc.php";
 						<button type="submit" class="btn btn-primary pull-right">Register</button>
 					</div>
 				</form>
-				<div class="alert alert-danger" id="errorPasswordsNotMatch" style="display: none">
-					<strong>Error!</strong> The passwords do not match.
-				</div>
-				<div class="alert alert-danger" id="errorAccountRegistered" style="display: none">
-					<strong>Error!</strong> The specified username is already in use.
-				</div>
-				<div class="alert alert-danger" id="errorVerification" style="display: none">
-					<strong>Error!</strong> The captcha could not be verified.
-				</div>
-				<div class="alert alert-danger" id="errorRegisterServer" style="display: none">
-					<strong>Error!</strong> There has been a problem with the server. Please contact the administrator.
-				</div>
-				<div class="alert alert-danger" id="errorDatabase" style="display: none">
-					<strong>Error!</strong> There has been a problem with the database connection. Please contact the administrator.
-				</div>
 			</div>
 		</div>
 	</div>

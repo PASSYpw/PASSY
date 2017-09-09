@@ -12,6 +12,9 @@
 				<h3>Login</h3>
 				<h4>Password</h4>
 				<div>
+					<div id="page_user_settings_alert_change_password_disabled" class="alert alert-info" style="display: none">
+						Changing password is disabled! Please disable two factor authentication first.
+					</div>
 					<form id="page_user_settings_form_change_password" class="clearfix" action="action.php"
 					      method="post">
 						<input type="hidden" name="a" value="user/changePassword">
@@ -35,10 +38,6 @@
 						<p>This process could take a while, because all your passwords have to be decrypted and
 							encrypted
 							again!</p>
-						<div class="alert alert-danger" id="errorChangePasswordInvalidCredentials"
-						     style="display: none">
-							<strong>Error!</strong> Current password is not correct.
-						</div>
 						<button type="submit" class="btn btn-primary pull-right">Apply</button>
 					</form>
 				</div>
@@ -54,13 +53,6 @@
 					        data-target="#page_user_settings_modal_2fa_setup">Enable
 					</button>
 					<button id="btn_2fa_disable" class="btn btn-danger">Disable</button>
-
-					<div class="alert alert-success" id="success_2fa_disabled" style="display: none">
-						<strong>Success!</strong> Two-Factor-Authentication has been disabled
-					</div>
-					<div class="alert alert-danger" id="error_2fa_server" style="display: none">
-						<strong>Error!</strong> There has been a problem with the server. Please contact the administrator.
-					</div>
 				</div>
 			</div>
 			<div class="col-xs-12">
@@ -77,12 +69,6 @@
 						<input type="text" class="form-control" title="New username" name="new_username" required
 						       autocomplete="off"/>
 						<label>New username</label>
-					</div>
-					<div class="alert alert-danger" id="error_username_exists" style="display: none">
-						<strong>Error!</strong> User with username already exists.
-					</div>
-					<div class="alert alert-danger" id="errorChangeEmailInvalidCredentials" style="display: none">
-						<strong>Error!</strong> Current password is not correct.
 					</div>
 					<button type="submit" class="btn btn-primary pull-right">Apply</button>
 				</form>
@@ -212,7 +198,7 @@
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="tab_2fa_finish">
 							<p>
-								<span class="text-success">Congratulations!</span> Two-Factor-Authentication is now enabled! <br>
+								<span class="text-success">Congratulations!</span> Two-Factor-Authentication has been enabled! <br>
 								The following text is your back-up code, which you can use to disable 2FA for your
 								account, if you can't use your 2FA-generator for some reason.
 							</p>

@@ -15,18 +15,6 @@
 				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="alert alert-success" id="successImported" style="display: none">
-				<strong>Success!</strong> Passwords have been imported.
-			</div>
-			<div class="alert alert-danger" id="errorImported" style="display: none">
-				<strong>Error!</strong> An error Occurred.
-			</div>
-			<div class="alert alert-danger" id="errorImportedEmpty" style="display: none">
-				<strong>Error!</strong> No passwords have been imported, because the file was empty or because the file
-				is not formatted right.
-			</div>
-		</div>
 		<div class="row row-margin">
 			<div class="col-xs-12">
 				<div class="table-responsive">
@@ -86,12 +74,6 @@
 								<label>Description (optional)</label>
 							</div>
 						</div>
-						<div class="alert alert-danger" id="errorDatabase" style="display: none">
-							<strong>Error!</strong> There was a problem with the database connection.
-						</div>
-						<div class="alert alert-danger" id="errorUnknown" style="display: none">
-							<strong>Error!</strong> An unhandled error occurred!
-						</div>
 					</div>
 					<div class="modal-footer">
 						<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
@@ -128,12 +110,6 @@
 								<input type="text" class="form-control" title="Description" name="description" autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
-						</div>
-						<div class="alert alert-danger" id="errorEditDatabase" style="display: none">
-							<strong>Error!</strong> There was a problem with the database connection.
-						</div>
-						<div class="alert alert-danger" id="errorEditUnknown" style="display: none">
-							<strong>Error!</strong> An unhandled error occurred!
 						</div>
 					</div>
 					<div class="modal-footer">

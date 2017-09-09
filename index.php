@@ -139,13 +139,10 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 </div>
 
 <!-- SNACKBAR
-<div class="snackbar-container">
-	<div class="snackbar">
-		Test
-		<button class="btn btn-primary btn-flat">Undo</button>
-	</div>
-</div>
--->
+<div class="snackbar snackbar-show">
+	<span class="snackbar-text">Password has been set!</span>
+	<button class="btn btn-primary btn-flat">Dismiss</button>
+</div> -->
 
 <div class="footer">
 	<div class="container">
@@ -170,8 +167,8 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 			</div>
 			<div class="col-sm-6 col-xs-12 text-right">
 				<ul class="list-inline">
-					<li><a href="<?= $passyMetadata["github"] ?>" target="_blank">GitHub</a></li>
-					<li><a href="<?= $passyMetadata["issues"] ?>" target="_blank">Bug report</a></li>
+					<li><a href="<?= PASSY_REPO ?>" target="_blank">GitHub</a></li>
+					<li><a href="<?= PASSY_BUGTRACKER ?>" target="_blank">Bug report</a></li>
 				</ul>
 			</div>
 		</div>

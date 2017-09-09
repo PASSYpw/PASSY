@@ -2,28 +2,21 @@
 
 namespace PASSY;
 
-
+/**
+ * Class UserManager
+ * @author Sefa Eyeoglu <contact@scrumplex.net>
+ * @package PASSY
+ */
 class UserManager
 {
-	/**
-	 * @var Database
-	 */
-	private $database;
-	/**
-	 * @var Passwords
-	 */
-	private $passwords;
 
 	/**
 	 * UserManager constructor.
-	 * @param Database $database
-	 * @param Passwords $passwords
 	 * @param boolean $forceSSL if true, session will only be allowed over HTTPS
 	 */
-	function __construct(Database $database, Passwords $passwords, $forceSSL)
+	function __construct($forceSSL)
 	{
-		$this->database = $database;
-		$this->passwords = $passwords;
+		PASSY::$userManager = $this;
 		ini_set('session.cookie_lifetime', 60 * 60 * 24 * 90); // 90 days
 		ini_set('session.gc_maxlifetime', 60 * 60 * 24 * 90); // 90 days
 		if ($forceSSL)
@@ -59,7 +52,7 @@ class UserManager
 	 */
 	function _login($username, $password)
 	{
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `users` WHERE `USERNAME` = (?)");
 		$ps->bind_param("s", $username);
 		$succeeded = $ps->execute();
@@ -76,6 +69,7 @@ class UserManager
 					$_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
 					$_SESSION["session_expiration"] = 300; // 5 mins
 					$this->trackActivity();
+					PASSY::$tasks->run(); // Run tasks every time, someone logs in successfully.
 					return new Response(true, array());
 				}
 			}
@@ -96,7 +90,7 @@ class UserManager
 		$salt = hash("SHA512", uniqid());
 		$hashedPassword = hash("SHA512", $password . $salt);
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `users` WHERE `USERNAME` = (?)");
 		$ps->bind_param("s", $username);
 		$succeeded = $ps->execute();
@@ -133,7 +127,7 @@ class UserManager
 		$twoFactor = array();
 
 		$userId = $this->getUserID();
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `twofactor` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);
 		$succeeded = $ps->execute();
@@ -170,7 +164,7 @@ class UserManager
 	 */
 	function _changeUsername($userId, $newUsername)
 	{
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT `USERID` FROM `users` WHERE `USERNAME` = (?)");
 		$ps->bind_param("s", $newUsername);
 		$succeeded = $ps->execute();
@@ -200,7 +194,10 @@ class UserManager
 	 */
 	function _changePassword($userId, $masterPassword, $newPassword)
 	{
-		$mysql = $this->database->getInstance();
+		if(PASSY::$twoFactor->enabled($userId))
+			return new Response(false, "2fa_enabled");
+
+		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT `SALT` FROM `users` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);
 		$succeeded = $ps->execute();
@@ -215,7 +212,7 @@ class UserManager
 			$ps->bind_param("ss", $hashedPassword, $userId);
 			$succeeded = $ps->execute();
 			if ($succeeded)
-				return $this->passwords->_reencryptPasswords($userId, $masterPassword, $newPassword);
+				return PASSY::$passwords->_reencryptPasswords($userId, $masterPassword, $newPassword);
 			return new Response(true, array());
 		}
 		return new Response(false, "database_error");

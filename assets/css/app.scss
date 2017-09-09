@@ -234,6 +234,14 @@ button {
 	transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
 }
 
+.btn-flat {
+	-webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+	-moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+	-ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+	-o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+	transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+}
+
 .btn:focus, .btn:active, .btn:focus:active {
 	outline: none;
 }
@@ -241,6 +249,7 @@ button {
 .btn:not(.btn-flat) {
 	@extend .depth-1;
 }
+
 .btn:not(.btn-flat):hover {
 	@extend .depth-2;
 }
@@ -691,33 +700,50 @@ label {
 }
 
 /* SNACKBAR */
-.snackbar-container {
-	position: fixed;
-	left: 40px;
-	bottom: 20px;
-}
 
 .snackbar {
-	position: relative;
+	position: fixed;
 	width: auto;
 	height: 48px;
 	min-width: 288px;
 	max-width: 568px;
 	padding: 14px 24px;
 	border-radius: 2px;
+	bottom: -48px;
+	left: 20px;
 	color: #fff;
 	background: #212121;
+	transition: bottom 300ms cubic-bezier(0.4, 0.0, 0.2, 1);
+	z-index: 100;
+}
+
+.snackbar.snackbar-show {
+	bottom: 20px;
 }
 
 .snackbar > .btn-flat {
-	padding: 0;
-	margin: 0 0 0 48px;
+	position: relative;
+	margin-top: -6px;
+	margin-right: -10px;
 	min-width: 0;
 	height: auto;
 	float: right;
 }
 
+@media screen and (max-width: 768px) {
+	.snackbar {
+		width: 100%;
+		max-width: none;
+		left: 0;
+	}
+
+	.snackbar.snackbar-show {
+		bottom: 0;
+	}
+}
+
 /* MISC */
+
 .material-icons {
 	vertical-align: middle;
 	font-size: 24px;

@@ -5,24 +5,18 @@ namespace PASSY;
 /**
  * Class IPLog
  * @author Sefa Eyeoglu <contact@scrumplex.net>
- * @package Scrumplex\PASSY
+ * @package PASSY
  */
 class IPLog
 {
 
 	/**
-	 * @var Database
-	 */
-	private $database;
-
-	/**
 	 * IPLog constructor.
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
-	 * @param Database $database
 	 */
-	function __construct(Database $database)
+	function __construct()
 	{
-		$this->database = $database;
+		PASSY::$ipLog = $this;
 	}
 
 	/**
@@ -32,13 +26,13 @@ class IPLog
 	 * @param $userAgent
 	 * @param $userId
 	 * @return Response
-	 * @see \Scrumplex\PASSY\Response
+	 * @see \PASSY\Response
 	 */
-	function logIP($ip, $userAgent, $userId)
+	function _logIP($ip, $userAgent, $userId)
 	{
 		$now = time();
 
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 
 		$ps = $mysql->prepare("INSERT INTO `iplog` (`USERID`, `IP`, `USERAGENT`, `DATE`) VALUES (?, ?, ?, ?)");
 		$ps->bind_param("ssss", $userId, $ip, $userAgent, $now);
@@ -54,11 +48,11 @@ class IPLog
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
 	 * @param $userId
 	 * @return Response
-	 * @see \Scrumplex\PASSY\Response
+	 * @see \PASSY\Response
 	 */
-	function queryAll($userId)
+	function _queryAll($userId)
 	{
-		$mysql = $this->database->getInstance();
+		$mysql = PASSY::$db->getInstance();
 
 		$ps = $mysql->prepare("SELECT * FROM `iplog` WHERE `USERID` = (?) ORDER BY `DATE` DESC");
 		$ps->bind_param("s", $userId);

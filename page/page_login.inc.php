@@ -50,9 +50,6 @@ include_once __DIR__ . "/../config.inc.php";
 											<label>Authentication Code</label>
 										</div>
 									</div>
-									<div class="alert alert-danger" id="errorWrongCode" style="display: none">
-										<strong>Error!</strong> The entered two-factor-authentication code is invalid!
-									</div>
 								</div>
 								<div class="modal-footer">
 									<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Cancel
@@ -66,24 +63,6 @@ include_once __DIR__ . "/../config.inc.php";
 						<button type="submit" class="btn btn-success pull-right">Login</button>
 					</div>
 				</form>
-				<div class="alert alert-warning" id="warningInactive" style="display: none">
-					<strong>Warning!</strong> Your session has expired. Please authenticate to access your passwords.
-				</div>
-				<div class="alert alert-success" id="successLoggedOut" style="display: none">
-					<strong>Success!</strong> You have been logged out.
-				</div>
-				<div class="alert alert-success" id="successAccountCreated" style="display: none">
-					<strong>Success!</strong> You can now log in.
-				</div>
-				<div class="alert alert-danger" id="errorInvalidCredentials" style="display: none">
-					<strong>Error!</strong> The entered credentials do not match any account.
-				</div>
-				<div class="alert alert-danger" id="errorLoginServer" style="display: none">
-					<strong>Error!</strong> There has been a problem with the server. Please contact the administrator.
-				</div>
-				<div class="alert alert-danger" id="errorLoginDatabase" style="display: none">
-					<strong>Error!</strong> There was a problem with the database connection.
-				</div>
 			</div>
 		</div>
 	</div>

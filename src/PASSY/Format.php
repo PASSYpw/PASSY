@@ -5,7 +5,7 @@ namespace PASSY;
 /**
  * Class Format
  * @author Sefa Eyeoglu <contact@scrumplex.net>
- * @package Scrumplex\PASSY
+ * @package PASSY
  */
 class Format
 {

@@ -10,7 +10,7 @@ use mysqli;
 /**
  * Class Database
  * @author Sefa Eyeoglu <contact@scrumplex.net>
- * @package Scrumplex\PASSY
+ * @package PASSY
  */
 class Database
 {
@@ -31,6 +31,7 @@ class Database
 	 */
 	function __construct($mysqlConfig)
 	{
+		PASSY::$db = $this;
 		$this->mysqlConfig = $mysqlConfig;
 	}
 
