@@ -16,7 +16,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 	<meta name="theme-color" content="#ff5722">
 	<title><?= $customizationConfig["title"] ?></title>
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/css/material-icons.css" rel="stylesheet">
+	<link href="assets/css/material-icons.min.css" rel="stylesheet">
 	<link href="assets/css/ripple.min.css" rel="stylesheet">
 	<link href="assets/css/app.min.css" rel="stylesheet">
 </head>
