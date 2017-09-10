@@ -52,7 +52,6 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // Report exceptions to error log and print error message
 set_exception_handler(function ($exception) {
-	print_r($exception);
 	error_log($exception);
 	$response = new Response(false, "server_error");
 	die($response->getJSONResponse());

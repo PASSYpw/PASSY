@@ -7,7 +7,7 @@
 $mysqlConfig = array(
 
 	"host" => "localhost",
-	"user" => "passy",
+	"user" => "root",
 	"password" => "",
 	"db" => "passy"
 

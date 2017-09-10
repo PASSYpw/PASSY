@@ -80,8 +80,10 @@ class Passwords
 	 * @param string $data
 	 * @param string $userId
 	 * @param string $masterPassword
+	 * @param bool $withPassword
+	 * @param string $importPassword
 	 * @param string $type
-	 * @return Response|null
+	 * @return null|Response
 	 */
 	function _import($data, $userId, $masterPassword, $withPassword, $importPassword, $type = "passy")
 	{
