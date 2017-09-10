@@ -194,7 +194,7 @@ class UserManager
 	 */
 	function _changePassword($userId, $masterPassword, $newPassword)
 	{
-		if(PASSY::$twoFactor->enabled($userId))
+		if(PASSY::$twoFactor->isEnabled($userId))
 			return new Response(false, "2fa_enabled");
 
 		$mysql = PASSY::$db->getInstance();

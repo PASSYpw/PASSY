@@ -15,6 +15,8 @@ use Defuse\Crypto\Crypto;
 class TwoFactor
 {
 
+	public static $KEYLENGTH = 32;
+
 	private $google2fa;
 
 	function __construct()
@@ -25,7 +27,7 @@ class TwoFactor
 
 	function _generateSecretKey($displayName)
 	{
-		$privateKey = $this->google2fa->generateSecretKey(32);
+		$privateKey = $this->google2fa->generateSecretKey(TwoFactor::$KEYLENGTH);
 		$qrUrl = $this->google2fa->getQRCodeGoogleUrl('PASSY', $displayName, $privateKey);
 		return new Response(true, array(
 			"privateKey" => $privateKey,
@@ -79,7 +81,7 @@ class TwoFactor
 		return new Response(false, "database_error");
 	}
 
-	function enabled($userId) {
+	function isEnabled($userId) {
 		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT `DATE` FROM `twofactor` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);

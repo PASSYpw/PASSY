@@ -16,7 +16,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 	<meta name="theme-color" content="#ff5722">
 	<title><?= $customizationConfig["title"] ?></title>
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
-	<link href="assets/css/material-icons.min.css" rel="stylesheet">
+	<link href="assets/css/material-icons.css" rel="stylesheet">
 	<link href="assets/css/ripple.min.css" rel="stylesheet">
 	<link href="assets/css/app.min.css" rel="stylesheet">
 </head>
@@ -137,12 +137,6 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 		</li>
 	</ul>
 </div>
-
-<!-- SNACKBAR
-<div class="snackbar snackbar-show">
-	<span class="snackbar-text">Password has been set!</span>
-	<button class="btn btn-primary btn-flat">Dismiss</button>
-</div> -->
 
 <div class="footer">
 	<div class="container">

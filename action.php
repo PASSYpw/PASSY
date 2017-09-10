@@ -13,7 +13,6 @@ use PASSY\IPLog;
 use PASSY\Response;
 use PASSY\Util;
 
-
 $unauthenticatedActions = array(
 	"user/login" => true,
 	"user/logout" => true,
@@ -69,7 +68,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 
 			$result = $userManager->_login($username, $password);
 			if ($result->wasSuccess()) {
-				if ($twoFactor->enabled($_SESSION["userId"])) {
+				if ($twoFactor->isEnabled($_SESSION["userId"])) {
 					if (isset($_POST["2faCode"])) {
 						$twoFactorCode = $_POST["2faCode"];
 						$twoFactorCode = trim($twoFactorCode);
@@ -81,7 +80,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 									$userManager->setSessionExpirationTime(0);
 								die($result->getJSONResponse());
 							}
-						} else if (strlen($twoFactorCode) > 6) {
+						} else if (strlen($twoFactorCode) == TwoFactor::$KEYLENGTH) {
 							if ($twoFactor->checkPrivateKey($_SESSION["userId"], $password, $twoFactorCode)) {
 								$twoFactor->_disable2FA($_SESSION["userId"]);
 								$ipLog->_logIP($_SERVER["REMOTE_ADDR"], $_SERVER["HTTP_USER_AGENT"], $userManager->getUserID());
@@ -165,7 +164,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 			case "misc/import":
 				$withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
 				$exportPassword = $userManager->getMasterPassword();
-				if(isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
+				if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
 				$content = $_FILES['parse-file']['tmp_name'];
 				if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
 					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
@@ -183,7 +182,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 			case "misc/export":
 				$withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
 				$exportPassword = $userManager->getMasterPassword();
-				if(isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
+				if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
 				$result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
 				$json = $result->getJSONResponse();
 				header('Content-Description: File Transfer');
@@ -258,7 +257,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 				break;
 
 			case "user/2faGenerateKey":
-				if ($twoFactor->enabled($_SESSION["userId"])) {
+				if ($twoFactor->isEnabled($_SESSION["userId"])) {
 					$response = new Response(false, "2fa_enabled");
 					die($response->getJSONResponse());
 				}
@@ -266,7 +265,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 				break;
 
 			case "user/2faEnable":
-				if ($twoFactor->enabled($_SESSION["userId"])) {
+				if ($twoFactor->isEnabled($_SESSION["userId"])) {
 					$response = new Response(false, "2fa_enabled");
 					die($response->getJSONResponse());
 				}
@@ -277,8 +276,26 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 				break;
 
 			case "user/2faDisable":
-				$result = $twoFactor->_disable2FA($_SESSION["userId"]);
-				die($result->getJSONResponse());
+				if ($twoFactor->isEnabled($_SESSION["userId"])) {
+					$twoFactorCode = $_POST["2faCode"];
+					$twoFactorCode = trim($twoFactorCode);
+					if (strlen($twoFactorCode) == 6) {
+						$result = $twoFactor->_checkCode($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode);
+						if ($result->wasSuccess()) {
+							$result = $twoFactor->_disable2FA($_SESSION["userId"]);
+							die($result->getJSONResponse());
+						}
+					} else if (strlen($twoFactorCode) == TwoFactor::$KEYLENGTH) {
+						if ($twoFactor->checkPrivateKey($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode)) {
+							$result = $twoFactor->_disable2FA($_SESSION["userId"]);
+							die($result->getJSONResponse());
+						}
+					}
+					$result = new Response(false, "invalid_code");
+					die($result->getJSONResponse());
+				}
+				$response = new Response(true, array());
+				die($response->getJSONResponse());
 				break;
 		}
 	} else {

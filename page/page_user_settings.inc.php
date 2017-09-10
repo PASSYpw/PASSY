@@ -12,7 +12,8 @@
 				<h3>Login</h3>
 				<h4>Password</h4>
 				<div>
-					<div id="page_user_settings_alert_change_password_disabled" class="alert alert-info" style="display: none">
+					<div id="page_user_settings_alert_change_password_disabled" class="alert alert-info"
+					     style="display: none">
 						Changing password is disabled! Please disable two factor authentication first.
 					</div>
 					<form id="page_user_settings_form_change_password" class="clearfix" action="action.php"
@@ -49,10 +50,10 @@
 					<p>
 						Status: <span id="text_2fa_status"></span>
 					</p>
-					<button id="btn_2fa_modal_toggle" class="btn btn-primary" data-toggle="modal"
+					<button id="btn2faSetupModalToggle" class="btn btn-primary" data-toggle="modal"
 					        data-target="#page_user_settings_modal_2fa_setup">Enable
 					</button>
-					<button id="btn_2fa_disable" class="btn btn-danger">Disable</button>
+					<button data-toggle="modal" data-target="#page_user_settings_modal_2fa_disable" id="btn2faDisableModalToggle" class="btn btn-danger">Disable</button>
 				</div>
 			</div>
 			<div class="col-xs-12">
@@ -84,11 +85,12 @@
 						<option value="csv">CSV</option>
 						<option value="text" disabled>Plaintext</option>
 					</select>
-					<br />
+					<br/>
 					<input type="checkbox" title="Export with Password" name="with-pass">
 					<label>Export with Password</label>
 					<div class="text">
-						<input type="password" class="form-control" title="Password, by default you master password" name="pass"
+						<input type="password" class="form-control" title="Password, by default you master password"
+						       name="pass"
 						       autocomplete="off"/>
 						<label>Password, by default you Master Password</label>
 					</div>
@@ -105,11 +107,12 @@
 				      method="post">
 					<input type="hidden" name="a" value="misc/import">
 					<input type="file" id="import-file" name="parse-file">
-					<br />
+					<br/>
 					<input type="checkbox" title="Import with Password" name="with-pass">
 					<label>Import with Password</label>
 					<div class="text">
-						<input type="password" class="form-control" title="Password, by default you master password" name="pass"
+						<input type="password" class="form-control" title="Password, by default you master password"
+						       name="pass"
 						       autocomplete="off"/>
 						<label>Password, by default you Master Password</label>
 					</div>
@@ -214,7 +217,8 @@
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="tab_2fa_finish">
 							<p>
-								<span class="text-success">Congratulations!</span> Two-Factor-Authentication has been enabled! <br>
+								<span class="text-success">Congratulations!</span> Two-Factor-Authentication has been
+								enabled! <br>
 								The following text is your back-up code, which you can use to disable 2FA for your
 								account, if you can't use your 2FA-generator for some reason.
 							</p>
@@ -230,10 +234,40 @@
 				<button type="submit" id="btn_2fa_next" data-target="#tab_2fa" data-next="tab"
 				        class="btn btn-flat btn-primary">Next
 				</button>
-				<button type="submit" id="btn_2fa_enable_submit" data-submit="#page_user_settings_form_2fa_setup"
-				        class="btn btn-flat btn-primary">Submit
+				<button type="submit" id="btn_2fa_enable_submit" data-submit="#page_user_settings_form_2fa_setup" class="btn btn-flat btn-primary">Submit
 				</button>
-				<button type="submit" id="btn_2fa_finish" class="btn btn-flat btn-primary" data-dismiss="modal">Finish</button>
+				<button type="submit" id="btn_2fa_finish" class="btn btn-flat btn-primary" data-dismiss="modal">Finish
+				</button>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal fade" id="page_user_settings_modal_2fa_disable" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content depth-5">
+			<div class="modal-header">
+				<h4 class="modal-title">Two-Factor-Authentication</h4>
+			</div>
+			<div class="modal-body">
+				<form method="post" action="action.php" id="page_user_settings_form_2fa_disable" autocomplete="off">
+					<input type="hidden" name="a" value="user/2faDisable" readonly style="display: none"/>
+					<p>
+						To disable two factor authentication, please enter you generated 6-digit code below.
+						<br>
+						You may enter your recovery code, if you can't use your generator.
+					</p>
+					<div class="form-group clearfix">
+						<div class="text">
+							<input type="text" class="form-control" title="Authentication Code" name="2faCode" autocomplete="off"/>
+							<label>Authentication Code</label>
+						</div>
+					</div>
+				</form>
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-flat btn-primary" data-dismiss="modal">Cancel</button>
+				<button type="submit" class="btn btn-flat btn-danger" data-submit="#page_user_settings_form_2fa_disable">Disable</button>
 			</div>
 		</div>
 	</div>
