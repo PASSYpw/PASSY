@@ -83,13 +83,13 @@ class Passwords
 	 * @param string $type
 	 * @return Response|null
 	 */
-	function _import($data, $userId, $masterPassword, $type = "passy")
+	function _import($data, $userId, $masterPassword, $withPassword, $importPassword, $type = "passy")
 	{
 		$count = 0;
 		$failed = 0;
 		if ($type == "passy") {
 			$arr = json_decode($data, true);
-			$data = $arr["data"];
+			$data = $withPassword ? json_decode(Crypto::decryptWithPassword($arr["data"], $importPassword), true) : $arr["data"];
 			foreach ($data as $item) {
 
 				if ($item["pass"] == null) {
@@ -102,7 +102,7 @@ class Passwords
 			}
 		} else if ($type == "CSV") {
 
-			$csv = Reader::createFromString($data);
+			$csv = Reader::createFromString($withPassword ? Crypto::decryptWithPassword($data, $importPassword) : $data);
 			foreach ($csv->getIterator() as $item) {
 
 				if (count($item) < 4) {
@@ -128,9 +128,11 @@ class Passwords
 	 * @author Liz3(Yann HN) <info@liz3.de>
 	 * @param string $userId
 	 * @param string $masterPassword
+	 * @param bool $withPassword
+	 * @param string $exportPassword
 	 * @return Response
 	 */
-	function _exportAll($userId, $masterPassword)
+	function _exportAll($userId, $masterPassword, $withPassword, $exportPassword)
 	{
 		$data = array();
 		$mysql = PASSY::$db->getInstance();
@@ -176,7 +178,7 @@ class Passwords
 					}
 				}
 			}
-			return new Response(true, $data);
+			return new Response(true, $withPassword ? Crypto::encryptWithPassword(json_encode($data), $exportPassword) : $data);
 		}
 		return new Response(false, "database_error");
 	}

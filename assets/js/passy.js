@@ -503,6 +503,12 @@ var passy = (function () {
 
 				var data = new FormData();
 				data.append("a", "misc/import");
+				const withPass = $("#page_user_settings_form_import").find('input[name="with-pass"]')[0].checked;
+				if(withPass){
+                    data.append("with-pass", "on");
+                    data.append("pass", $("#page_user_settings_form_import").find('input[name="pass"]').val());
+				}
+
 				$.each($('#import-file')[0].files, function (i, file) {
 					data.append("parse-file", file);
 				});

@@ -84,6 +84,14 @@
 						<option value="csv">CSV</option>
 						<option value="text" disabled>Plaintext</option>
 					</select>
+					<br />
+					<input type="checkbox" title="Export with Password" name="with-pass">
+					<label>Export with Password</label>
+					<div class="text">
+						<input type="password" class="form-control" title="Password, by default you master password" name="pass"
+						       autocomplete="off"/>
+						<label>Password, by default you Master Password</label>
+					</div>
 					<p>This process could take a while, because all your passwords have to be decrypted!</p>
 					<button type="submit" class="btn btn-primary pull-right">Export</button>
 				</form>
@@ -97,6 +105,14 @@
 				      method="post">
 					<input type="hidden" name="a" value="misc/import">
 					<input type="file" id="import-file" name="parse-file">
+					<br />
+					<input type="checkbox" title="Import with Password" name="with-pass">
+					<label>Import with Password</label>
+					<div class="text">
+						<input type="password" class="form-control" title="Password, by default you master password" name="pass"
+						       autocomplete="off"/>
+						<label>Password, by default you Master Password</label>
+					</div>
 					<button type="submit" class="btn btn-primary pull-right">Import</button>
 				</form>
 			</div>

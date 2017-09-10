@@ -71,6 +71,51 @@ class Database
 	}
 
 	/**
+	 * This method simply help to shorted mysql commands, on success an array is returned containing:
+	 * true
+	 * if available the results object
+	 * boolean if the result row count is not null e.g 0 = false not 0 = true
+	 * the prepared error
+	 * and the mysql connection
+	 *
+	 * on a error also an array is returned with
+	 * false
+	 * the prepared error
+	 * the mysql connection error
+	 *
+	 * @author Liz3
+	 * @param string $statement
+	 * @param string $keys
+	 * @param array ...$args
+	 * @return array
+	 */
+	function easy_exec($statement, $keys, ...$args)
+	{
+		$arr = array();
+		array_push($arr, $keys);
+		foreach ($args as $arg) {
+			array_push($arr, $arg);
+		}
+		$tmp = array();
+		foreach ($arr as $key => $value) $tmp[$key] = &$arr[$key];
+		$prepared = $this->mysql->prepare($statement);
+		call_user_func_array(array($prepared, 'bind_param'), $tmp);
+		$success = $prepared->execute();
+		if (!$success)
+			return array(false, $prepared->error, $this->mysql->error);
+
+		$arr = array(true);
+		$result = $prepared->get_result();
+		array_push($arr, $result);
+		array_push($arr, is_object($result) ? $result->num_rows : 0);
+		array_push($arr, is_object($prepared) ? $prepared->insert_id : 0);
+		array_push($arr, $prepared->error);
+		array_push($arr, $this->mysql->error);
+
+		$prepared->close();
+		return $arr;
+	}
+	/**
 	 * Getter function for current mysqli instance. Connects to database if not initialized.
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>
 	 * @return mysqli current mysqli instance.

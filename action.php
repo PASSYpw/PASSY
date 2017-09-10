@@ -52,6 +52,7 @@ header("Content-Type: application/json; charset=UTF-8");
 
 // Report exceptions to error log and print error message
 set_exception_handler(function ($exception) {
+	print_r($exception);
 	error_log($exception);
 	$response = new Response(false, "server_error");
 	die($response->getJSONResponse());
@@ -163,12 +164,15 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 				break;
 
 			case "misc/import":
+				$withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
+				$exportPassword = $userManager->getMasterPassword();
+				if(isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
 				$content = $_FILES['parse-file']['tmp_name'];
 				if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
-					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword());
+					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
 					die($result->getJSONResponse());
 				} elseif (Util::endsWith($_FILES['parse-file']['name'], ".csv")) {
-					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), "CSV");
+					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword, "CSV");
 					die($result->getJSONResponse());
 				} else {
 					$result = new Response(false, array("not_supported_format"));
@@ -178,7 +182,10 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 				break;
 
 			case "misc/export":
-				$result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword());
+				$withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
+				$exportPassword = $userManager->getMasterPassword();
+				if(isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
+				$result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
 				$json = $result->getJSONResponse();
 				header('Content-Description: File Transfer');
 				header('Content-Type: application/octet-stream');
