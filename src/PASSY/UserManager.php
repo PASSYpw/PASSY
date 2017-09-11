@@ -2,6 +2,9 @@
 
 namespace PASSY;
 
+use Defuse\Crypto\Crypto;
+
+
 /**
  * Class UserManager
  * @author Sefa Eyeoglu <contact@scrumplex.net>
@@ -61,8 +64,8 @@ class UserManager
 		if ($succeeded) {
 			if ($result->num_rows > 0) {
 				$row = $result->fetch_assoc();
-				$hashedPassword = hash("SHA512", $password . $row["SALT"]);
-				if ($hashedPassword == $row['PASSWORD']) {
+				$hashedPassword = hash("SHA512", $row["USERNAME"] . $row["SALT"]);
+				if (Crypto::decryptWithPassword($row['PASSWORD'], $password) == $hashedPassword) {
 					$_SESSION["username"] = $username;
 					$_SESSION["master_password"] = $password;
 					$_SESSION["userId"] = $row['USERID'];
@@ -88,7 +91,7 @@ class UserManager
 	{
 		$userId = uniqid("user_");
 		$salt = hash("SHA512", uniqid());
-		$hashedPassword = hash("SHA512", $password . $salt);
+		$hashedPassword = hash("SHA512", $username . $salt);
 
 		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT * FROM `users` WHERE `USERNAME` = (?)");
@@ -98,8 +101,9 @@ class UserManager
 		$ps->close();
 		if ($succeeded) {
 			if ($result->num_rows == 0) {
+				$encryptedPassword = Crypto::encryptWithPassword($hashedPassword, $password);
 				$ps = $mysql->prepare("INSERT INTO `users` (`USERNAME`, `USERID`, `PASSWORD`, `SALT`) VALUES (?, ?, ?, ?)");
-				$ps->bind_param("ssss", $username, $userId, $hashedPassword, $salt);
+				$ps->bind_param("ssss", $username, $userId, $encryptedPassword, $salt);
 				$succeeded = $ps->execute();
 				$ps->close();
 				if ($succeeded)
