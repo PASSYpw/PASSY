@@ -235,7 +235,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 					$response = new Response(false, "invalid_credentials");
 					die($response->getJSONResponse());
 				}
-				$result = $userManager->_changeUsername($userManager->getUserID(), $newUsername);
+				$result = $userManager->_changeUsername($userManager->getUserID(), $newUsername, $userManager->getMasterPassword());
 				die($result->getJSONResponse());
 				break;
 
