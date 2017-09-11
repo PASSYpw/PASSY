@@ -808,7 +808,7 @@ var passy = (function () {
 		});
 
 		passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id"), targetForm = $("page_password_list_form_edit");
+			var me = $(this), passwordId = me.data("password-id"), targetForm = $("#page_password_list_form_edit");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
