@@ -1,0 +1,71 @@
+/*
+ * PASSY 2.x.x
+ * Copyright 2017 Sefa Eyeoglu
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+label {
+	font-weight: normal;
+}
+
+.text {
+	padding-top: 15px;
+}
+
+.text:last-of-type {
+	padding-bottom: 15px;
+}
+
+.text > .form-control {
+	height: 24px;
+	display: block;
+	padding: 0;
+	border: none;
+	border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
+	border-radius: 0;
+	box-shadow: none;
+	line-height: 24px;
+	font-size: 14px;
+	margin: 5px 0 0;
+}
+
+.text > label {
+	color: $colorSecondaryText;
+	font-size: 14px;
+	font-weight: normal;
+	position: absolute;
+	pointer-events: none;
+	transform-origin: bottom left;
+	transform: translateY(-24px);
+	-webkit-transition: all 0.2s ease;
+	-moz-transition: all 0.2s ease;
+	-ms-transition: all 0.2s ease;
+	-o-transition: all 0.2s ease;
+	transition: all 0.2s ease;
+}
+
+.text > input:focus ~ label, .text > input.hastext ~ label {
+	transform: scale(.8) translateY(-53px);
+	color: $colorAccent;
+}
+
+.text > .form-control:focus {
+	box-shadow: none;
+	border-bottom-color: $colorAccent;
+}
+
+.text > .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
+	background-color: transparent;
+	opacity: 0.5;
+}

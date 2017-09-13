@@ -1,0 +1,66 @@
+/*
+ * PASSY 2.x.x
+ * Copyright 2017 Sefa Eyeoglu
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.modal.fade, .modal.in, .modal.fade .modal-dialog, .modal.in .modal-dialog {
+	transform: none;
+	-webkit-transition: opacity 100ms linear;
+	-moz-transition: opacity 100ms linear;
+	-ms-transition: opacity 100ms linear;
+	-o-transition: opacity 100ms linear;
+	transition: opacity 100ms linear;
+}
+
+.modal-backdrop.in {
+	filter: alpha(opacity=20);
+	opacity: 0.2;
+}
+
+.modal-header {
+	background-color: $colorForeground;
+	border-bottom: none;
+	padding: 24px 24px 0 24px;
+	border-radius: 2px;
+}
+
+.modal-title {
+	color: $colorText;
+}
+
+.modal-body {
+	padding: 20px 24px 24px 24px;
+}
+
+.modal-body > p {
+	color: lighten($colorText, 20%);
+}
+
+.modal-footer {
+	border-top: none;
+	padding: 8px 8px 8px 24px;
+}
+
+.modal-footer > .btn-flat {
+	padding-left: 8px;
+	padding-right: 8px;
+	margin: 0 0 0 8px !important;
+}
+
+.modal-content {
+	border-radius: 2px;
+	border: none;
+	@extend .depth-4;
+}

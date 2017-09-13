@@ -18,7 +18,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/material-icons.min.css" rel="stylesheet">
 	<link href="assets/css/ripple.min.css" rel="stylesheet">
-	<link href="assets/css/app.min.css" rel="stylesheet">
+	<link href="assets/css/main.min.css" rel="stylesheet">
 </head>
 <body>
 <nav class="navbar navbar-default navbar-fixed-top">

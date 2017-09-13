@@ -1,0 +1,168 @@
+/*
+ * PASSY 2.x.x
+ * Copyright 2017 Sefa Eyeoglu
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+.navbar-default {
+	background-color: $colorTheme;
+	border: none;
+	border-radius: 0;
+	overflow-y: hidden;
+	@extend .depth-2;
+}
+
+.navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover,
+.navbar-default .navbar-nav > li > a, .navbar-default .navbar-nav > .active > a,
+.navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
+	color: $colorThemeText;
+}
+
+.navbar-default .navbar-nav > li > a:active, .navbar-default .navbar-nav > li > a:active:hover {
+	background: mix(transparent, $colorThemeText, 70%);
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover {
+	background-color: transparent;
+	border-bottom: solid 2px $colorThemeText;
+}
+
+.navbar-default .navbar-nav > li > a {
+	background: transparent;
+	border: none;
+	border-bottom: solid 2px transparent;
+	-webkit-transition: border 200ms ease, background 300ms linear;
+	-moz-transition: border 200ms ease, background 300ms linear;
+	-ms-transition: border 200ms ease, background 300ms linear;
+	-o-transition: border 200ms ease, background 300ms linear;
+	transition: border 200ms ease, background 300ms linear;
+}
+
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:hover,
+.navbar-default .navbar-nav > li > a:hover, .navbar-default .navbar-nav > li > a:focus, .navbar-default .navbar-nav > li > a:hover {
+	color: $colorThemeText;
+	background-color: transparent;
+	border-bottom: solid 2px $colorThemeText;
+}
+
+.navbar-right > li > a, .navbar-right > li > a:focus, .navbar-right > li > a:hover,
+.navbar-right > .dropdown > a, .navbar-right > .dropdown > a:focus, .navbar-right > .dropdown > a:hover,
+.navbar-right > .open > a, .navbar-right > .open > a:focus, .navbar-right > .open > a:hover {
+	color: $colorThemeText !important;
+	background-color: transparent !important;
+	border-radius: 100%;
+	border-bottom: none !important;
+	width: 54px;
+	height: 54px;
+	padding: 15px;
+}
+
+.navbar-right > li > a:active, .navbar-right > li > a:active:hover,
+.navbar-right > .dropdown > a:active, .navbar-right > .dropdown > a:active:hover,
+.navbar-right > .open > a:active, .navbar-right > .open > a:active:hover {
+	background-color: mix(transparent, $colorThemeText, 70%) !important;
+}
+
+.navbar-nav {
+	margin: 0 auto;
+	display: table;
+	table-layout: fixed;
+	float: none;
+}
+
+.navbar-nav > li {
+	float: left;
+}
+
+.navbar-right {
+	float: right !important;
+	margin-right: -15px;
+}
+
+.container-fluid > .navbar-collapse, .container-fluid > .navbar-header, .container > .navbar-collapse, .container > .navbar-header {
+	margin-right: 0;
+	margin-left: 0;
+}
+
+.navbar-header {
+	float: left;
+}
+
+.navbar-right .dropdown-menu {
+	top: 2px;
+	right: 2px;
+	left: auto;
+}
+
+.navbar-nav .open .dropdown-menu, .contextmenu.open .dropdown-menu {
+	position: absolute;
+	float: left;
+	width: 200px;
+	margin-top: 0;
+	background-color: $colorForeground;
+	border-radius: 0;
+	border: none;
+	top: 2px;
+	right: 2px;
+	@extend .depth-3;
+}
+
+.dropdown.open .dropdown-menu {
+	animation: dropdownIn ease 200ms;
+}
+
+.dropdown.open .dropdown-menu > li {
+	opacity: 0;
+	animation: dropdownItemsIn ease 300ms forwards;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: $colorText;
+	}
+	.navbar-nav .open .dropdown-menu > li > a {
+		line-height: 1.42857143;
+	}
+	.navbar-nav .open .dropdown-menu .dropdown-header, .navbar-nav .open .dropdown-menu > li > a {
+		padding: 3px 20px;
+	}
+
+	.navbar-nav .open .dropdown-menu {
+		position: absolute;
+		float: left;
+		width: 200px;
+		background-color: $colorForeground;
+		border: none;
+	}
+}
+
+.nav-tabs.nav-justified > .active > a, .nav-tabs.nav-justified > .active > a:focus, .nav-tabs.nav-justified > .active > a:hover {
+	border: none;
+	border-radius: 0;
+}
+
+.nav-tabs.nav-justified > li {
+	display: table-cell;
+	width: 1%;
+}
+
+.nav-tabs.nav-justified > li > a {
+	border-bottom: none;
+	border-radius: 0;
+	margin-bottom: 0;
+}
+
+.tab-pane {
+	padding: 20px 20px;
+}
