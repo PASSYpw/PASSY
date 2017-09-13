@@ -192,7 +192,7 @@
 								below.
 							</p>
 							<img id="img_2fa_key" src="" class="img-responsive margin-center">
-							<pre id="pre_2fa_key" class="selectable no-contextmenu text-center"></pre>
+							<pre id="pre_2fa_key" class="force-select no-contextmenu text-center"></pre>
 						</div>
 						<div role="tabpanel" class="tab-pane fade" id="tab_2fa_step_3">
 							<form id="page_user_settings_form_2fa_setup" action="action.php" method="post"
@@ -222,7 +222,7 @@
 								The following text is your back-up code, which you can use to disable 2FA for your
 								account, if you can't use your 2FA-generator for some reason.
 							</p>
-							<pre id="pre_2fa_key2" class="selectable no-contextmenu text-center"></pre>
+							<pre id="pre_2fa_key2" class="force-select no-contextmenu text-center"></pre>
 						</div>
 					</div>
 

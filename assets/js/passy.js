@@ -424,14 +424,15 @@ var passy = (function () {
 		});
 
 		$(window).focus(function () {
-			if (!options.fade_on_focus_loss && $(".content").css('display') !== "none")
+			const content = $(".content");
+			if (!options.fade_on_focus_loss || !content.hasClass("content-hidden"))
 				return;
-			$(".content").fadeIn(300);
+			content.removeClass("content-hidden");
 		}).blur(function () {
 			if (!options.fade_on_focus_loss)
 				return;
-			if (!$('iframe').is(':focus'))
-				$(".content").fadeOut(300);
+			if ($('iframe:hover').length == 0)
+				$(".content").addClass("content-hidden");
 		});
 
 		$(document).on("keydown", function (e) {
@@ -449,13 +450,15 @@ var passy = (function () {
 				contextMenu.removeClass("open");
 		});
 
-		$(document).bind("contextmenu", function (e) {
+		$(document).on("contextmenu", function (e) {
 			if (e.shiftKey)
 				return;
 			var x = e.clientX,
 				y = e.clientY;
 			var elementUnderMouse = $(document.elementFromPoint(x, y));
 			if (elementUnderMouse.hasClass("no-contextmenu") || elementUnderMouse.parents(".no-contextmenu").length > 0)
+				return;
+			if (elementUnderMouse.is("input") || elementUnderMouse.is("textarea") || elementUnderMouse.is("select"))
 				return;
 			e.preventDefault();
 			contextMenu.removeClass("open");
@@ -793,7 +796,7 @@ var passy = (function () {
 			me.html(spinnerSVG);
 			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
-					parent.html("<span class='selectable no-contextmenu'>" + data.data.password_safe + "</span>");
+					parent.html("<span class='force-select no-contextmenu'>" + data.data.password_safe + "</span>");
 					timeoutPassword(parent, passwordId);
 				} else {
 					if (data.msg === "not_authenticated") {
@@ -973,7 +976,7 @@ var passy = (function () {
 					var row = "<tr data-visible='true' id='" + item.password_id + "'>";
 					if (!item.archived) {
 						//Passwords page
-						row += "<td><span class='selectable no-contextmenu'>" + username + "</span></td>";
+						row += "<td><span class='force-select no-contextmenu'>" + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
 						row += "<td>" + item.date_added_readable + "</td>";
@@ -989,7 +992,7 @@ var passy = (function () {
 						tbody += row;
 					} else {
 						//Archived page
-						row += "<td><span class='selectable no-contextmenu'> " + username + "</span></td>";
+						row += "<td><span class='force-select no-contextmenu'> " + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
 						row += "<td>" + item.date_archived_readable + "</td>";

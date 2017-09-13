@@ -41,16 +41,7 @@ $durationSpinner: 1.6s;
 
 //Styling
 
-* {
-	-webkit-touch-callout: none;
-	-webkit-user-select: none;
-	-moz-user-select: -moz-none;
-	-ms-user-select: element;
-	user-select: element;
-	cursor: default;
-}
-
-.selectable {
+.force-select {
 	-webkit-touch-callout: default;
 	-webkit-user-select: auto;
 	-moz-user-select: all;
@@ -96,6 +87,13 @@ body {
 
 .content {
 	padding-top: 120px;
+	opacity: 1;
+	transition: opacity 300ms ease;
+}
+
+.content-hidden {
+	opacity: 0;
+	transition: opacity 300ms ease 1000ms;
 }
 
 /* Buttons */
@@ -252,15 +250,6 @@ button {
 
 .btn:not(.btn-flat):hover {
 	@extend .depth-2;
-}
-
-.form-control, .btn {
-	-webkit-user-select: initial !important;
-	-khtml-user-select: initial !important;
-	-moz-user-select: initial !important;
-	-ms-user-select: initial !important;
-	user-select: initial !important;
-
 }
 
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
