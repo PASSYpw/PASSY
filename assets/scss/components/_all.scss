@@ -14,17 +14,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500);
 
-@import "../scss/vars";
-@import "../scss/shadows";
-
-@import "../scss/structure";
-@import "../scss/animations";
-
-@import "../scss/components/buttons";
-@import "../scss/components/navbar";
-@import "../scss/components/inputs";
-@import "../scss/components/modals";
-@import "../scss/components/snackbar";
-@import "../scss/components/misc";
+@import "buttons";
+@import "navbar";
+@import "inputs";
+@import "modals";
+@import "snackbar";
+@import "misc";

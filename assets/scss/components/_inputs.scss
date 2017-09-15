@@ -43,16 +43,11 @@ label {
 .text > label {
 	color: $colorSecondaryText;
 	font-size: 14px;
-	font-weight: normal;
 	position: absolute;
 	pointer-events: none;
 	transform-origin: bottom left;
 	transform: translateY(-24px);
-	-webkit-transition: all 0.2s ease;
-	-moz-transition: all 0.2s ease;
-	-ms-transition: all 0.2s ease;
-	-o-transition: all 0.2s ease;
-	transition: all 0.2s ease;
+	transition: all 200ms $easeOutQuart;
 }
 
 .text > input:focus ~ label, .text > input.hastext ~ label {

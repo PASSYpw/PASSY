@@ -1,4 +1,4 @@
-/*
+/*!
  * PASSY 2.x.x
  * Copyright 2017 Sefa Eyeoglu
  *
@@ -14,40 +14,4 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
-.snackbar {
-	position: fixed;
-	width: auto;
-	height: 48px;
-	min-width: 288px;
-	max-width: 568px;
-	padding: 4px 10px 4px 24px;
-	border-radius: 2px;
-	left: 20px;
-	color: #fff;
-	background: #212121;
-	z-index: 100;
-	transition: bottom 300ms $easeInExpo;
-}
-
-.snackbar.snackbar-show {
-	transition: bottom 300ms $easeOutQuart;
-}
-
-.snackbar > .btn-flat {
-	position: relative;
-	min-width: 0;
-	height: auto;
-}
-
-@media screen and (max-width: 768px) {
-	.snackbar {
-		width: 100%;
-		max-width: none;
-		left: 0;
-	}
-
-	.snackbar.snackbar-show {
-		bottom: 0 !important;
-	}
-}
+@import "../../node_modules/awesome-sass-easing/sass-easing";@import "base";@import "shadows";@import "structure";@import "animations";@import "components/all";

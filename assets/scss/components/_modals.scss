@@ -17,15 +17,10 @@
 
 .modal.fade, .modal.in, .modal.fade .modal-dialog, .modal.in .modal-dialog {
 	transform: none;
-	-webkit-transition: opacity 100ms linear;
-	-moz-transition: opacity 100ms linear;
-	-ms-transition: opacity 100ms linear;
-	-o-transition: opacity 100ms linear;
 	transition: opacity 100ms linear;
 }
 
 .modal-backdrop.in {
-	filter: alpha(opacity=20);
 	opacity: 0.2;
 }
 
@@ -62,5 +57,5 @@
 .modal-content {
 	border-radius: 2px;
 	border: none;
-	@extend .depth-4;
+	@include depth(4);
 }

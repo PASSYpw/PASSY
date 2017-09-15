@@ -15,39 +15,28 @@
  * limitations under the License.
  */
 
-.snackbar {
-	position: fixed;
-	width: auto;
-	height: 48px;
-	min-width: 288px;
-	max-width: 568px;
-	padding: 4px 10px 4px 24px;
-	border-radius: 2px;
-	left: 20px;
-	color: #fff;
-	background: #212121;
-	z-index: 100;
-	transition: bottom 300ms $easeInExpo;
-}
+// Theme
+$colorBackground: #EEEEEE;
+$colorForeground: #FFFFFF;
+$colorText: #000000;
+$colorSecondaryText: #757575;
+$colorDivider: rgba(0, 0, 0, 0.06);
+$colorTheme: #FF5722;
+$colorThemeText: #FFFFFF;
+$colorAccent: #00BCD4;
+$colorAccentText: #FFFFFF;
 
-.snackbar.snackbar-show {
-	transition: bottom 300ms $easeOutQuart;
-}
+// Colors
+$colorDefault: #ffffff;
+$colorPrimary: $colorAccent;
+$colorSuccess: #4CAF50;
+$colorInfo: #00BCD4;
+$colorWarning: #FFC107;
+$colorDanger: #f44336;
 
-.snackbar > .btn-flat {
-	position: relative;
-	min-width: 0;
-	height: auto;
-}
+// Spinner
+$offsetSpinnerStroke: 187;
+$durationSpinner: 1.6s;
 
-@media screen and (max-width: 768px) {
-	.snackbar {
-		width: 100%;
-		max-width: none;
-		left: 0;
-	}
-
-	.snackbar.snackbar-show {
-		bottom: 0 !important;
-	}
-}
+// Font
+@import url(https://fonts.googleapis.com/css?family=Roboto:300,400,500);

@@ -97,13 +97,18 @@ var passy = (function () {
 
 		$("body").append(snackbar);
 		setTimeout(function () {
-			const offset = snackbarCount++ * (snackbar.outerHeight() + 10) + 20;
-			snackbar.css({"bottom": offset + "px"});
+			snackbar.addClass("snackbar-show");
+			snackbar.css({"bottom": "-" + snackbar.outerHeight() + "px"});
+			setTimeout(function () {
+				const offset = snackbarCount++ * (snackbar.outerHeight() + 10) + 20;
+				snackbar.css({"bottom": offset + "px"});
+			}, 1);
 		}, 1);
 	}
 
 	function killSnackbar(elem) {
-		elem.css({"bottom": "-48px"});
+		elem.removeClass("snackbar-show");
+		elem.css({"bottom": "-" + elem.outerHeight() + "px"});
 		elem.on('transitionend webkitTransitionEnd oTransitionEnd', function () {
 			elem.off('transitionend webkitTransitionEnd oTransitionEnd');
 			elem.remove();
@@ -425,7 +430,7 @@ var passy = (function () {
 
 		$(window).focus(function () {
 			const content = $(".content");
-			if (!options.fade_on_focus_loss || !content.hasClass("content-hidden"))
+			if (!options.fade_on_focus_loss && !content.hasClass("content-hidden"))
 				return;
 			content.removeClass("content-hidden");
 		}).blur(function () {

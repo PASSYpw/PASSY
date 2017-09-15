@@ -20,7 +20,7 @@
 	border: none;
 	border-radius: 0;
 	overflow-y: hidden;
-	@extend .depth-2;
+	@include depth(2);
 }
 
 .navbar-default .navbar-brand, .navbar-default .navbar-brand:focus, .navbar-default .navbar-brand:hover,
@@ -42,10 +42,6 @@
 	background: transparent;
 	border: none;
 	border-bottom: solid 2px transparent;
-	-webkit-transition: border 200ms ease, background 300ms linear;
-	-moz-transition: border 200ms ease, background 300ms linear;
-	-ms-transition: border 200ms ease, background 300ms linear;
-	-o-transition: border 200ms ease, background 300ms linear;
 	transition: border 200ms ease, background 300ms linear;
 }
 
@@ -115,16 +111,16 @@
 	border: none;
 	top: 2px;
 	right: 2px;
-	@extend .depth-3;
+	@include depth(3);
 }
 
 .dropdown.open .dropdown-menu {
-	animation: dropdownIn ease 200ms;
+	animation: dropdownIn 200ms $easeOutQuart;
 }
 
 .dropdown.open .dropdown-menu > li {
 	opacity: 0;
-	animation: dropdownItemsIn ease 300ms forwards;
+	animation: dropdownItemsIn 300ms $easeOutQuart forwards;
 }
 
 @media (max-width: 767px) {

@@ -1,6 +1,6 @@
 {
 	"name": "scrumplex/passy",
-	"description": "Modern password manager",
+	"description": "A password manager written in PHP to serve you over the internet.",
 	"minimum-stability": "dev",
 	"license": "Apache-2.0",
 	"authors": [

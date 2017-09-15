@@ -40,7 +40,7 @@ body {
 .jumbotron {
 	background-color: $colorForeground;
 	border-radius: 0 !important;
-	@extend .depth-1;
+	@include depth(1);
 }
 
 @media (max-width: 768px) {
@@ -65,7 +65,7 @@ body {
 
 .content-hidden {
 	opacity: 0;
-	transition: opacity 300ms ease 1000ms;
+	transition: opacity 300ms ease 1s;
 }
 
 .force-select {

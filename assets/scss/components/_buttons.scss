@@ -142,19 +142,11 @@ button {
 	border-radius: 2px;
 	text-transform: uppercase;
 	font-size: 14px;
-	-webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-	-moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-	-ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-	-o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
-	transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1), box-shadow 300ms cubic-bezier(0.215, 0.61, 0.355, 1);
+	transition: background 300ms $easeOutCubic, box-shadow 300ms $easeOutCubic;
 }
 
 .btn-flat {
-	-webkit-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
-	-moz-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
-	-ms-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
-	-o-transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
-	transition: background 300ms cubic-bezier(0.215, 0.61, 0.355, 1) 100ms;
+	transition: background 300ms $easeOutCubic 100ms;
 }
 
 .btn:focus, .btn:active, .btn:focus:active {
@@ -162,11 +154,11 @@ button {
 }
 
 .btn:not(.btn-flat) {
-	@extend .depth-1;
+	@include depth(1);
 }
 
 .btn:not(.btn-flat):hover {
-	@extend .depth-2;
+	@include depth(2);
 }
 
 .btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {

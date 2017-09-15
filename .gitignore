@@ -1,4 +1,6 @@
+.idea/
+.sass-cache/
 .vagrant/
-.idea
-vendor
+vendor/
+node_modules/
 *.log

@@ -1,4 +1,4 @@
-/*
+/*!
  * PASSY 2.x.x
  * Copyright 2017 Sefa Eyeoglu
  *
@@ -15,25 +15,13 @@
  * limitations under the License.
  */
 
-//Theme settings
-$colorBackground: #EEEEEE;
-$colorForeground: #FFFFFF;
-$colorText: #000000;
-$colorSecondaryText: #757575;
-$colorDivider: rgba(0, 0, 0, 0.06);
-$colorTheme: #FF5722;
-$colorThemeText: #FFFFFF;
-$colorAccent: #00BCD4;
-$colorAccentText: #FFFFFF;
+// Addons
+@import "../../node_modules/awesome-sass-easing/sass-easing";
 
-//Colors
-$colorDefault: #ffffff;
-$colorPrimary: $colorAccent;
-$colorSuccess: #4CAF50;
-$colorInfo: #00BCD4;
-$colorWarning: #FFC107;
-$colorDanger: #f44336;
+@import "base";
+@import "shadows";
 
-//Spinner
-$offsetSpinnerStroke: 187;
-$durationSpinner: 1.6s;
+@import "structure";
+@import "animations";
+
+@import "components/all";
