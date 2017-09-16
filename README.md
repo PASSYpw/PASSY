@@ -22,6 +22,10 @@ A password manager written in PHP to serve you over the internet.
  - Run the following command: `npm install`
  - Edit the `config.inc.php`
 
+Walkthrough (Ubuntu 16.04.3):
+[![Installation](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF.png)](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF)
+
+
 ## Installation (Pre 2.0.3)
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
