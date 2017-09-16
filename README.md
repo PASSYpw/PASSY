@@ -15,19 +15,19 @@ A password manager written in PHP to serve you over the internet.
  - PHP 7.0 curl module (only needed for ReCaptcha support)
  - [Composer](https://getcomposer.org/download/) (For Ubuntu 16.04 and newer: `apt install composer`)
  - [npm](https://docs.npmjs.com/getting-started/installing-node) (For Ubuntu 14.04 and newer: `apt install npm`)
- 
-## Installation (Pre 2.0.3)
- - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
- - Unzip it in your web root.
- - Run the following command: `composer install`
- - Edit the `config.inc.php`
- 
+
 ## Installation (2.0.3+)
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
  - Run the following command: `npm install`
  - Edit the `config.inc.php`
- 
+
+## Installation (Pre 2.0.3)
+ - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
+ - Unzip it in your web root.
+ - Run the following command: `composer install`
+ - Edit the `config.inc.php`
+
 ## Contributing
 More information on how to contribute to PASSY can be found under [CONTRIBUTING](CONTRIBUTING.md). Please also refer to the [CODE OF CONDUCT](CODE_OF_CONDUCT.md) file.
 

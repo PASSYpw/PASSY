@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "bff0a5675fd670013b26911fd150ca31",
+    "hash": "1e4fd86ae967c4d94ffb7a9bd9a27c3d",
     "content-hash": "8ddeef56de4ec09fd6c41ab4c4dd18dd",
     "packages": [
         {
@@ -435,12 +435,12 @@
             "source": {
                 "type": "git",
                 "url": "https://github.com/symfony/polyfill-util.git",
-                "reference": "5d2fc887042ffa5617c28d362f0f114a4c6048bf"
+                "reference": "67925d1cf0b84bd234a83bebf26d4eb281744c6d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/5d2fc887042ffa5617c28d362f0f114a4c6048bf",
-                "reference": "5d2fc887042ffa5617c28d362f0f114a4c6048bf",
+                "url": "https://api.github.com/repos/symfony/polyfill-util/zipball/67925d1cf0b84bd234a83bebf26d4eb281744c6d",
+                "reference": "67925d1cf0b84bd234a83bebf26d4eb281744c6d",
                 "shasum": ""
             },
             "require": {
@@ -479,7 +479,7 @@
                 "polyfill",
                 "shim"
             ],
-            "time": "2017-06-14 15:44:48"
+            "time": "2017-07-05 15:09:33"
         }
     ],
     "packages-dev": [],
