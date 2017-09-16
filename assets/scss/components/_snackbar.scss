@@ -15,18 +15,18 @@
  * limitations under the License.
  */
 
+
 .snackbar {
 	position: fixed;
 	width: auto;
-	height: 48px;
 	min-width: 288px;
 	max-width: 568px;
-	padding: 4px 10px 4px 24px;
+	padding: 10px 24px 10px 24px;
 	border-radius: 2px;
 	left: 20px;
 	color: #fff;
 	background: #212121;
-	z-index: 100;
+	z-index: 1000;
 	transition: bottom 300ms $easeInExpo;
 }
 
@@ -35,9 +35,10 @@
 }
 
 .snackbar > .btn-flat {
-	position: relative;
-	min-width: 0;
-	height: auto;
+	margin-top: -6px;
+	margin-right: -6px;
+	margin-bottom: -6px;
+	float: right;
 }
 
 @media screen and (max-width: 768px) {
@@ -45,6 +46,7 @@
 		width: 100%;
 		max-width: none;
 		left: 0;
+		border-radius: 0;
 	}
 
 	.snackbar.snackbar-show {

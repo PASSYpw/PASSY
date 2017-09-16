@@ -71,10 +71,6 @@ var passy = (function () {
 			buttonText = "Dismiss";
 		}
 
-		if (buttonText.length > 60) {
-			buttonText = buttonText.substr(0, 60);
-		}
-
 		const snackbarKill = setTimeout(function () {
 			killSnackbar(snackbar);
 		}, 5000);
