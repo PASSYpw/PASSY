@@ -10,7 +10,7 @@ Vagrant.configure("2") do |config|
 
 
 
-  config.vm.box = "debian/jessie64"
+  config.vm.box = "debian/stretch64"
 
   config.vm.box_check_update = true
 
@@ -28,11 +28,11 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     export DEBIAN_FRONTEND=noninteractive
-    echo "deb http://packages.dotdeb.org jessie all" > /etc/apt/sources.list.d/dotdeb.list
+    echo "deb http://packages.dotdeb.org stretch all" > /etc/apt/sources.list.d/dotdeb.list
     wget -qO - https://www.dotdeb.org/dotdeb.gpg | apt-key add -
     apt-get update
     apt-get upgrade -y
-    apt-get install -y apache2 libapache2-mod-php7.0 php7.0 php7.0-json php7.0-curl php7.0-mysql mysql-server
+    apt-get install -y apache2 libapache2-mod-php7.0 php7.0 php7.0-json php7.0-curl php7.0-mysql mariadb-server
     rm -rf /var/www/html
     ln -s /vagrant /var/www/html
     phpenmod mysqli

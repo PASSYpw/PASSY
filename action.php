@@ -173,7 +173,7 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 					$result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword, "CSV");
 					die($result->getJSONResponse());
 				} else {
-					$result = new Response(false, array("not_supported_format"));
+					$result = new Response(false, "not_supported_format");
 					die($result->getJSONResponse());
 				}
 

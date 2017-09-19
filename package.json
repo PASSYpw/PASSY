@@ -9,7 +9,6 @@
 	},
 	"devDependencies": {
 		"autoprefixer": "^7.1.4",
-		"gulp-csso": "^3.0.0",
 		"gulp-postcss": "^7.0.0",
 		"gulp-sass": "^3.1.0",
 		"gulp-sourcemaps": "^2.6.1",
@@ -18,7 +17,10 @@
 		"postcss-scss": "^1.0.2"
 	},
 	"scripts": {
-		"install": "composer install; gulp"
+		"install": "composer install"
+	},
+	"config": {
+		"unsafe-perm":true
 	},
 	"repository": {
 		"type": "git",

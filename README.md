@@ -1,14 +1,17 @@
 # PASSY
-[![Join our Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
+[![GitHub release](https://img.shields.io/github/release/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/releases)
+[![GitHub issues](https://img.shields.io/github/issues/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/issues)
+[![Join the Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
 
 [PASSY in the cloud](https://app.passy.pw)
 
 A password manager written in PHP to serve you over the internet.
 
 ## Requirements
- - MySQL Server (Maria DB not tested)
+ - MySQL Server (mysql-server, mariadb-server)
  - Web Server (nginx / Apache 2 / lighttpd / ...)
- - PHP 7.0 (PHP 5 not tested)
+ - PHP 7.0
  - PHP 7.0 openssl module (often included with PHP 7.0)
  - PHP 7.0 mysql module
  - PHP 7.0 json module
