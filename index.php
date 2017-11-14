@@ -17,7 +17,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 	<title><?= $customizationConfig["title"] ?></title>
 	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/material-icons.min.css" rel="stylesheet">
-	<link href="assets/css/ripple.min.css" rel="stylesheet">
+	<link href="node_modules/@passypw/wavesjs/dist/waves.css" rel="stylesheet">
 	<link href="assets/css/application.css" rel="stylesheet">
 </head>
 <body>
@@ -125,6 +125,26 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 
 	include_once __DIR__ . "/page/page_user_settings.inc.php";
 	?>
+
+</div>
+
+<div class="modal fade" id="modal_connection_lost" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content depth-5">
+			<div class="modal-header">
+				<h4 class="modal-title">Connection error!</h4>
+			</div>
+			<div class="modal-body">
+				<p>
+					Either the backend went offline or there is a problem with the server. Please contact the system
+					administrator. This may be temporary.
+				</p>
+			</div>
+			<div class="modal-footer">
+				<button type="submit" class="btn btn-flat btn-warning" onclick="location.reload()">Reload</button>
+			</div>
+		</div>
+	</div>
 </div>
 
 <!-- CONTEXTMENU -->
@@ -168,9 +188,9 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 		</div>
 	</div>
 </div>
-<script src="assets/js/jquery.min.js "></script>
-<script src="assets/js/bootstrap.min.js "></script>
-<script src="assets/js/ripple.min.js"></script>
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/@passypw/wavesjs/dist/waves.js"></script>
+<script src="assets/js/bootstrap.min.js"></script>
 <script src="assets/js/passy.js"></script>
 <?php
 if ($generalConfig["recaptcha"]["enabled"]) {

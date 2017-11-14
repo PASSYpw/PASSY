@@ -27,16 +27,7 @@ var passy = (function () {
 		},
 		latestStatus = null,
 		snackbarCount = 0,
-		spinnerSVG = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>',
-		rippleSettings = {
-			debug: false,
-			on: 'mousedown',
-			opacity: 0.3,
-			color: "auto",
-			multi: true,
-			duration: 0.3,
-			easing: 'linear'
-		};
+		spinnerSVG = '<svg class="spinner" width="20px" height="20px" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="path" fill="none" stroke-width="6" stroke-linecap="round" cx="33" cy="33" r="30"></circle></svg>';
 
 	//##################################################################################################################
 	//GLOBAL METHODS
@@ -304,14 +295,27 @@ var passy = (function () {
 
 	function fetchStatus(callback) {
 		request("a=status", function (data) {
-			if (!data.success)
-				alert("There has been a problem with the backend! Please contact the administrator.");
+			if (!data.success) {
+				showConnectionErrorModal();
+			} else {
+				hideConnectionErrorModal();
+			}
 			latestStatus = data.data;
 			if (callback != null)
 				callback(data);
 		}, function () {
-			alert("There has been a problem with the backend! Please contact the administrator.");
+			showConnectionErrorModal();
 		});
+	}
+
+	function showConnectionErrorModal() {
+		var modal = $("#modal_connection_lost");
+		modal.modal("show");
+	}
+
+	function hideConnectionErrorModal() {
+		var modal = $("#modal_connection_lost");
+		modal.modal("hide");
 	}
 
 	function registerPageListeners() {
@@ -320,8 +324,8 @@ var passy = (function () {
 			inputs = $(".text > input"),
 			contextMenu = $("#dropdownContextMenu");
 
-		$.ripple(".nav > li > a", rippleSettings);
-		$.ripple(".btn:not([disabled])", rippleSettings);
+		$.waves(".nav > li > a");
+		$.waves(".btn:not([disabled])");
 
 		inputs.each(function (index, elem) {
 			elem = $(elem);

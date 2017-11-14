@@ -1,17 +1,7 @@
-# -*- mode: ruby -*-
-# vi: set ft=ruby :
-
 Vagrant.configure("2") do |config|
   # https://docs.vagrantup.com.
 
-
-  # LINUX ONLY! ADD # to disable
-  config.vm.provider "lxc"
-
-
-
-  config.vm.box = "debian/stretch64"
-
+  config.vm.box = "ubuntu/xenial64"
   config.vm.box_check_update = true
 
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
@@ -20,9 +10,6 @@ Vagrant.configure("2") do |config|
   config.vm.network "forwarded_port", guest: 3306, host: 3366
 
   config.vm.provider "virtualbox" do |vb|
-    # Display the VirtualBox GUI when booting the machine
-    # vb.gui = true
-
     vb.memory = "2048"
   end
 

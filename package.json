@@ -1,14 +1,16 @@
 {
-	"name": "passy",
-	"version": "2.0.3",
+	"name": "@passypw/passy",
+	"version": "2.0.4",
 	"description": "A password manager written in PHP to serve you over the internet.",
-	"main": "index.js",
+	"main": "index.php",
 	"dependencies": {
-		"awesome-sass-easing": "^1.1.2",
-		"gulp": "^3.9.1"
+		"@passypw/wavesjs": "^2.0.0",
+		"jquery": "^3.2.1"
 	},
 	"devDependencies": {
 		"autoprefixer": "^7.1.4",
+		"awesome-sass-easing": "^1.1.2",
+		"gulp": "^3.9.1",
 		"gulp-postcss": "^7.0.0",
 		"gulp-sass": "^3.1.0",
 		"gulp-sourcemaps": "^2.6.1",
@@ -20,7 +22,7 @@
 		"install": "composer install"
 	},
 	"config": {
-		"unsafe-perm":true
+		"unsafe-perm": true
 	},
 	"repository": {
 		"type": "git",
@@ -31,7 +33,7 @@
 		"password",
 		"manager"
 	],
-	"authors": {
+	"author": {
 		"name": "Scrumplex",
 		"email": "contact@scrumplex.net",
 		"url": "https://scrumplex.net"
