@@ -1,9 +1,5 @@
 <?php
 
-// #############################################################
-// Edit under this line
-// 
-
 $mysqlConfig = array(
 
 	"host" => "localhost",
