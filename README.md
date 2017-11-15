@@ -2,7 +2,7 @@
 [![GitHub release](https://img.shields.io/github/release/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/releases)
 [![GitHub issues](https://img.shields.io/github/issues/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/issues)
 [![Join the Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
 
 [PASSY in the cloud](https://app.passy.pw)
 
@@ -45,5 +45,5 @@ Walkthrough (Ubuntu 16.04.3):
 More information on how to contribute to PASSY can be found under [CONTRIBUTING](CONTRIBUTING.md). Please also refer to the [CODE OF CONDUCT](CODE_OF_CONDUCT.md) file.
 
 ## License
-This project is licensed under the Apache License 2.0.
+This project is licensed under the GNU General Public License v3.
 You can find more information about it in the [LICENSE](LICENSE) file.
