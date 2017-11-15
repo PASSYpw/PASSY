@@ -15,11 +15,11 @@
  * limitations under the License.
  */
 
-var passy = (function () {
+const passy = (function () {
 	//##################################################################################################################
 	//GLOBAL VARS
 	//##################################################################################################################
-	var currentPage = "login",
+	let currentPage = "login",
 		currentScope = "logged_out",
 		switchingPage = false,
 		options = {
@@ -70,7 +70,7 @@ var passy = (function () {
 	}
 
 	function snackbar(content, buttonText, buttonCallback, buttonType) {
-		var snackbar = $('<div class="snackbar"></div>');
+		const snackbar = $('<div class="snackbar"></div>');
 
 		if (!buttonText) {
 			buttonText = "Dismiss";
@@ -90,7 +90,7 @@ var passy = (function () {
 			buttonType = "primary";
 		}
 
-		var button = $('<button class="btn btn-' + buttonType + ' btn-flat">' + buttonText + '</button>');
+		const button = $('<button class="btn btn-' + buttonType + ' btn-flat">' + buttonText + '</button>');
 		snackbar.append('<span class="snackbar-text">' + content + '</span>');
 		snackbar.append(button);
 
@@ -127,9 +127,9 @@ var passy = (function () {
 		const safeAlphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789",
 			specialAlphabet = "@#$%_-";
 
-		var string = "";
+		let string = "";
 
-		for (var i = 0; i < length; i++) {
+		for (let i = 0; i < length; i++) {
 			const alphabet = (i === 0 || i === length) ? safeAlphabet : safeAlphabet + specialAlphabet; // first and last letter is not a special char
 
 
@@ -142,12 +142,8 @@ var passy = (function () {
 		return Math.floor(Math.random() * max)
 	}
 
-	function startsWith(haystack, needle) {
-		return haystack.substr(0, needle.length) === needle;
-	}
-
 	function getInitialPage() {
-		var anchor = location.href.substring(location.href.indexOf("#"));
+		const anchor = location.href.substring(location.href.indexOf("#"));
 		if (anchor.substring(0, 4) === "#!p=" && anchor.length > 1) {
 			return anchor.substring(4);
 		}
@@ -158,7 +154,7 @@ var passy = (function () {
 		if (switchingPage)
 			return;
 		switchingPage = true;
-		var oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
+		const oldPage = $("#page_" + currentPage), newPage = $("#page_" + page), spinner = $(".load-spinner");
 		currentPage = page;
 		changePageScope(newPage.attr("data-apply-page-scope"));
 		hideAllModals();
@@ -172,7 +168,7 @@ var passy = (function () {
 			}
 		});
 
-		var show = function () {
+		const show = function () {
 			$("*[data-page-highlight]").each(function (index, element) {
 				const elem = $(element);
 				if (elem.attr("data-page-highlight") === page) {
@@ -184,7 +180,7 @@ var passy = (function () {
 			spinner.removeClass("shown");
 			newPage.fadeIn(300);
 			switchingPage = false;
-			if (!callback)
+			if (callback)
 				callback();
 		};
 
@@ -317,17 +313,15 @@ var passy = (function () {
 	}
 
 	function showConnectionErrorModal() {
-		var modal = $("#modal_connection_lost");
-		modal.modal("show");
+		$("#modal_connection_lost").modal("show");
 	}
 
 	function hideConnectionErrorModal() {
-		var modal = $("#modal_connection_lost");
-		modal.modal("hide");
+		$("#modal_connection_lost").modal("hide");
 	}
 
 	function registerPageListeners() {
-		var passwordTable = $('#tbodyPasswords'),
+		let passwordTable = $('#tbodyPasswords'),
 			archivedPasswordTable = $('#tbodyArchivedPasswords'),
 			inputs = $(".text > input"),
 			contextMenu = $("#dropdownContextMenu");
@@ -350,7 +344,7 @@ var passy = (function () {
 		});
 
 		$("*[data-random-value]").click(function () {
-			var me = $(this),
+			const me = $(this),
 				target = $(me.data("random-value"));
 			target.val(randomPassword(20));
 			target.attr("type", "text");
@@ -359,17 +353,17 @@ var passy = (function () {
 
 		$("*[data-next='tab']").click(function (e) {
 			e.preventDefault();
-			var me = $(this);
+			const me = $(this);
 			$(me.data("target") + ' > .active').next('li').find('a').trigger('click');
 		});
 
 		$("*[data-hide]").click(function () {
-			var me = $(this);
+			const me = $(this);
 			$(me.data("hide")).hide();
 		});
 
 		$("*[data-show]").click(function () {
-			var me = $(this);
+			const me = $(this);
 			$(me.data("show")).show();
 		});
 
@@ -380,7 +374,7 @@ var passy = (function () {
 			targetForm.submit();
 		});
 
-		var delay = 100;
+		let delay = 100;
 		$(".dropdown-menu").find("li").each(function (index, element) {
 			const elem = $(element);
 			elem.css({"animation-delay": delay + "ms"});
@@ -389,7 +383,7 @@ var passy = (function () {
 
 		$("input[data-search-in]").on("keyup", function () {
 			console.log("change");
-			var me = $(this),
+			let me = $(this),
 				query = me.val(),
 				target = $(me.attr("data-search-in"));
 
@@ -397,8 +391,8 @@ var passy = (function () {
 				target = target.find("tbody");
 
 
-			target.children("tr").each(function (index, child) {
-				var elem = $(child);
+			target.children("tr").each(function (index, element) {
+				const elem = $(element);
 
 				const visible = elem.attr("data-visible") === "true";
 				const userName = elem.children(0).text();
@@ -418,13 +412,13 @@ var passy = (function () {
 			});
 		});
 
-		var lastHeight = 0;
+		let lastHeight = 0;
 		const navbar = $(".navbar-fixed-top");
 		$(window).scroll(function () {
 			$(".dropdown.open").find(".dropdown-toggle").dropdown("toggle");
 			$(".contextmenu.open").removeClass("open");
 
-			var scrollTop = $(document).scrollTop(),
+			const scrollTop = $(document).scrollTop(),
 				firstHeight = navbar.children().first().outerHeight();
 
 			if (scrollTop < firstHeight) {
@@ -466,9 +460,9 @@ var passy = (function () {
 		$(document).on("contextmenu", function (e) {
 			if (e.shiftKey)
 				return;
-			var x = e.clientX,
+			const x = e.clientX,
 				y = e.clientY;
-			var elementUnderMouse = $(document.elementFromPoint(x, y));
+			const elementUnderMouse = $(document.elementFromPoint(x, y));
 			if (elementUnderMouse.hasClass("no-contextmenu") || elementUnderMouse.parents(".no-contextmenu").length > 0)
 				return;
 			if (elementUnderMouse.is("input") || elementUnderMouse.is("textarea") || elementUnderMouse.is("select"))
@@ -482,8 +476,8 @@ var passy = (function () {
 		});
 
 		$("*[data-to-page]").click(function (e) {
-			var me = $(this),
-				targetPage = me.attr("data-to-page");
+			const me = $(this);
+			let targetPage = me.attr("data-to-page");
 			e.preventDefault();
 			if (targetPage === "refresh")
 				targetPage = currentPage;
@@ -493,7 +487,7 @@ var passy = (function () {
 
 		$(window).on('popstate', function (e) {
 			console.log(e);
-			var state = e.originalEvent.state;
+			const state = e.originalEvent.state;
 			if (currentScope === state.scope)
 				loadPage(state.page, null, false);
 			else {
@@ -509,7 +503,7 @@ var passy = (function () {
 
 			const elem = $(this);
 
-			var data = new FormData();
+			const data = new FormData();
 			data.append("a", "misc/import");
 			const withPass = elem.find('input[name="with-pass"]')[0].checked;
 			if (withPass) {
@@ -546,10 +540,10 @@ var passy = (function () {
 		});
 
 		$("#page_user_settings_form_2fa_setup").submit(function (e) {
-			var me = $(this);
+			const me = $(this);
 			e.preventDefault();
-			var modal_content = me.parent().parent().parent().parent().parent();
-			var btn = modal_content.find("button");
+			const modal_content = me.parent().parent().parent().parent().parent(); // TODO: Make this prettier
+			const btn = modal_content.find("button");
 			btn.attr("disabled", "");
 			request(me.serialize(), function (data) {
 				btn.attr("disabled", null);
@@ -563,13 +557,13 @@ var passy = (function () {
 		});
 
 		$("#page_login_form_login").submit(function (e) {
-			var me = $(this);
+			let me = $(this);
 			e.preventDefault();
-			var data = me.serialize();
+			let data = me.serialize();
 			me.find("input").attr("disabled", "disabled");
 			me.find("button").attr("disabled", "disabled");
 			request(data, function (data) {
-				var modal = $("#page_login_modal_2fa"),
+				let modal = $("#page_login_modal_2fa"),
 					reset = true;
 				if (data.success) {
 					loadPage("password_list");
@@ -610,9 +604,9 @@ var passy = (function () {
 		});
 
 		$("#page_register_form_register").submit(function (e) {
-			var me = $(this);
 			e.preventDefault();
-			var data = me.serialize();
+			const me = $(this),
+				data = me.serialize();
 			me.find("input").attr("disabled", "disabled");
 			me.find("button").attr("disabled", "disabled");
 			request(data, function (data) {
@@ -655,9 +649,9 @@ var passy = (function () {
 		});
 
 		$("#page_password_list_form_add").submit(function (e) {
-			var me = $(this);
 			e.preventDefault();
-			var btn = me.find("button");
+			const me = $(this),
+				btn = me.find("button");
 			btn.attr("disabled", "");
 			request(me.serialize(), function (data) {
 				btn.attr("disabled", null);
@@ -673,9 +667,9 @@ var passy = (function () {
 		});
 
 		$("#page_password_list_form_edit").submit(function (e) {
-			var me = $(this);
 			e.preventDefault();
-			var btn = me.find("button");
+			const me = $(this),
+				btn = me.find("button");
 			btn.attr("disabled", "");
 			request(me.serialize(), function (data) {
 				btn.attr("disabled", null);
@@ -691,9 +685,9 @@ var passy = (function () {
 		});
 
 		$("#page_user_settings_form_change_password").submit(function (e) {
-			var me = $(this);
 			e.preventDefault();
-			var btn = me.find("button");
+			const me = $(this),
+				btn = me.find("button");
 			btn.attr("disabled", "");
 
 			request(me.serialize(), function (data) {
@@ -715,7 +709,7 @@ var passy = (function () {
 		});
 
 		$("#page_user_settings_form_2fa_disable").submit(function (e) {
-			var me = $(this),
+			const me = $(this),
 				submitBtn = me.data("submit-btn");
 			e.preventDefault();
 			submitBtn.attr("disabled", "");
@@ -739,9 +733,9 @@ var passy = (function () {
 		});
 
 		$("#page_user_settings_form_change_username").submit(function (e) {
-			var me = $(this);
 			e.preventDefault();
-			var btn = me.find("button");
+			const me = $(this),
+				btn = me.find("button");
 			btn.attr("disabled", "");
 
 			request(me.serialize(), function (data) {
@@ -769,7 +763,9 @@ var passy = (function () {
 
 		//PASSWORD ACTIONS
 		passwordTable.on('click', '*[data-password-action="show"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id"), parent = me.parent();
+			const me = $(this),
+				passwordId = me.data("password-id"),
+				parent = me.parent();
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
@@ -788,7 +784,9 @@ var passy = (function () {
 		});
 
 		passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id"), targetForm = $("#page_password_list_form_edit");
+			const me = $(this),
+				passwordId = me.data("password-id"),
+				targetForm = $("#page_password_list_form_edit");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
@@ -797,9 +795,9 @@ var passy = (function () {
 					me.html("<i class='material-icons'>edit</i>");
 					me.attr("disabled", null);
 					targetForm.find("input[name='id']").val(passwordId);
-					targetForm.find("input[name='username']").val(data.data.username).change();
-					targetForm.find("input[name='password']").val(data.data.password).change();
-					targetForm.find("input[name='description']").val(data.data.description).change();
+					targetForm.find("input[name='username']").val(data.data.username.raw).change();
+					targetForm.find("input[name='password']").val(data.data.password.raw).change();
+					targetForm.find("input[name='description']").val(data.data.description.raw).change();
 					$("#page_password_list_modal_edit").modal("show");
 				} else {
 					me.html("<i class='material-icons'>error</i>");
@@ -812,7 +810,8 @@ var passy = (function () {
 		});
 
 		passwordTable.on('click', '*[data-password-action="archive"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id");
+			const me = $(this),
+				passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
@@ -830,7 +829,8 @@ var passy = (function () {
 		});
 
 		archivedPasswordTable.on('click', '*[data-password-action="restore"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id");
+			const me = $(this),
+				passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
@@ -848,7 +848,8 @@ var passy = (function () {
 		});
 
 		archivedPasswordTable.on('click', '*[data-password-action="delete"]', function (e) {
-			var me = $(this), passwordId = me.data("password-id");
+			const me = $(this),
+				passwordId = me.data("password-id");
 			e.preventDefault();
 			me.attr("disabled", "");
 			me.html(spinnerSVG);
@@ -868,12 +869,12 @@ var passy = (function () {
 
 		// MODALS
 		$('.modal').on('shown.bs.modal', function () {
-			var me = $(this);
+			const me = $(this);
 			me.find('input[type=text],textarea,select').filter(':visible:first').focus();
 		});
 
 		$('#page_user_settings_modal_2fa_setup').on('show.bs.modal', function () {
-			var me = $(this);
+			const me = $(this);
 			$('#tab_2fa').find('a:first').tab('show');
 			me.find("form").each(function (i, elem) {
 				elem.reset();
@@ -901,11 +902,11 @@ var passy = (function () {
 //##################################################################################################################
 
 	function timeoutPassword(passwordObject, passwordId) {
-		var timeLeft = 60;
 		passwordObject.append(" <span id='timeLeft_" + passwordId + "' class='text-muted'></span>");
-		var timeLeftDisplay = passwordObject.find("#timeLeft_" + passwordId);
+		let timeLeft = 60;
+		const timeLeftDisplay = passwordObject.find("#timeLeft_" + passwordId);
 
-		var timer = function () {
+		const timer = function () {
 			timeLeftDisplay.html(timeLeft);
 			if (timeLeft === 10) {
 				timeLeftDisplay.addClass("text-danger");
@@ -918,30 +919,25 @@ var passy = (function () {
 		};
 		timer();
 
-		var timerId = setInterval(timer, 1000);
+		let timerId = setInterval(timer, 1000);
 	}
 
 
 	function fetchPasswords(callbackDone) {
-		var tableBody = $("#tbodyPasswords");
-		var tableArchivedBody = $("#tbodyArchivedPasswords");
+		const tablePasswordsBody = $("#tbodyPasswords"),
+			tableArchivedBody = $("#tbodyArchivedPasswords");
 		request("a=password/queryAll", function (data) {
-			var tbody = "",
-				tbodyArchived = "";
+			let contentPasswords = "",
+				contentArchivedPassword = "";
 			if (data.success) {
 				$.each(data.data, function (index, item) {
 
-					var description = "<i>None</i>";
-					if (item.description.raw)
-						description = item.description.safe;
+					const description = item.description.raw ? item.description.safe : "<i>None</i>";
+					const username = item.username.raw ? item.username.safe : "<i>None</i>";
 
-					var username = "<i>None</i>";
-					if (item.username.raw)
-						username = item.username.safe;
-
-					var row = "<tr data-visible='true' id='" + item.password_id + "'>";
+					let row = "<tr data-visible='true' id='" + item.password_id + "'>";
 					if (!item.archived) {
-						//Passwords page
+						// Passwords page
 						row += "<td><span class='force-select no-contextmenu'>" + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
@@ -955,27 +951,27 @@ var passy = (function () {
 							"</button>" +
 							"</td>";
 						row += "</tr>";
-						tbody += row;
+						contentPasswords += row;
 					} else {
-						//Archived page
+						// Archived page
 						row += "<td><span class='force-select no-contextmenu'> " + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
 						row += "<td>" + item.date_archived.pretty + "</td>";
 						row += "<td><button class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></button><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
 						row += "</tr>";
-						tbodyArchived += row;
+						contentArchivedPassword += row;
 					}
 				});
 			} else {
 				snackbar("There has been a problem with the server. Please try again later");
 			}
-			tableBody.html(tbody);
-			tableArchivedBody.html(tbodyArchived);
+			tablePasswordsBody.html(contentPasswords);
+			tableArchivedBody.html(contentArchivedPassword);
 			if (callbackDone)
 				callbackDone(data.msg);
 		}, function () {
-			tableBody.html("");
+			tablePasswordsBody.html("");
 			snackbar("There has been a problem with the server. Please try again later");
 			if (callbackDone)
 				callbackDone(false);
@@ -984,34 +980,27 @@ var passy = (function () {
 	}
 
 	function fetchIPLog(callbackDone) {
-		var tableBody = $("#tbodyLoginHistory");
+		const tableBody = $("#tbodyLoginHistory");
 		request("a=iplog/queryAll", function (data) {
+			let content = "";
 			if (data.success) {
-				var jsonData = data.data, tbody = "";
+				const jsonData = data.data;
 				$.each(jsonData, function (index, item) {
-					var row = "<tr>";
+					let row = "<tr>";
 
 					row += "<td><span>" + item.ip + "</span></td>";
 					row += "<td><span>" + item.user_agent + "</span></td>";
 					row += "<td><span>" + item.date.pretty + "</span></td>";
 					row += "</tr>";
 
-					tbody += row;
+					content += row;
 				});
-				tableBody.html(tbody);
-				if (callbackDone)
-					callbackDone();
 			} else {
-				if (data.msg === "not_authenticated") {
-					closeSession();
-					return;
-				}
-
-				tableBody.html("");
 				snackbar("There has been a problem with the server. Please try again later");
-				if (callbackDone)
-					callbackDone(data.msg);
 			}
+			tableBody.html(content);
+			if (callbackDone)
+				callbackDone();
 		}, function () {
 			tableBody.html("");
 			snackbar("There has been a problem with the server. Please try again later");
@@ -1022,7 +1011,7 @@ var passy = (function () {
 
 	return {
 		setOption: function (option, value) {
-			var previousValue = options[option];
+			const previousValue = options[option];
 			options[option] = value;
 			return "Previous value was " + previousValue;
 		}

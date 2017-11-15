@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const pump = require('pump');
 
 // CSS
-
 const postcss = require('gulp-postcss');
 const sourcemaps = require('gulp-sourcemaps');
 const sass = require('gulp-sass');

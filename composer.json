@@ -21,11 +21,9 @@
 			"email": "info@liz3.de"
 		}
 	],
-
 	"minimum-stability": "stable",
 	"require": {
-		"php" : ">=7.0.10",
-
+		"php": ">=7.0.10",
 		"google/recaptcha": "1.1.2",
 		"defuse/php-encryption": "2.0.3",
 		"league/csv": "^9.0",

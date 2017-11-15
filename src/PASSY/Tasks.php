@@ -15,12 +15,14 @@ class Tasks
 		PASSY::$tasks = $this;
 	}
 
-	function run() {
+	function run()
+	{
 		$this->clearArchivedPasswords();
 		$this->clearLoginHistory();
 	}
 
-	private function clearArchivedPasswords() {
+	private function clearArchivedPasswords()
+	{
 		$maxAge = 2 * 7 * 24 * 60 * 60; // two weeks in seconds
 		$deleteOlderThan = time() - $maxAge; // Now - 2 weeks
 
@@ -31,7 +33,8 @@ class Tasks
 		return $ps->execute();
 	}
 
-	private function clearLoginHistory() {
+	private function clearLoginHistory()
+	{
 		$maxAge = 2 * 7 * 24 * 60 * 60; // two weeks in seconds
 		$deleteOlderThan = time() - $maxAge; // Now - 2 weeks
 
@@ -41,8 +44,6 @@ class Tasks
 		$ps->bind_param("i", $deleteOlderThan);
 		return $ps->execute();
 	}
-
-
 
 
 }

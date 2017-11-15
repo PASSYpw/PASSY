@@ -115,6 +115,7 @@ class Database
 		$prepared->close();
 		return $arr;
 	}
+
 	/**
 	 * Getter function for current mysqli instance. Connects to database if not initialized.
 	 * @author Sefa Eyeoglu <contact@scrumplex.net>

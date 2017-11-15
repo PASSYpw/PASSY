@@ -22,7 +22,8 @@ class Util
 		return $length == 0 ? true : (substr($haystack, -$length) === $needle);
 	}
 
-	static function filterStrings($string) {
+	static function filterStrings($string)
+	{
 		return htmlspecialchars($string);
 	}
 

@@ -35,7 +35,8 @@
 			</div>
 		</div>
 	</div>
-	<button class="btn btn-fab" id="btnAdd" title="Add password" data-toggle="modal" data-target="#page_password_list_modal_add">
+	<button class="btn btn-fab" id="btnAdd" title="Add password" data-toggle="modal"
+	        data-target="#page_password_list_modal_add">
 		<i class="material-icons">add</i>
 	</button>
 
@@ -61,7 +62,8 @@
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
-								<input type="password" tabindex="2" id="addPasswordInput" class="form-control" title="Password"
+								<input type="password" tabindex="2" id="addPasswordInput" class="form-control"
+								       title="Password"
 								       name="password" required autocomplete="off"/>
 								<label>Password</label>
 							</div>
@@ -99,15 +101,18 @@
 						</p>
 						<div class="form-group">
 							<div class="text">
-								<input type="text" class="form-control" title="Username" name="username" autocomplete="off"/>
+								<input type="text" class="form-control" title="Username" name="username"
+								       autocomplete="off"/>
 								<label>Username (optional)</label>
 							</div>
 							<div class="text">
-								<input type="text" class="form-control" title="Password" name="password" required autocomplete="off"/>
+								<input type="text" class="form-control" title="Password" name="password" required
+								       autocomplete="off"/>
 								<label>Password</label>
 							</div>
 							<div class="text">
-								<input type="text" class="form-control" title="Description" name="description" autocomplete="off"/>
+								<input type="text" class="form-control" title="Description" name="description"
+								       autocomplete="off"/>
 								<label>Description (optional)</label>
 							</div>
 						</div>

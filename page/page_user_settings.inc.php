@@ -53,7 +53,9 @@
 					<button id="btn2faSetupModalToggle" class="btn btn-primary" data-toggle="modal"
 					        data-target="#page_user_settings_modal_2fa_setup">Enable
 					</button>
-					<button data-toggle="modal" data-target="#page_user_settings_modal_2fa_disable" id="btn2faDisableModalToggle" class="btn btn-danger">Disable</button>
+					<button data-toggle="modal" data-target="#page_user_settings_modal_2fa_disable"
+					        id="btn2faDisableModalToggle" class="btn btn-danger">Disable
+					</button>
 				</div>
 			</div>
 			<div class="col-xs-12">
@@ -234,7 +236,8 @@
 				<button type="submit" id="btn_2fa_next" data-target="#tab_2fa" data-next="tab"
 				        class="btn btn-flat btn-primary">Next
 				</button>
-				<button type="submit" id="btn_2fa_enable_submit" data-submit="#page_user_settings_form_2fa_setup" class="btn btn-flat btn-primary">Submit
+				<button type="submit" id="btn_2fa_enable_submit" data-submit="#page_user_settings_form_2fa_setup"
+				        class="btn btn-flat btn-primary">Submit
 				</button>
 				<button type="submit" id="btn_2fa_finish" class="btn btn-flat btn-primary" data-dismiss="modal">Finish
 				</button>
@@ -259,7 +262,8 @@
 					</p>
 					<div class="form-group clearfix">
 						<div class="text">
-							<input type="text" class="form-control" title="Authentication Code" name="2faCode" autocomplete="off"/>
+							<input type="text" class="form-control" title="Authentication Code" name="2faCode"
+							       autocomplete="off"/>
 							<label>Authentication Code</label>
 						</div>
 					</div>
@@ -267,7 +271,9 @@
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-flat btn-primary" data-dismiss="modal">Cancel</button>
-				<button type="submit" class="btn btn-flat btn-danger" data-submit="#page_user_settings_form_2fa_disable">Disable</button>
+				<button type="submit" class="btn btn-flat btn-danger"
+				        data-submit="#page_user_settings_form_2fa_disable">Disable
+				</button>
 			</div>
 		</div>
 	</div>

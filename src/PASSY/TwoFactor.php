@@ -81,7 +81,8 @@ class TwoFactor
 		return new Response(false, "database_error");
 	}
 
-	function isEnabled($userId) {
+	function isEnabled($userId)
+	{
 		$mysql = PASSY::$db->getInstance();
 		$ps = $mysql->prepare("SELECT `DATE` FROM `twofactor` WHERE `USERID` = (?)");
 		$ps->bind_param("s", $userId);

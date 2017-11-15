@@ -24,9 +24,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 <nav class="navbar navbar-default navbar-fixed-top">
 	<div class="container">
 		<div class="navbar-header">
-			<!-- @formatter:off -->
-            <span class="navbar-brand"><?= $customizationConfig["title"] ?></span>
-            <!-- @formatter:on -->
+			<span class="navbar-brand"><?= $customizationConfig["title"] ?></span>
 		</div>
 		<ul class="nav navbar-nav navbar-right">
 			<li>
@@ -128,7 +126,8 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 
 </div>
 
-<div class="modal fade" id="modal_connection_lost" data-keyboard="false" data-backdrop="static" tabindex="-1" role="dialog">
+<div class="modal fade" id="modal_connection_lost" data-keyboard="false" data-backdrop="static" tabindex="-1"
+     role="dialog">
 	<div class="modal-dialog" role="document">
 		<div class="modal-content depth-5">
 			<div class="modal-header">
