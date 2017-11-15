@@ -1,20 +1,46 @@
-var gulp = require('gulp');
-var postcss = require('gulp-postcss');
-var sourcemaps = require('gulp-sourcemaps');
-var sass = require('gulp-sass');
+const gulp = require('gulp');
+const pump = require('pump');
 
-gulp.task('css', function () {
-	return gulp.src('./assets/scss/application.scss')
-		.pipe(sourcemaps.init())
-		.pipe(postcss([
-			require('autoprefixer'),
-			require('postcss-csso')
-		], {
-			syntax: require('postcss-scss')
-		}))
-		.pipe(sass.sync({outputStyle: 'compressed'}).on('error', sass.logError))
-		.pipe(sourcemaps.write())
-		.pipe(gulp.dest('./assets/css'));
+// CSS
+
+const postcss = require('gulp-postcss');
+const sourcemaps = require('gulp-sourcemaps');
+const sass = require('gulp-sass');
+
+// JS
+const uglify = require('gulp-uglify');
+const babel = require('gulp-babel');
+
+gulp.task('css', function (cb) {
+	pump([
+			gulp.src('assets/src/scss/application.scss'),
+			sourcemaps.init(),
+			postcss([
+				require('autoprefixer'),
+				require('postcss-csso')
+			], {
+				syntax: require('postcss-scss')
+			}),
+			sass({outputStyle: 'compressed'}),
+			sourcemaps.write(),
+			gulp.dest('assets/css')
+		],
+		cb);
+
+});
+gulp.task('js', function (cb) {
+	pump([
+			gulp.src('assets/src/js/*.js'),
+			sourcemaps.init(),
+			babel({
+				presets: ['env']
+			}),
+			uglify(),
+			sourcemaps.write(),
+			gulp.dest('assets/js')
+		],
+		cb);
+
 });
 
-gulp.task('default', ['css']);
+gulp.task('default', ['css', 'js']);

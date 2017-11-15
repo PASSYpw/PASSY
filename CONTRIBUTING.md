@@ -4,6 +4,11 @@ When contributing to this repository, please first discuss the change you wish t
 
 Please note we have a [code of conduct](CODE_OF_CONDUCT.md), please follow it in all your interactions with the project.
 
+## Development Workflow
+We use [Yarn](https://yarnpkg.com) to manage dependencies for frontend as well as development.
+Additionally we use [Composer](https://getcomposer.org/) to manage backend dependencies (PHP).
+We use SCSS as a CSS preprocessor and Babel as a JavaScript preprocessor.
+
 ## Pull Request Process
 
 1. Ensure, that no IDE / editor related files were pushed. ([How to use .gitignore](https://git-scm.com/book/en/v2/Git-Basics-Recording-Changes-to-the-Repository#_ignoring))
