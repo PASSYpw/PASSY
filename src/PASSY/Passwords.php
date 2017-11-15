@@ -208,33 +208,43 @@ class Passwords
 			$row = $result->fetch_assoc();
 
 			$username = $row["USERNAME"];
-			$description = $row["DESCRIPTION"];
 			if (strlen($username) == 0)
 				$username = null;
 
+			$description = $row["DESCRIPTION"];
 			if (strlen($description) == 0)
 				$description = null;
 
 			$entry = array(
-				"password" => null,
-				"password_safe" => null,
-				"password_id" => $row["ID"],
-				"username" => $username,
-				"username_safe" => Util::filterStrings($username),
-				"description" => $description,
-				"description_safe" => Util::filterStrings($description),
-				"date_added" => $row["DATE"],
-				"date_added_readable" => Format::formatTime($row["DATE"]),
 				"user_id" => $row["USERID"],
+				"password" => array(
+					"raw" => null,
+					"safe" => null
+				),
+				"password_id" => $row["ID"],
+				"username" => array(
+					"raw" => $username,
+					"safe" => Util::filterStrings($username)
+				),
+				"description" => array(
+					"raw" => $description,
+					"safe" => Util::filterStrings($description)
+				),
+				"date_added" => array(
+					"timestamp" => $row["DATE"],
+					"pretty" => Format::formatTime($row["DATE"])
+				),
 				"archived" => $row["ARCHIVED_DATE"] !== null,
-				"date_archived" => $row["ARCHIVED_DATE"],
-				"date_archived_readable" => Format::formatTime($row["ARCHIVED_DATE"])
+				"date_archived" => array(
+					"timestamp" => $row["DATE"],
+					"pretty" => Format::formatTime($row["DATE"])
+				),
 			);
 
 			if (isset($masterPassword)) {
 				$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
-				$entry["password"] = $decryptedPassword;
-				$entry["password_safe"] = Util::filterStrings($decryptedPassword);
+				$entry["password"]["raw"] = $decryptedPassword;
+				$entry["password"]["safe"] = Util::filterStrings($decryptedPassword);
 			}
 			return new Response(true, $entry);
 		}
@@ -263,34 +273,45 @@ class Passwords
 			$data = array();
 			if ($result->num_rows > 0) {
 				while ($row = $result->fetch_assoc()) {
+
 					$username = $row["USERNAME"];
-					$description = $row["DESCRIPTION"];
 					if (strlen($username) == 0)
 						$username = null;
 
+					$description = $row["DESCRIPTION"];
 					if (strlen($description) == 0)
 						$description = null;
 
 					$entry = array(
-						"password" => null,
-						"password_safe" => null,
-						"password_id" => $row["ID"],
-						"username" => $username,
-						"username_safe" => Util::filterStrings($username),
-						"description" => $description,
-						"description_safe" => Util::filterStrings($description),
-						"date_added" => $row["DATE"],
-						"date_added_readable" => Format::formatTime($row["DATE"]),
 						"user_id" => $row["USERID"],
+						"password" => array(
+							"raw" => null,
+							"safe" => null
+						),
+						"password_id" => $row["ID"],
+						"username" => array(
+							"raw" => $username,
+							"safe" => Util::filterStrings($username)
+						),
+						"description" => array(
+							"raw" => $description,
+							"safe" => Util::filterStrings($description)
+						),
+						"date_added" => array(
+							"timestamp" => $row["DATE"],
+							"pretty" => Format::formatTime($row["DATE"])
+						),
 						"archived" => $row["ARCHIVED_DATE"] !== null,
-						"date_archived" => $row["ARCHIVED_DATE"],
-						"date_archived_readable" => Format::formatTime($row["ARCHIVED_DATE"])
+						"date_archived" => array(
+							"timestamp" => $row["ARCHIVED_DATE"],
+							"pretty" => Format::formatTime($row["ARCHIVED_DATE"])
+						),
 					);
 
 					if (isset($masterPassword)) {
 						$decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
-						$entry["password"] = $decryptedPassword;
-						$entry["password_safe"] = Util::filterStrings($decryptedPassword);
+						$entry["password"]["raw"] = $decryptedPassword;
+						$entry["password"]["safe"] = Util::filterStrings($decryptedPassword);
 					}
 					array_push($data, $entry);
 				}

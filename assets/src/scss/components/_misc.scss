@@ -121,6 +121,19 @@
 	height: 56px;
 }
 
+.table > tbody:empty {
+	position: relative;
+}
+
+.table > tbody:empty::after {
+	content: 'Empty';
+	position: absolute;
+	left: 50%;
+	transform: translateX(-50%);
+	text-align: center;
+	color: rgba($colorText, .75);
+}
+
 @media screen and (max-width: 767px) {
 	.table-responsive {
 		border: none;

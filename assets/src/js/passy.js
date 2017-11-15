@@ -34,31 +34,45 @@ var passy = (function () {
 	//##################################################################################################################
 
 	function request(data, onSuccess, onFailure, options) {
-		if (data === null || onSuccess === null) {
+		if (!data)
 			return null;
-		}
 
-		if (onFailure === null) {
+		if (!onFailure) {
 			onFailure = function () {
-				snackbar("There has been a problem with the server.");
+				snackbar("There has been a problem with the server. Please try again later.");
 			}
 		}
 
-		if (options === null || options === undefined)
+		if (!options)
 			options = {};
 
 		options.url = "action.php";
 		options.method = "POST";
 		options.data = data;
-		options.success = onSuccess;
-		options.error = onFailure;
+		options.success = function (data, textStatus, jqXHR) {
+			if (!data.success) {
+				switch (data.msg) {
+					case "not_authenticated":
+						closeSession();
+						return;
+
+					case "database_error":
+						snackbar("There has been a problem with the database. Please try again later.");
+						return;
+				}
+			}
+			onSuccess(data, textStatus, jqXHR);
+		};
+		options.error = function (jqXHR, textStatus, errorThrown) {
+			onFailure(jqXHR, textStatus, errorThrown);
+		};
 		return $.ajax(options);
 	}
 
 	function snackbar(content, buttonText, buttonCallback, buttonType) {
 		var snackbar = $('<div class="snackbar"></div>');
 
-		if (buttonText == null) {
+		if (!buttonText) {
 			buttonText = "Dismiss";
 		}
 
@@ -66,13 +80,13 @@ var passy = (function () {
 			killSnackbar(snackbar);
 		}, 5000);
 
-		if (buttonCallback == null) {
+		if (!buttonCallback) {
 			buttonCallback = function () {
 				clearTimeout(snackbarKill);
 				killSnackbar(snackbar);
 			};
 		}
-		if (buttonType == null) {
+		if (!buttonType) {
 			buttonType = "primary";
 		}
 
@@ -124,18 +138,12 @@ var passy = (function () {
 		return string;
 	}
 
-	function randomNumber(max) {
-		if (max === null)
-			max = 1;
+	function randomNumber(max = 1) {
 		return Math.floor(Math.random() * max)
 	}
 
 	function startsWith(haystack, needle) {
 		return haystack.substr(0, needle.length) === needle;
-	}
-
-	function endsWith(haystack, needle) {
-		return haystack.substr(haystack.length - needle.length) === needle;
 	}
 
 	function getInitialPage() {
@@ -157,16 +165,16 @@ var passy = (function () {
 
 		spinner.addClass("shown");
 
-		$("*[data-page-highlight]").each(function (index, elem) {
-			elem = $(elem);
+		$("*[data-page-highlight]").each(function (index, element) {
+			const elem = $(element);
 			if (elem.attr("data-page-highlight") !== page) {
 				elem.removeClass("active");
 			}
 		});
 
 		var show = function () {
-			$("*[data-page-highlight]").each(function (index, elem) {
-				elem = $(elem);
+			$("*[data-page-highlight]").each(function (index, element) {
+				const elem = $(element);
 				if (elem.attr("data-page-highlight") === page) {
 					elem.addClass("active");
 				}
@@ -176,7 +184,7 @@ var passy = (function () {
 			spinner.removeClass("shown");
 			newPage.fadeIn(300);
 			switchingPage = false;
-			if (callback != null)
+			if (!callback)
 				callback();
 		};
 
@@ -187,7 +195,7 @@ var passy = (function () {
 				fetchIPLog(show);
 			} else if (page === "user_settings") {
 				fetchStatus(function () {
-					if (latestStatus != null) {
+					if (!latestStatus) {
 						// 2fa Status
 						const twoFactorEnableButton = $("#btn2faSetupModalToggle"),
 							twoFactorDisableButton = $("#btn2faDisableModalToggle"),
@@ -237,8 +245,8 @@ var passy = (function () {
 
 	function changePageScope(scope) {
 		currentScope = scope;
-		$("*[data-page-scope]").each(function (i, elem) {
-			elem = $(elem);
+		$("*[data-page-scope]").each(function (i, element) {
+			const elem = $(element);
 			if (elem.data("page-scope") !== scope) {
 				elem.hide();
 			} else {
@@ -262,14 +270,14 @@ var passy = (function () {
 		}, false);
 	}
 
-	//##################################################################################################################
-	//DOCUMENT LOAD
-	//##################################################################################################################
+//##################################################################################################################
+//DOCUMENT LOAD
+//##################################################################################################################
 	$(function () {
 		currentPage = getInitialPage();
 		fetchStatus(function () {
 			if (latestStatus.logged_in && currentScope === "logged_out") {
-				if (currentPage == "login" || currentPage == "register")
+				if (currentPage === "login" || currentPage === "register")
 					currentPage = "password_list"; // load password list if already authenticated
 
 			} else if (!latestStatus.logged_in && currentScope === "logged_in") {
@@ -301,7 +309,7 @@ var passy = (function () {
 				hideConnectionErrorModal();
 			}
 			latestStatus = data.data;
-			if (callback != null)
+			if (callback)
 				callback(data);
 		}, function () {
 			showConnectionErrorModal();
@@ -327,8 +335,8 @@ var passy = (function () {
 		$.waves(".nav > li > a");
 		$.waves(".btn:not([disabled])");
 
-		inputs.each(function (index, elem) {
-			elem = $(elem);
+		inputs.each(function (index, element) {
+			const elem = $(element);
 			if (elem.val().length > 0)
 				elem.addClass("hastext");
 		});
@@ -373,9 +381,9 @@ var passy = (function () {
 		});
 
 		var delay = 100;
-		$(".dropdown-menu").find("li").each(function (index, item) {
-			item = $(item);
-			item.css({"animation-delay": delay + "ms"});
+		$(".dropdown-menu").find("li").each(function (index, element) {
+			const elem = $(element);
+			elem.css({"animation-delay": delay + "ms"});
 			delay += 25;
 		});
 
@@ -436,7 +444,7 @@ var passy = (function () {
 		}).blur(function () {
 			if (!options.fade_on_focus_loss)
 				return;
-			if ($('iframe:hover').length == 0)
+			if ($('iframe:hover').length === 0)
 				$(".content").addClass("content-hidden");
 		});
 
@@ -499,12 +507,14 @@ var passy = (function () {
 		$("#page_user_settings_form_import").submit(function (e) {
 			e.preventDefault();
 
+			const elem = $(this);
+
 			var data = new FormData();
 			data.append("a", "misc/import");
-			const withPass = $("#page_user_settings_form_import").find('input[name="with-pass"]')[0].checked;
+			const withPass = elem.find('input[name="with-pass"]')[0].checked;
 			if (withPass) {
 				data.append("with-pass", "on");
-				data.append("pass", $("#page_user_settings_form_import").find('input[name="pass"]').val());
+				data.append("pass", elem.find('input[name="pass"]').val());
 			}
 
 			$.each($('#import-file')[0].files, function (i, file) {
@@ -519,21 +529,18 @@ var passy = (function () {
 				data: data,
 				success: function (data) {
 					if (data.success) {
-						if (data.data.imported == 0) {
-							snackbar("The imported data was empty!")
+						if (data.data.imported === 0) {
+							snackbar("Nothing has been imported.")
 						} else {
-							snackbar("The import was successful!")
+							snackbar("The import was successful.")
 						}
 						setTimeout(
 							function () {
 								loadPage("password_list");
 							}, 800)
 					} else {
-						snackbar("The import failed! Please contact the administrator.")
+						snackbar("There has been a problem with the server. Please try again later")
 					}
-				},
-				error: function () {
-					snackbar("There has been a problem with the server.");
 				}
 			});
 		});
@@ -551,11 +558,6 @@ var passy = (function () {
 					me.find("input.hastext").change();
 					$('#tab_2fa').find('a:last').click();
 					refresh();
-				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
 				}
 			})
 		});
@@ -573,20 +575,23 @@ var passy = (function () {
 					loadPage("password_list");
 					modal.find("input").attr("disabled", "");
 				} else {
-					if (data.msg == "already_logged_in") {
-						loadPage("password_list");
-					} else if (data.msg == "invalid_credentials") {
-						snackbar("The entered credentials do not match any account.")
-					} else if (data.msg == "database_error") {
-						snackbar("There has been a problem with the database.")
-					} else if (data.msg == "two_factor_needed") {
-						modal.find("input").attr("disabled", null);
-						modal.modal("show");
-						reset = false;
-					} else if (data.msg == "invalid_code") {
-						snackbar("The entered two-factor-authentication code is invalid!");
-						modal.find("input").attr("disabled", null);
-						reset = false;
+					switch (data.msg) {
+						case "already_logged_in":
+							loadPage("password_list");
+							break;
+						case "invalid_credentials":
+							snackbar("The entered credentials do not match any account.");
+							break;
+						case "two_factor_needed":
+							modal.find("input").attr("disabled", null);
+							modal.modal("show");
+							reset = false;
+							break;
+						case "invalid_code":
+							snackbar("The entered two-factor-authentication code is invalid!");
+							modal.find("input").attr("disabled", null);
+							reset = false;
+							break;
 					}
 				}
 				if (reset)
@@ -615,16 +620,19 @@ var passy = (function () {
 					loadPage("login");
 					snackbar("Your account has been created. You may log in.")
 				} else {
-					if (data.msg == "already_logged_in") {
-						loadPage("password_list");
-					} else if (data.msg == "passwords_not_matching") {
-						snackbar("The entered passwords do not match.")
-					} else if (data.msg == "recaptcha_fail") {
-						snackbar("Captcha could not be verified.")
-					} else if (data.msg == "username_exists") {
-						snackbar("The username is occupied.")
-					} else if (data.msg == "database_error") {
-						snackbar("There has been a problem with the database.")
+					switch (data.msg) {
+						case "already_logged_in":
+							loadPage("password_list");
+							break;
+						case "passwords_not_matching":
+							snackbar("The entered passwords do not match.");
+							break;
+						case "recaptcha_fail":
+							snackbar("Captcha could not be verified.");
+							break;
+						case "username_exists":
+							snackbar("The username is occupied.");
+							break;
 					}
 				}
 				me[0].reset();
@@ -632,7 +640,7 @@ var passy = (function () {
 				me.find("input").attr("disabled", null);
 				me.find("button").attr("disabled", null);
 
-				if (typeof grecaptcha !== 'undefined')
+				if (!grecaptcha)
 					grecaptcha.reset();
 			}, function () {
 				snackbar("There has been a problem with the server.");
@@ -641,7 +649,7 @@ var passy = (function () {
 				me.find("input").attr("disabled", null);
 				me.find("button").attr("disabled", null);
 
-				if (typeof grecaptcha !== 'undefined')
+				if (!grecaptcha)
 					grecaptcha.reset();
 			})
 		});
@@ -659,15 +667,7 @@ var passy = (function () {
 					refresh();
 					hideAllModals();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					if (startsWith(data.msg, "database_")) {
-						snackbar("There has been a problem with the database.")
-					} else {
-						snackbar("There has been a problem with the server.");
-					}
+					snackbar("There has been a problem with the server. Please try again later");
 				}
 			})
 		});
@@ -685,15 +685,7 @@ var passy = (function () {
 					refresh();
 					hideAllModals();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					if (startsWith(data.msg, "database_")) {
-						snackbar("There has been a problem with the database.")
-					} else {
-						snackbar("There has been a problem with the server.")
-					}
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			})
 		});
@@ -711,18 +703,12 @@ var passy = (function () {
 					me.find("input").change();
 					doLogout();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					if (startsWith(data.msg, "database_")) {
-						snackbar("There has been a problem with the database.")
-					} else if (data.msg == "invalid_credentials") {
+					if (data.msg === "invalid_credentials") {
 						snackbar("Your current password is not correct.")
-					} else if (data.msg == "passwords_not_matching") {
+					} else if (data.msg === "passwords_not_matching") {
 						snackbar("Your new passwords do not match.")
 					} else {
-						snackbar("There has been a problem with the server.")
+						snackbar("There has been a problem with the server. Please try again later")
 					}
 				}
 			});
@@ -743,16 +729,10 @@ var passy = (function () {
 					refresh();
 					hideAllModals();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					if (startsWith(data.msg, "database_")) {
-						snackbar("There has been a problem with the database.")
-					} else if (data.msg == "invalid_code") {
+					if (data.msg === "invalid_code") {
 						snackbar("The entered two-factor-authentication code is invalid!")
 					} else {
-						snackbar("There has been a problem with the server.")
+						snackbar("There has been a problem with the server. Please try again later")
 					}
 				}
 			});
@@ -771,18 +751,12 @@ var passy = (function () {
 					me.find("input").change();
 					doLogout();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					if (startsWith(data.msg, "database_")) {
-						snackbar("There has been a problem with the database.")
-					} else if (data.msg == "username_exists") {
+					if (data.msg === "username_exists") {
 						snackbar("The username is occupied.")
-					} else if (data.msg == "invalid_credentials") {
+					} else if (data.msg === "invalid_credentials") {
 						snackbar("Your current password is not correct.")
 					} else {
-						snackbar("There has been a problem with the server.")
+						snackbar("There has been a problem with the server. Please try again later")
 					}
 				}
 			});
@@ -801,17 +775,15 @@ var passy = (function () {
 			me.html(spinnerSVG);
 			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
-					parent.html("<span class='force-select no-contextmenu'>" + data.data.password_safe + "</span>");
+					parent.html("<span class='force-select no-contextmenu'>" + data.data.password.safe + "</span>");
 					timeoutPassword(parent, passwordId);
 				} else {
-					if (data.msg === "not_authenticated") {
-						closeSession();
-						return;
-					}
-					me.html("<i class='material-icons'>error</i>")
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>")
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
 
@@ -830,14 +802,12 @@ var passy = (function () {
 					targetForm.find("input[name='description']").val(data.data.description).change();
 					$("#page_password_list_modal_edit").modal("show");
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					me.html("<i class='material-icons'>error</i>")
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>")
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
 
@@ -850,14 +820,12 @@ var passy = (function () {
 				if (data.success) {
 					refresh();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					me.html("<i class='material-icons'>error</i>")
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>")
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
 
@@ -870,14 +838,12 @@ var passy = (function () {
 				if (data.success) {
 					refresh();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					me.html("<i class='material-icons'>error</i>")
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>")
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
 
@@ -890,14 +856,12 @@ var passy = (function () {
 				if (data.success) {
 					refresh();
 				} else {
-					if (data.msg == "not_authenticated") {
-						closeSession();
-						return;
-					}
-					me.html("<i class='material-icons'>error</i>")
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>")
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
 
@@ -924,9 +888,7 @@ var passy = (function () {
 					$("#img_2fa_key").attr("src", data.data.qrCodeUrl);
 					me.find("input[name='2faPrivateKey']").val(data.data.privateKey).change();
 				} else {
-					if (data.msg === "not_authenticated") {
-						closeSession();
-					}
+					snackbar("There has been a problem with the server. Please try again later")
 				}
 			});
 
@@ -934,9 +896,9 @@ var passy = (function () {
 	} // END registerPageListeners()
 
 
-	//##################################################################################################################
-	//PAGE SPECIFIC METHODS
-	//##################################################################################################################
+//##################################################################################################################
+//PAGE SPECIFIC METHODS
+//##################################################################################################################
 
 	function timeoutPassword(passwordObject, passwordId) {
 		var timeLeft = 60;
@@ -964,19 +926,18 @@ var passy = (function () {
 		var tableBody = $("#tbodyPasswords");
 		var tableArchivedBody = $("#tbodyArchivedPasswords");
 		request("a=password/queryAll", function (data) {
-
+			var tbody = "",
+				tbodyArchived = "";
 			if (data.success) {
-				var jsonData = data.data, tbody = "", tbodyArchived = "";
-				$.each(jsonData, function (index, item) {
-					var description = "<i>None</i>";
-					if (item.description !== null)
-						description = item.description_safe;
+				$.each(data.data, function (index, item) {
 
+					var description = "<i>None</i>";
+					if (item.description.raw)
+						description = item.description.safe;
 
 					var username = "<i>None</i>";
-					if (item.username !== null)
-						username = item.username_safe;
-
+					if (item.username.raw)
+						username = item.username.safe;
 
 					var row = "<tr data-visible='true' id='" + item.password_id + "'>";
 					if (!item.archived) {
@@ -984,7 +945,7 @@ var passy = (function () {
 						row += "<td><span class='force-select no-contextmenu'>" + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
-						row += "<td>" + item.date_added_readable + "</td>";
+						row += "<td>" + item.date_added.pretty + "</td>";
 						row += "<td>" +
 							"<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
 							"<i class='material-icons'>edit</i>" +
@@ -1000,35 +961,23 @@ var passy = (function () {
 						row += "<td><span class='force-select no-contextmenu'> " + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
 						row += "<td>" + description + "</td>";
-						row += "<td>" + item.date_archived_readable + "</td>";
+						row += "<td>" + item.date_archived.pretty + "</td>";
 						row += "<td><button class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></button><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
 						row += "</tr>";
 						tbodyArchived += row;
 					}
 				});
-				if (tbody.length == 0) {
-					tbody = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
-				}
-				if (tbodyArchived.length == 0) {
-					tbodyArchived = "<tr><td>Empty</td><td></td><td></td><td></td><td></td></tr>";
-				}
-				tableBody.html(tbody);
-				tableArchivedBody.html(tbodyArchived);
-				if (callbackDone !== null)
-					callbackDone();
 			} else {
-				if (data.msg === "not_authenticated") {
-					closeSession();
-					return;
-				}
-
-				tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td><td></td></tr>");
-				if (callbackDone !== null)
-					callbackDone(data.msg);
+				snackbar("There has been a problem with the server. Please try again later");
 			}
+			tableBody.html(tbody);
+			tableArchivedBody.html(tbodyArchived);
+			if (callbackDone)
+				callbackDone(data.msg);
 		}, function () {
-			tableBody.html("<tr><td>Error</td><td></td><td></td><td></td><td></td></tr>");
-			if (callbackDone !== null)
+			tableBody.html("");
+			snackbar("There has been a problem with the server. Please try again later");
+			if (callbackDone)
 				callbackDone(false);
 		});
 
@@ -1044,30 +993,29 @@ var passy = (function () {
 
 					row += "<td><span>" + item.ip + "</span></td>";
 					row += "<td><span>" + item.user_agent + "</span></td>";
-					row += "<td><span>" + item.date_readable + "</span></td>";
+					row += "<td><span>" + item.date.pretty + "</span></td>";
 					row += "</tr>";
 
 					tbody += row;
 				});
-				if (tbody.length === 0) {
-					tbody = "<tr><td>Empty</td><td></td><td></td><td></td></tr>";
-				}
 				tableBody.html(tbody);
-				if (callbackDone !== null)
+				if (callbackDone)
 					callbackDone();
 			} else {
-				if (data.msg == "not_authenticated") {
+				if (data.msg === "not_authenticated") {
 					closeSession();
 					return;
 				}
 
-				tableBody.html("<tr><td>Error: " + data.msg + "</td><td></td><td></td><td></td></tr>");
-				if (callbackDone !== null)
+				tableBody.html("");
+				snackbar("There has been a problem with the server. Please try again later");
+				if (callbackDone)
 					callbackDone(data.msg);
 			}
 		}, function () {
-			tableBody.html("<tr><td>Error</td><td></td><td></td><td></td></tr>");
-			if (callbackDone !== null)
+			tableBody.html("");
+			snackbar("There has been a problem with the server. Please try again later");
+			if (callbackDone)
 				callbackDone(false);
 		});
 	}

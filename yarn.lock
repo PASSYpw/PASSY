@@ -20,8 +20,8 @@
     through2 "^2.0.3"
 
 "@passypw/wavesjs@^2.0.0":
-  version "2.0.0"
-  resolved "https://registry.yarnpkg.com/@passypw/wavesjs/-/wavesjs-2.0.0.tgz#886688db9b97e29a8621521da64583ce2604da48"
+  version "2.0.1"
+  resolved "https://registry.yarnpkg.com/@passypw/wavesjs/-/wavesjs-2.0.1.tgz#d5318034d3980eaf42fcb45f6a2ea34cb2121874"
   dependencies:
     jquery "^3.2.1"
 
@@ -2296,8 +2296,8 @@ multipipe@^0.1.2:
     duplexer2 "0.0.2"
 
 nan@^2.3.0, nan@^2.3.2:
-  version "2.7.0"
-  resolved "https://registry.yarnpkg.com/nan/-/nan-2.7.0.tgz#d95bf721ec877e08db276ed3fc6eb78f9083ad46"
+  version "2.8.0"
+  resolved "https://registry.yarnpkg.com/nan/-/nan-2.8.0.tgz#ed715f3fe9de02b57a5e6252d90a96675e1f085a"
 
 natives@^1.1.0:
   version "1.1.0"

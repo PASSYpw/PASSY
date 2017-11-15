@@ -66,8 +66,10 @@ class IPLog
 					$entry = array(
 						"ip" => $row["IP"],
 						"user_agent" => $row["USERAGENT"],
-						"date" => $row["DATE"],
-						"date_readable" => Format::formatTime($row["DATE"])
+						"date" => array(
+							"timestamp" => $row["DATE"],
+							"pretty" => Format::formatTime($row["DATE"])
+						)
 					);
 					array_push($data, $entry);
 				}
