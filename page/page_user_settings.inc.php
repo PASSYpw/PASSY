@@ -91,10 +91,10 @@
 					<input type="checkbox" title="Export with Password" name="with-pass">
 					<label>Export with Password</label>
 					<div class="text">
-						<input type="password" class="form-control" title="Password, by default you master password"
+						<input type="password" id="page_user_settings_form_import_export_pass" class="form-control" title="Password, by default you master password"
 						       name="pass"
 						       autocomplete="off"/>
-						<label>Password, by default you Master Password</label>
+						<label for="page_user_settings_form_import_export_pass">Password, by default you Master Password</label>
 					</div>
 					<p>This process could take a while, because all your passwords have to be decrypted!</p>
 					<button type="submit" class="btn btn-primary pull-right">Export</button>
@@ -113,10 +113,10 @@
 					<input type="checkbox" title="Import with Password" name="with-pass">
 					<label>Import with Password</label>
 					<div class="text">
-						<input type="password" class="form-control" title="Password, by default you master password"
+						<input type="password" id="page_user_settings_form_import_input_pass" class="form-control" title="Password, by default you master password"
 						       name="pass"
 						       autocomplete="off"/>
-						<label>Password, by default you Master Password</label>
+						<label for="page_user_settings_form_import_input_pass">Password, by default you Master Password</label>
 					</div>
 					<button type="submit" class="btn btn-primary pull-right">Import</button>
 				</form>

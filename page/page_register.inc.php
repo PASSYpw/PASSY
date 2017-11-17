@@ -15,19 +15,19 @@ include_once __DIR__ . "/../config.inc.php";
 					<input type="hidden" name="a" value="user/register" readonly style="display: none">
 					<div class="form-group">
 						<div class="text">
-							<input type="text" class="form-control" title="E-Mail" name="username"
+							<input type="text" class="form-control" title="Username (required)" minlength="3" name="username"
 							       required/>
-							<label>Username</label>
+							<label>Username <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="Password" name="password"
+							<input type="password" class="form-control" title="Password (required)" minlength="8" name="password"
 							       required/>
-							<label>Password</label>
+							<label>Password <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="Password" name="password2"
+							<input type="password" class="form-control" title="Repeat password (required)" name="password2"
 							       required/>
-							<label>Password (again)</label>
+							<label>Password (again) <span class="text-danger">*</span></label>
 						</div>
 						<?php
 						if ($generalConfig["recaptcha"]["enabled"]) {
@@ -36,6 +36,7 @@ include_once __DIR__ . "/../config.inc.php";
 						?>
 					</div>
 					<div class="form-group">
+						<span class="text-danger">* Required</span>
 						<button type="submit" class="btn btn-primary pull-right">Register</button>
 					</div>
 				</form>

@@ -193,7 +193,7 @@ const passy = (function () {
 				fetchIPLog(show);
 			} else if (page === "user_settings") {
 				fetchStatus(function () {
-					if (!latestStatus) {
+					if (latestStatus) {
 						// 2fa Status
 						const twoFactorEnableButton = $("#btn2faSetupModalToggle"),
 							twoFactorDisableButton = $("#btn2faDisableModalToggle"),
@@ -588,6 +588,12 @@ const passy = (function () {
 							modal.find("input").attr("disabled", null);
 							reset = false;
 							break;
+						case "invalid_username":
+							snackbar("The username is too short.");
+							break;
+						case "invalid_password":
+							snackbar("The password is too short.");
+							break;
 					}
 				}
 				if (reset)
@@ -628,6 +634,12 @@ const passy = (function () {
 							break;
 						case "username_exists":
 							snackbar("The username is occupied.");
+							break;
+						case "invalid_username":
+							snackbar("The username is too short.");
+							break;
+						case "invalid_password":
+							snackbar("The password is too short.");
 							break;
 					}
 				}

@@ -31,6 +31,7 @@ use PASSY\Passwords;
 use PASSY\IPLog;
 use PASSY\Response;
 use PASSY\Util;
+use PASSY\Validate;
 
 $unauthenticatedActions = array(
 	"user/login" => true,
@@ -82,6 +83,15 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 		case "user/login":
 			$username = $_POST["username"];
 			$password = $_POST["password"];
+
+			if (!Validate::validateLoginUsername($username)) {
+				$response = new Response(false, "invalid_username");
+				die($response->getJSONResponse());
+			}
+			if (!Validate::validateLoginPassword($password)) {
+				$response = new Response(false, "invalid_password");
+				die($response->getJSONResponse());
+			}
 
 			$persistent = isset($_POST["persistent"]) && $_POST["persistent"] == "on";
 
@@ -137,6 +147,11 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 			$password = $_POST["password"];
 			$password2 = $_POST["password2"];
 
+			if (!Validate::validateLoginUsername($username)) {
+				$response = new Response(false, "invalid_username");
+				die($response->getJSONResponse());
+			}
+
 			if ($generalConfig["recaptcha"]["enabled"]) {
 				$recaptcha = new \ReCaptcha\ReCaptcha($generalConfig["recaptcha"]["private_key"]);
 				$resp = $recaptcha->verify($_POST["g-recaptcha-response"], $_SERVER["REMOTE_ADDR"]);
@@ -148,6 +163,11 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
 
 			if ($password != $password2) {
 				$response = new Response(false, "passwords_not_matching");
+				die($response->getJSONResponse());
+			}
+
+			if (!Validate::validateLoginPassword($password)) {
+				$response = new Response(false, "invalid_password");
 				die($response->getJSONResponse());
 			}
 

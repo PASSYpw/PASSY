@@ -18,12 +18,12 @@ Vagrant.configure("2") do |config|
     echo "deb http://packages.dotdeb.org stretch all" > /etc/apt/sources.list.d/dotdeb.list
     wget -qO - https://www.dotdeb.org/dotdeb.gpg | apt-key add -
     apt-get update
+    apt-get autoremove --purge apache2
     apt-get upgrade -y
-    apt-get install -y apache2 libapache2-mod-php7.0 php7.0 php7.0-json php7.0-curl php7.0-mysql mariadb-server
-    rm -rf /var/www/html
-    ln -s /vagrant /var/www/html
-    phpenmod mysqli
-    service apache2 restart
+    apt-get install -y nginx php7.0 php7.0-json php7.0-curl php7.0-mysql mariadb-server
+    ln -s /vagrant /var/www/passy
+    cp /vagrant/example_nginx.conf /etc/nginx/sites-enabled/default
+    service nginx restart
     mysql -uroot -e "CREATE DATABASE IF NOT EXISTS passy;"
     mysql -uroot -e "CREATE USER 'passy'@'%' IDENTIFIED BY '';"
     mysql -uroot -e "GRANT USAGE ON *.* TO 'passy'@'%' IDENTIFIED BY ''"

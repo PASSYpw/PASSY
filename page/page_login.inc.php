@@ -16,12 +16,12 @@ include_once __DIR__ . "/../config.inc.php";
 					<input type="hidden" name="a" value="user/login" readonly style="display: none">
 					<div class="form-group">
 						<div class="text">
-							<input type="text" class="form-control" title="Username" name="username"
+							<input type="text" class="form-control" title="Username" minlength="3" name="username"
 							       required/>
 							<label>Username</label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="Password" name="password"
+							<input type="password" class="form-control" title="Password" minlength="8" name="password"
 							       required/>
 							<label>Password</label>
 						</div>
