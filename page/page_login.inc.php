@@ -16,14 +16,16 @@ include_once __DIR__ . "/../config.inc.php";
 					<input type="hidden" name="a" value="user/login" readonly style="display: none">
 					<div class="form-group">
 						<div class="text">
-							<input type="text" class="form-control" title="Username" minlength="3" name="username"
+							<input type="text" class="form-control" title="Username (required)" minlength="3"
+							       name="username"
 							       required/>
-							<label>Username</label>
+							<label>Username <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="Password" minlength="8" name="password"
+							<input type="password" class="form-control" title="Password (required)" minlength="8"
+							       name="password"
 							       required/>
-							<label>Password</label>
+							<label>Password <span class="text-danger">*</span></label>
 						</div>
 						<input id="checkboxPersistent" type="checkbox" title="Stay logged in" name="persistent">
 						<label for="checkboxPersistent">Stay logged in</label>
@@ -40,18 +42,20 @@ include_once __DIR__ . "/../config.inc.php";
 										You have two-factor-authentication enabled! Please enter you generated 6-digit
 										code below.
 										<br>
-										You may enter your recovery code, which will disable two-factor-authentication.
+										You may enter your recovery code, which will disable two-factor-authentication
+										permanently.
 									</p>
-									<div class="form-group clearfix">
+									<div class="form-group">
 										<div class="text">
 											<input type="text" class="form-control"
-											       title="Authentication Code" name="2faCode"
+											       title="Authentication Code (required)" name="2faCode"
 											       autocomplete="off" disabled/>
-											<label>Authentication Code</label>
+											<label>Authentication Code <span class="text-danger">*</span></label>
 										</div>
 									</div>
 								</div>
-								<div class="modal-footer">
+								<div class="modal-footer clearfix">
+									<span class="text-danger pull-left">* Required</span>
 									<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Cancel
 									</button>
 									<button type="submit" class="btn btn-flat btn-primary">Login</button>
@@ -59,7 +63,8 @@ include_once __DIR__ . "/../config.inc.php";
 							</div>
 						</div>
 					</div>
-					<div class="form-group">
+					<div class="form-group clearfix">
+						<span class="text-danger">* Required</span>
 						<button type="submit" class="btn btn-success pull-right">Login</button>
 					</div>
 				</form>

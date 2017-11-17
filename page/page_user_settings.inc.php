@@ -20,25 +20,26 @@
 					      method="post">
 						<input type="hidden" name="a" value="user/changePassword">
 						<div class="text">
-							<input type="password" class="form-control" title="Current Password" name="password"
-							       required
-							       autocomplete="off"/>
-							<label>Current Password</label>
+							<input type="password" class="form-control" title="Current Password (required)"
+							       name="password"
+							       required autocomplete="off"/>
+							<label>Current Password <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="New Password" name="new_password"
-							       required
-							       autocomplete="off"/>
-							<label>New Password</label>
+							<input type="password" class="form-control" title="New Password (required)"
+							       name="new_password"
+							       required autocomplete="off"/>
+							<label>New Password <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="New Password (again)"
+							<input type="password" class="form-control" title="Repeat New Password (required)"
 							       name="new_password2" required autocomplete="off"/>
-							<label>New Password (again)</label>
+							<label>New Password (again) <span class="text-danger">*</span></label>
 						</div>
 						<p>This process could take a while, because all your passwords have to be decrypted and
 							encrypted
 							again!</p>
+						<span class="text-danger">* Required</span>
 						<button type="submit" class="btn btn-primary pull-right">Apply</button>
 					</form>
 				</div>
@@ -63,16 +64,18 @@
 				<form id="page_user_settings_form_change_username" class="clearfix" action="action.php" method="post">
 					<input type="hidden" name="a" value="user/changeUsername">
 					<div class="text">
-						<input type="password" class="form-control" title="Current Password" name="password"
+						<input type="password" class="form-control" title="Current Password (required)" name="password"
 						       required
 						       autocomplete="off"/>
-						<label>Current Password</label>
+						<label>Current Password <span class="text-danger">*</span></label>
 					</div>
 					<div class="text">
-						<input type="text" class="form-control" title="New username" name="new_username" required
+						<input type="text" class="form-control" title="New Username (required)" name="new_username"
+						       required
 						       autocomplete="off"/>
-						<label>New username</label>
+						<label>New Username <span class="text-danger">*</span></label>
 					</div>
+					<span class="text-danger">* Required</span>
 					<button type="submit" class="btn btn-primary pull-right">Apply</button>
 				</form>
 			</div>
@@ -81,22 +84,25 @@
 				<p>This will put all your passwords into a file, so you can import them later in any PASSY server.</p>
 				<form id="page_user_settings_form_export" class="clearfix" action="action.php" method="post">
 					<input type="hidden" name="a" value="misc/export">
-					<select name="format">
+					<label for="page_user_settings_form_export_select_format">Format: </label>
+					<select name="format" id="page_user_settings_form_export_select_format" title="Format (required)">
 						<option value="passy">PASSY</option>
-						<option value="keepass" disabled>KeePass (not implemented)</option>
 						<option value="csv">CSV</option>
+						<option value="keepass" disabled>KeePass (not implemented)</option>
 						<option value="text" disabled>Plaintext</option>
 					</select>
+					<span class="text-danger">*</span>
 					<br/>
-					<input type="checkbox" title="Export with Password" name="with-pass">
-					<label>Export with Password</label>
+					<input type="checkbox" id="page_user_settings_form_export_checkbox_pass"
+					       title="Export with Password" name="with-pass">
+					<label for="page_user_settings_form_export_checkbox_pass">Export with Password</label>
 					<div class="text">
-						<input type="password" id="page_user_settings_form_import_export_pass" class="form-control" title="Password, by default you master password"
-						       name="pass"
-						       autocomplete="off"/>
-						<label for="page_user_settings_form_import_export_pass">Password, by default you Master Password</label>
+						<input type="password" id="page_user_settings_form_import_export_pass" class="form-control"
+						       title="Password, by default you master password" name="pass" autocomplete="off"/>
+						<label>Password, by default you Master Password</label>
 					</div>
 					<p>This process could take a while, because all your passwords have to be decrypted!</p>
+					<span class="text-danger">* Required</span>
 					<button type="submit" class="btn btn-primary pull-right">Export</button>
 				</form>
 
@@ -105,18 +111,18 @@
 				<h3>Import</h3>
 				<p>Import your previously exported passwords.</p>
 				<form id="page_user_settings_form_import" class="clearfix" action="action.php"
-				      enctype="multipart/form-data"
-				      method="post">
+				      enctype="multipart/form-data" method="post">
 					<input type="hidden" name="a" value="misc/import">
-					<input type="file" id="import-file" name="parse-file">
+					<input type="file" id="import-file" name="parse-file" title="File (required)">
 					<br/>
-					<input type="checkbox" title="Import with Password" name="with-pass">
-					<label>Import with Password</label>
+					<input type="checkbox" id="page_user_settings_form_import_checkbox_pass"
+					       title="Import with Password" name="with-pass">
+					<label for="page_user_settings_form_import_checkbox_pass">Import with Password</label>
 					<div class="text">
-						<input type="password" id="page_user_settings_form_import_input_pass" class="form-control" title="Password, by default you master password"
+						<input type="password" class="form-control" title="Password, by default you master password"
 						       name="pass"
 						       autocomplete="off"/>
-						<label for="page_user_settings_form_import_input_pass">Password, by default you Master Password</label>
+						<label>Password, by default you Master Password</label>
 					</div>
 					<button type="submit" class="btn btn-primary pull-right">Import</button>
 				</form>
@@ -212,7 +218,7 @@
 									<div class="text">
 										<input type="text" class="form-control" title="Code" name="2faCode"
 										       autocomplete="off"/>
-										<label>Code</label>
+										<label>Code <span class="text-danger">*</span></label>
 									</div>
 								</div>
 							</form>
@@ -230,7 +236,8 @@
 
 				</div>
 			</div>
-			<div class="modal-footer">
+			<div class="modal-footer clearfix">
+				<span class="text-danger pull-left">* Required</span>
 				<button type="button" id="btn_2fa_cancel" class="btn btn-flat btn-danger" data-dismiss="modal">Cancel
 				</button>
 				<button type="submit" id="btn_2fa_next" data-target="#tab_2fa" data-next="tab"
@@ -264,12 +271,13 @@
 						<div class="text">
 							<input type="text" class="form-control" title="Authentication Code" name="2faCode"
 							       autocomplete="off"/>
-							<label>Authentication Code</label>
+							<label>Authentication Code <span class="text-danger">*</span></label>
 						</div>
 					</div>
 				</form>
 			</div>
-			<div class="modal-footer">
+			<div class="modal-footer clearfix">
+				<span class="text-danger pull-left">* Required</span>
 				<button type="button" class="btn btn-flat btn-primary" data-dismiss="modal">Cancel</button>
 				<button type="submit" class="btn btn-flat btn-danger"
 				        data-submit="#page_user_settings_form_2fa_disable">Disable

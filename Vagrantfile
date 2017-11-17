@@ -1,7 +1,7 @@
 Vagrant.configure("2") do |config|
   # https://docs.vagrantup.com.
 
-  config.vm.box = "ubuntu/xenial64"
+  config.vm.box = "debian/stretch64"
   config.vm.box_check_update = true
 
   config.ssh.shell = "bash -c 'BASH_ENV=/etc/profile exec bash'"
@@ -18,9 +18,9 @@ Vagrant.configure("2") do |config|
     echo "deb http://packages.dotdeb.org stretch all" > /etc/apt/sources.list.d/dotdeb.list
     wget -qO - https://www.dotdeb.org/dotdeb.gpg | apt-key add -
     apt-get update
-    apt-get autoremove --purge apache2
+    apt-get autoremove -y --purge apache2
     apt-get upgrade -y
-    apt-get install -y nginx php7.0 php7.0-json php7.0-curl php7.0-mysql mariadb-server
+    apt-get install -y nginx php7.0-fpm php7.0-json php7.0-curl php7.0-mysql mariadb-server
     ln -s /vagrant /var/www/passy
     cp /vagrant/example_nginx.conf /etc/nginx/sites-enabled/default
     service nginx restart

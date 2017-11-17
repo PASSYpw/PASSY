@@ -330,6 +330,7 @@ const passy = (function () {
 
 		$.waves(".nav > li > a");
 		$.waves(".btn:not([disabled])");
+		$.waves(".btn-input:not([disabled])");
 
 		inputs.each(function (index, element) {
 			const elem = $(element);

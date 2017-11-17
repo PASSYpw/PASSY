@@ -25,7 +25,7 @@ include_once __DIR__ . "/../config.inc.php";
 							<label>Password <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
-							<input type="password" class="form-control" title="Repeat password (required)" name="password2"
+							<input type="password" class="form-control" title="Repeat Password (required)" name="password2"
 							       required/>
 							<label>Password (again) <span class="text-danger">*</span></label>
 						</div>

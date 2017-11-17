@@ -51,33 +51,33 @@
 					<input type="hidden" name="a" value="password/create" readonly style="display: none">
 					<div class="modal-body">
 						<p>
-							Fill the form below to create a new password entry. You will be able to view the password,
-							edit
-							the entry and share the entry with others later.
+							Fill the form below to create a new password entry. You will be able to edit the password
+							afterwards.
 						</p>
-						<div class="form-group">
-							<div class="text">
-								<input type="text" tabindex="1" class="form-control" title="Username" name="username"
-								       autocomplete="off"/>
-								<label>Username (optional)</label>
-							</div>
-							<div class="text">
-								<input type="password" tabindex="2" id="addPasswordInput" class="form-control"
-								       title="Password"
-								       name="password" required autocomplete="off"/>
-								<label>Password</label>
-							</div>
-							<button type="button" tabindex="-1" class="btn btn-flat btn-primary"
-							        data-random-value="#addPasswordInput">Generate
+						<div class="text">
+							<input type="text" tabindex="1" class="form-control" title="Username" name="username"
+							       autocomplete="off"/>
+							<label>Username</label>
+						</div>
+						<div class="text hasbtn">
+							<input type="password" tabindex="2" id="addPasswordInput" class="form-control"
+							       title="Password (required)"
+							       name="password" required autocomplete="off"/>
+							<label>Password <span class="text-danger">*</span></label>
+							<button class="btn-input" data-random-value="#addPasswordInput" tabindex="-1"
+							        type="button">
+								<i class="material-icons">shuffle</i>
 							</button>
-							<div class="text">
-								<input type="text" tabindex="3" class="form-control" title="Website" name="description"
-								       autocomplete="off"/>
-								<label>Description (optional)</label>
-							</div>
+						</div>
+						<div class="text">
+							<input type="text" tabindex="3" class="form-control" title="Description"
+							       name="description"
+							       autocomplete="off"/>
+							<label>Description</label>
 						</div>
 					</div>
-					<div class="modal-footer">
+					<div class="modal-footer clearfix">
+						<span class="text-danger pull-left">* Required</span>
 						<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
 						<button type="submit" class="btn btn-flat btn-primary">Add</button>
 					</div>
@@ -85,44 +85,46 @@
 			</div>
 		</div>
 	</div>
+</div>
 
-	<div class="modal fade" id="page_password_list_modal_edit" tabindex="-1" role="dialog">
-		<div class="modal-dialog" role="document">
-			<div class="modal-content depth-5">
-				<div class="modal-header">
-					<h4 class="modal-title">Edit password</h4>
-				</div>
-				<form method="post" action="action.php" id="page_password_list_form_edit" autocomplete="off">
-					<input type="hidden" name="id" value=""/>
-					<input type="hidden" name="a" value="password/edit" readonly style="display: none"/>
-					<div class="modal-body">
-						<p>
-							Change your password, so it is up to date.
-						</p>
-						<div class="form-group">
-							<div class="text">
-								<input type="text" class="form-control" title="Username" name="username"
-								       autocomplete="off"/>
-								<label>Username (optional)</label>
-							</div>
-							<div class="text">
-								<input type="text" class="form-control" title="Password" name="password" required
-								       autocomplete="off"/>
-								<label>Password</label>
-							</div>
-							<div class="text">
-								<input type="text" class="form-control" title="Description" name="description"
-								       autocomplete="off"/>
-								<label>Description (optional)</label>
-							</div>
+<div class="modal fade" id="page_password_list_modal_edit" tabindex="-1" role="dialog">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content depth-5">
+			<div class="modal-header">
+				<h4 class="modal-title">Edit password</h4>
+			</div>
+			<form method="post" action="action.php" id="page_password_list_form_edit" autocomplete="off">
+				<input type="hidden" name="id" value=""/>
+				<input type="hidden" name="a" value="password/edit" readonly style="display: none"/>
+				<div class="modal-body">
+					<p>
+						Update your password details.
+					</p>
+					<div class="form-group">
+						<div class="text">
+							<input type="text" tabindex="1" class="form-control" title="Username" name="username"
+							       autocomplete="off"/>
+							<label>Username</label>
+						</div>
+						<div class="text">
+							<input type="password" tabindex="2" class="form-control" title="Password (required)"
+							       name="password" required autocomplete="off"/>
+							<label>Password <span class="text-danger">*</span></label>
+						</div>
+						<div class="text">
+							<input type="text" tabindex="3" class="form-control" title="Description"
+							       name="description"
+							       autocomplete="off"/>
+							<label>Description</label>
 						</div>
 					</div>
-					<div class="modal-footer">
-						<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
-						<button type="submit" class="btn btn-flat btn-primary">Save</button>
-					</div>
-				</form>
-			</div>
+				</div>
+				<div class="modal-footer clearfix">
+					<span class="text-danger pull-left">* Required</span>
+					<button type="button" class="btn btn-flat btn-danger" data-dismiss="modal">Close</button>
+					<button type="submit" class="btn btn-flat btn-primary">Save</button>
+				</div>
+			</form>
 		</div>
 	</div>
 </div>
