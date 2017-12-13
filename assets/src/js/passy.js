@@ -838,7 +838,7 @@ const passy = (function () {
 			me.html(spinnerSVG);
 			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
-					me.html("<i class='material-icons'>edit</i> Edit");
+					me.html("<i class='material-icons'>edit</i>");
 					me.attr("disabled", null);
 					targetForm.find("input[name='id']").val(passwordId);
 					targetForm.find("input[name='username']").val(data.data.username.raw).change();
@@ -979,36 +979,27 @@ const passy = (function () {
 					if (!item.archived) {
 						let row = "<tr data-copy-password data-password-id='" + item.password_id + "' data-visible='true' id='" + item.password_id + "'>";
 						// Passwords page
-						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><span class='force-select no-contextmenu'>" + username + "</span></td>";
+						row += "<td><span class='force-select no-contextmenu'>" + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
-						row += "<td class='full-width-xs'>" + description + "</td>";
-						row += "<td class='hidden-xs visible-sm visible-md visible-lg'>" + item.date_added.pretty + "</td>";
+						row += "<td>" + description + "</td>";
+						row += "<td>" + item.date_added.pretty + "</td>";
 						row += "<td>" +
-							"  <div class='dropdown'>" +
-							"    <button type='button' class='btn btn-default btn-flat dropdown-toggle pull-right' data-toggle=\"dropdown\"><i class='material-icons'>more_vert</i></button>" +
-							"    <ul class='dropdown-menu'>" +
-							"      <li>" +
-							"        <a href='#' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
-							"          <i class='material-icons'>edit</i> Edit" +
-							"        </a>" +
-							"      </li>" +
-							"      <li>" +
-							"        <a href='#' data-password-action='archive' data-password-id='" + item.password_id + "'>" +
-							"          <i class='material-icons'>archive</i> Archive" +
-							"        </a>" +
-							"      </li>" +
-							"    </ul>" +
-							"  </div>" +
+							"<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
+							"<i class='material-icons'>edit</i>" +
+							"</button>" +
+							"<button class='btn btn-default btn-flat btn-sm' data-password-action='archive' data-password-id='" + item.password_id + "'>" +
+							"<i class='material-icons'>archive</i>" +
+							"</button>" +
 							"</td>";
 						row += "</tr>";
 						contentPasswords += row;
 					} else {
 						let row = "<tr data-visible='true' id='" + item.password_id + "'>";
 						// Archived page
-						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><span class='force-select no-contextmenu'> " + username + "</span></td>";
-						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
-						row += "<td class='full-width-xs'>" + description + "</td>";
-						row += "<td class='hidden-xs visible-sm visible-md visible-lg'>" + item.date_archived.pretty + "</td>";
+						row += "<td><span class='force-select no-contextmenu'> " + username + "</span></td>";
+						row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
+						row += "<td >" + description + "</td>";
+						row += "<td>" + item.date_archived.pretty + "</td>";
 						row += "<td><button class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></button><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
 						row += "</tr>";
 						contentArchivedPassword += row;
