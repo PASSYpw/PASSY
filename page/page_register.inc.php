@@ -16,17 +16,17 @@ include_once __DIR__ . "/../config.inc.php";
 					<div class="form-group">
 						<div class="text">
 							<input type="text" class="form-control" title="Username (required)" minlength="3" name="username"
-							       required/>
+							       autocomplete="username" required/>
 							<label>Username <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
 							<input type="password" class="form-control" title="Password (required)" minlength="8" name="password"
-							       required/>
+							       autocomplete="new-password" required/>
 							<label>Password <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
 							<input type="password" class="form-control" title="Repeat Password (required)" name="password2"
-							       required/>
+							       autocomplete="new-password" required/>
 							<label>Password (again) <span class="text-danger">*</span></label>
 						</div>
 						<?php

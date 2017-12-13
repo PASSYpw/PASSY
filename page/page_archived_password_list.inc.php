@@ -26,7 +26,7 @@
 							<th>Password</th>
 							<th>Description</th>
 							<th>Date archived</th>
-							<th>Actions</th>
+							<th></th>
 						</tr>
 						</thead>
 						<tbody id="tbodyArchivedPasswords">

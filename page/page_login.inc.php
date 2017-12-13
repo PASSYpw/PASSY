@@ -17,14 +17,12 @@ include_once __DIR__ . "/../config.inc.php";
 					<div class="form-group">
 						<div class="text">
 							<input type="text" class="form-control" title="Username (required)" minlength="3"
-							       name="username"
-							       required/>
+							       name="username" autocomplete="username" required/>
 							<label>Username <span class="text-danger">*</span></label>
 						</div>
 						<div class="text">
 							<input type="password" class="form-control" title="Password (required)" minlength="8"
-							       name="password"
-							       required/>
+							       name="password" autocomplete="current-password" required/>
 							<label>Password <span class="text-danger">*</span></label>
 						</div>
 						<input id="checkboxPersistent" type="checkbox" title="Stay logged in" name="persistent">

@@ -2,7 +2,7 @@
 [![GitHub release](https://img.shields.io/github/release/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/releases)
 [![GitHub issues](https://img.shields.io/github/issues/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/issues)
 [![Join the Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
-[![GitHub license](https://img.shields.io/badge/license-GPL%20v3-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
+[![GitHub license](https://img.shields.io/badge/license-GPL%203.0-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
 
 [PASSY in the cloud](https://app.passy.pw)
 
@@ -19,21 +19,15 @@ A password manager written in PHP to serve you over the internet.
  - [Composer](https://getcomposer.org/download/) (For Ubuntu 16.04 and newer: `apt install composer`)
  - [npm](https://docs.npmjs.com/getting-started/installing-node) (For Ubuntu 14.04 and newer: `apt install npm`)
  - [Yarn](https://yarnpkg.com) (`npm install -g yarn`)
-
-## Installation (2.0.3+)
- - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
- - Unzip it in your web root.
- - Run the following command: `npm install`
- - Edit the `config.inc.php`
-
-Walkthrough (Ubuntu 16.04.3):
-[![Installation](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF.png)](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF)
-
-## Installation (2.0.4)
+ 
+## Installation
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
  - Run the following command: `yarn`
  - Edit the `config.inc.php`
+
+Walkthrough (Ubuntu 16.04.3):
+[![Installation](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF.png)](https://asciinema.org/a/XmWH8YVcd1zpuidHl4yydAeYF)
 
 ## Installation (Pre 2.0.3)
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).

@@ -1,0 +1,126 @@
+/*
+ *    PASSY - Modern HTML5 Password Manager
+ *    Copyright (C) 2017 Sefa Eyeoglu <contact@scrumplex.net> (https://scrumplex.net)
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published by
+ *    the Free Software Foundation, either version 3 of the License, or
+ *    (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *    GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program.  If not, see <https://www.gnu.org/licenses/>.
+ *
+ */
+
+.dropdown-toggle {
+	min-width: 36px;
+	width: 36px;
+	height: 36px;
+	padding-left: 0;
+	padding-right: 0;
+	border-radius: 100%;
+}
+
+.open .dropdown-menu {
+	position: absolute;
+	float: left;
+	width: 200px;
+	margin-top: 0;
+	background-color: $colorForeground;
+	border-radius: 0;
+	border: none;
+	top: 2px;
+	right: 2px;
+	@include depth(3);
+}
+
+.dropdown.open .dropdown-menu {
+	animation: dropdownIn 200ms $easeOutQuart;
+}
+
+.dropdown.open .dropdown-menu > li {
+	opacity: 0;
+	animation: dropdownItemsIn 300ms $easeOutQuart forwards;
+}
+
+@media (max-width: 767px) {
+	.open .dropdown-menu > li > a {
+		color: $colorText;
+	}
+	.open .dropdown-menu > li > a {
+		line-height: 1.42857143;
+	}
+	.open .dropdown-menu .dropdown-header, .open .dropdown-menu > li > a {
+		padding: 3px 20px;
+	}
+
+	.open .dropdown-menu {
+		position: absolute;
+		float: left;
+		width: 200px;
+		background-color: $colorForeground;
+		border: none;
+	}
+}
+
+.navbar-nav .open .dropdown-menu, .contextmenu.open .dropdown-menu {
+	position: absolute;
+	float: left;
+	width: 200px;
+	margin-top: 0;
+	background-color: $colorForeground;
+	border-radius: 0;
+	border: none;
+	top: 2px;
+	right: 2px;
+	@include depth(3);
+}
+
+.dropdown.open .dropdown-menu {
+	animation: dropdownIn 200ms $easeOutQuart;
+}
+
+.dropdown.open .dropdown-menu > li {
+	opacity: 0;
+	animation: dropdownItemsIn 300ms $easeOutQuart forwards;
+}
+
+@media (max-width: 767px) {
+	.navbar-default .navbar-nav .open .dropdown-menu > li > a {
+		color: $colorText;
+	}
+	.navbar-nav .open .dropdown-menu > li > a {
+		line-height: 1.42857143;
+	}
+	.navbar-nav .open .dropdown-menu .dropdown-header, .navbar-nav .open .dropdown-menu > li > a {
+		padding: 3px 20px;
+	}
+
+	.navbar-nav .open .dropdown-menu {
+		position: absolute;
+		float: left;
+		width: 200px;
+		background-color: $colorForeground;
+		border: none;
+	}
+}
+
+.contextmenu {
+	position: fixed;
+	z-index: 9000;
+	top: 0;
+	left: 0;
+}
+
+.contextmenu.open > .dropdown-menu {
+	animation: contextMenuIn 200ms $easeOutQuart;
+}
+
+.contextmenu > .dropdown-menu {
+	@include depth(5);
+}

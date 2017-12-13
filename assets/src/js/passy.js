@@ -144,6 +144,15 @@ const passy = (function () {
 		return Math.floor(Math.random() * max)
 	}
 
+	function copyToClipboard(text) {
+		let tempInput = $("<input>");
+		$("body").append(tempInput);
+		tempInput.val(text).select();
+		document.execCommand("copy");
+		tempInput.remove();
+	}
+
+
 	function getInitialPage() {
 		const anchor = location.href.substring(location.href.indexOf("#"));
 		if (anchor.substring(0, 4) === "#!p=" && anchor.length > 1) {
@@ -377,13 +386,6 @@ const passy = (function () {
 			targetForm.submit();
 		});
 
-		let delay = 100;
-		$(".dropdown-menu").find("li").each(function (index, element) {
-			const elem = $(element);
-			elem.css({"animation-delay": delay + "ms"});
-			delay += 25;
-		});
-
 		$("input[data-search-in]").on("keyup", function () {
 			console.log("change");
 			let me = $(this),
@@ -413,6 +415,13 @@ const passy = (function () {
 					}
 				}
 			});
+		});
+
+		let delay = 100;
+		$(".dropdown-menu").find("li").each(function (index, element) {
+			const elem = $(element);
+			elem.css({"animation-delay": delay + "ms"});
+			delay += 25;
 		});
 
 		let lastHeight = 0;
@@ -798,6 +807,28 @@ const passy = (function () {
 			});
 		});
 
+
+		passwordTable.on('click', '*[data-password-action="copy"]', function (e) {
+			const me = $(this),
+				passwordId = me.data("password-id");
+			e.preventDefault();
+			me.attr("disabled", "");
+			me.html(spinnerSVG);
+			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
+				if (data.success) {
+					copyToClipboard(data.data.password.raw);
+					me.attr("disabled", null);
+					me.html("<i class='material-icons'>content_copy</i>");
+				} else {
+					me.html("<i class='material-icons'>error</i>");
+					snackbar("There has been a problem with the server. Please try again later")
+				}
+			}, function () {
+				me.html("<i class='material-icons'>error</i>");
+				snackbar("There has been a problem with the server. Please try again later")
+			});
+		});
+
 		passwordTable.on('click', '*[data-password-action="edit"]', function (e) {
 			const me = $(this),
 				passwordId = me.data("password-id"),
@@ -807,7 +838,7 @@ const passy = (function () {
 			me.html(spinnerSVG);
 			request("a=password/query&id=" + encodeURIComponent(passwordId), function (data) {
 				if (data.success) {
-					me.html("<i class='material-icons'>edit</i>");
+					me.html("<i class='material-icons'>edit</i> Edit");
 					me.attr("disabled", null);
 					targetForm.find("input[name='id']").val(passwordId);
 					targetForm.find("input[name='username']").val(data.data.username.raw).change();
@@ -815,11 +846,9 @@ const passy = (function () {
 					targetForm.find("input[name='description']").val(data.data.description.raw).change();
 					$("#page_password_list_modal_edit").modal("show");
 				} else {
-					me.html("<i class='material-icons'>error</i>");
 					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>");
 				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
@@ -834,11 +863,9 @@ const passy = (function () {
 				if (data.success) {
 					refresh();
 				} else {
-					me.html("<i class='material-icons'>error</i>");
 					snackbar("There has been a problem with the server. Please try again later")
 				}
 			}, function () {
-				me.html("<i class='material-icons'>error</i>");
 				snackbar("There has been a problem with the server. Please try again later")
 			});
 		});
@@ -881,7 +908,6 @@ const passy = (function () {
 			});
 		});
 
-
 		// MODALS
 		$('.modal').on('shown.bs.modal', function () {
 			const me = $(this);
@@ -917,7 +943,7 @@ const passy = (function () {
 //##################################################################################################################
 
 	function timeoutPassword(passwordObject, passwordId) {
-		passwordObject.append(" <span id='timeLeft_" + passwordId + "' class='text-muted'></span>");
+		passwordObject.append("&nbsp;<span id='timeLeft_" + passwordId + "' class='text-muted'></span>");
 		let timeLeft = 60;
 		const timeLeftDisplay = passwordObject.find("#timeLeft_" + passwordId);
 
@@ -928,7 +954,7 @@ const passy = (function () {
 				timeLeftDisplay.removeClass("text-muted");
 			} else if (timeLeft === 0) {
 				clearInterval(timerId);
-				passwordObject.html("<a class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + passwordId + "'><i class='material-icons'>remove_red_eye</i></a>");
+				passwordObject.html("<button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + passwordId + "'><i class='material-icons'>remove_red_eye</i></button>");
 			}
 			timeLeft--;
 		};
@@ -950,29 +976,39 @@ const passy = (function () {
 					const description = item.description.raw ? item.description.safe : "<i>None</i>";
 					const username = item.username.raw ? item.username.safe : "<i>None</i>";
 
-					let row = "<tr data-visible='true' id='" + item.password_id + "'>";
 					if (!item.archived) {
+						let row = "<tr data-copy-password data-password-id='" + item.password_id + "' data-visible='true' id='" + item.password_id + "'>";
 						// Passwords page
-						row += "<td><span class='force-select no-contextmenu'>" + username + "</span></td>";
+						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><span class='force-select no-contextmenu'>" + username + "</span></td>";
 						row += "<td><button class='btn btn-default btn-flat btn-block' data-password-action='show' data-password-id='" + item.password_id + "'><i class='material-icons'>remove_red_eye</i></button></td>";
-						row += "<td>" + description + "</td>";
-						row += "<td>" + item.date_added.pretty + "</td>";
+						row += "<td class='full-width-xs'>" + description + "</td>";
+						row += "<td class='hidden-xs visible-sm visible-md visible-lg'>" + item.date_added.pretty + "</td>";
 						row += "<td>" +
-							"<button class='btn btn-default btn-flat btn-sm' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
-							"<i class='material-icons'>edit</i>" +
-							"</button>" +
-							"<button class='btn btn-default btn-flat btn-sm' data-password-action='archive' data-password-id='" + item.password_id + "'>" +
-							"<i class='material-icons'>archive</i>" +
-							"</button>" +
+							"  <div class='dropdown'>" +
+							"    <button type='button' class='btn btn-default btn-flat dropdown-toggle pull-right' data-toggle=\"dropdown\"><i class='material-icons'>more_vert</i></button>" +
+							"    <ul class='dropdown-menu'>" +
+							"      <li>" +
+							"        <a href='#' data-password-action='edit' data-password-id='" + item.password_id + "'>" +
+							"          <i class='material-icons'>edit</i> Edit" +
+							"        </a>" +
+							"      </li>" +
+							"      <li>" +
+							"        <a href='#' data-password-action='archive' data-password-id='" + item.password_id + "'>" +
+							"          <i class='material-icons'>archive</i> Archive" +
+							"        </a>" +
+							"      </li>" +
+							"    </ul>" +
+							"  </div>" +
 							"</td>";
 						row += "</tr>";
 						contentPasswords += row;
 					} else {
+						let row = "<tr data-visible='true' id='" + item.password_id + "'>";
 						// Archived page
-						row += "<td><span class='force-select no-contextmenu'> " + username + "</span></td>";
-						row += "<td><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
-						row += "<td>" + description + "</td>";
-						row += "<td>" + item.date_archived.pretty + "</td>";
+						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><span class='force-select no-contextmenu'> " + username + "</span></td>";
+						row += "<td class='hidden-xs visible-sm visible-md visible-lg'><button class='btn btn-default btn-flat btn-block' disabled='disabled'><i class='material-icons'>remove_red_eye</i></button></td>";
+						row += "<td class='full-width-xs'>" + description + "</td>";
+						row += "<td class='hidden-xs visible-sm visible-md visible-lg'>" + item.date_archived.pretty + "</td>";
 						row += "<td><button class='btn btn-default btn-flat btn-sm' data-password-action='restore' data-password-id='" + item.password_id + "'><i class='material-icons'>unarchive</i></button><a class='btn btn-default btn-flat btn-sm' data-password-action='delete' data-password-id='" + item.password_id + "'><i class='material-icons'>delete</i></a></td>";
 						row += "</tr>";
 						contentArchivedPassword += row;

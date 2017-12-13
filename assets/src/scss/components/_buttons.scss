@@ -163,16 +163,6 @@ button {
 	@include depth(2);
 }
 
-.btn-group > .btn:first-child:not(:last-child):not(.dropdown-toggle) {
-	border-top-right-radius: 2px;
-	border-bottom-right-radius: 2px;
-}
-
-.btn-group > .btn:last-child:not(:first-child), .btn-group > .dropdown-toggle:not(:first-child) {
-	border-top-left-radius: 2px;
-	border-bottom-left-radius: 2px;
-}
-
 .container {
 	position: relative;
 }

@@ -29,7 +29,7 @@ const sass = require('gulp-sass');
 const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 
-gulp.task('css', function (cb) {
+gulp.task('css-prod', function (cb) {
 	pump([
 			gulp.src('assets/src/scss/application.scss'),
 			sourcemaps.init(),
@@ -46,7 +46,8 @@ gulp.task('css', function (cb) {
 		cb);
 
 });
-gulp.task('js', function (cb) {
+
+gulp.task('js-prod', function (cb) {
 	pump([
 			gulp.src('assets/src/js/*.js'),
 			sourcemaps.init(),
@@ -61,4 +62,27 @@ gulp.task('js', function (cb) {
 
 });
 
-gulp.task('default', ['css', 'js']);
+gulp.task('css-dev', function (cb) {
+	pump([
+			gulp.src('assets/src/scss/application.scss'),
+			sourcemaps.init(),
+			sass(),
+			sourcemaps.write(),
+			gulp.dest('assets/css')
+		],
+		cb);
+
+});
+
+gulp.task('js-dev', function (cb) {
+	pump([
+			gulp.src('assets/src/js/*.js'),
+			sourcemaps.init(),
+			sourcemaps.write(),
+			gulp.dest('assets/js')
+		],
+		cb);
+
+});
+
+gulp.task('default', ['css-prod', 'js-prod']);

@@ -87,17 +87,6 @@
 	direction: ltr;
 }
 
-.contextmenu {
-	position: fixed;
-	z-index: 9000;
-	top: 0;
-	left: 0;
-}
-
-.contextmenu.open > .dropdown-menu {
-	animation: contextMenuIn 200ms $easeOutQuart;
-}
-
 .table > tbody > tr:after {
 	content: '';
 	display: inline-block;
@@ -140,14 +129,6 @@
 	.table-responsive {
 		border: none;
 	}
-}
-
-.dropdown-menu {
-	@include depth(3);
-}
-
-.contextmenu > .dropdown-menu {
-	@include depth(5);
 }
 
 .g-recaptcha {
