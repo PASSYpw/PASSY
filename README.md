@@ -9,13 +9,13 @@
 A password manager written in PHP to serve you over the internet.
 
 ## Requirements
- - MySQL Server (mysql-server, mariadb-server)
+ - MySQL Server (mysqld, mariadb-server)
  - Web Server (nginx / Apache 2 / lighttpd / ...)
  - PHP 7.0
- - PHP 7.0 openssl module (often included with PHP 7.0)
- - PHP 7.0 mysql module
- - PHP 7.0 json module
- - PHP 7.0 curl module (only needed for ReCaptcha support)
+ - PHP 7.0-openssl module (often included with PHP 7.0)
+ - PHP 7.0-mysql module
+ - PHP 7.0-json module
+ - PHP 7.0-curl module (only needed for ReCaptcha support)
  - [Composer](https://getcomposer.org/download/) (For Ubuntu 16.04 and newer: `apt install composer`)
  - [npm](https://docs.npmjs.com/getting-started/installing-node) (For Ubuntu 14.04 and newer: `apt install npm`)
  - [Yarn](https://yarnpkg.com) (`npm install -g yarn`)

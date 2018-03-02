@@ -15,8 +15,6 @@ Vagrant.configure("2") do |config|
 
   config.vm.provision "shell", inline: <<-SHELL
     export DEBIAN_FRONTEND=noninteractive
-    echo "deb http://packages.dotdeb.org stretch all" > /etc/apt/sources.list.d/dotdeb.list
-    wget -qO - https://www.dotdeb.org/dotdeb.gpg | apt-key add -
     apt-get update
     apt-get autoremove -y --purge apache2
     apt-get upgrade -y
