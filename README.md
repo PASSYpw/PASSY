@@ -1,12 +1,21 @@
-# PASSY
+PASSY
+---
 [![GitHub release](https://img.shields.io/github/release/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/releases)
 [![GitHub issues](https://img.shields.io/github/issues/PASSYpw/PASSY.svg)](https://github.com/PASSYpw/PASSY/issues)
 [![Join the Discord](https://discordapp.com/api/guilds/324602899839844352/widget.png?style=shield)](https://discord.gg/5K6XDnR)
 [![GitHub license](https://img.shields.io/badge/license-GPL%203.0-blue.svg)](https://raw.githubusercontent.com/PASSYpw/PASSY/master/LICENSE)
 
-[PASSY in the cloud](https://app.passy.pw)
+[Official hosted version](https://app.passy.pw)
 
 A password manager written in PHP to serve you over the internet.
+
+# Table of Contents
+ - [Requirements](#requirements)
+ - [Installation](#installation)
+   - [Latest](#latest)
+   - [Below 2.0.3](#below-2.0.3)
+ - [Contributing](#contributing)
+ - [License](#license)
 
 ## Requirements
  - MySQL Server (mysqld, mariadb-server)
@@ -21,6 +30,7 @@ A password manager written in PHP to serve you over the internet.
  - [Yarn](https://yarnpkg.com) (`npm install -g yarn`)
  
 ## Installation
+### Latest
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
  - Run the following command: `yarn`
@@ -29,7 +39,7 @@ A password manager written in PHP to serve you over the internet.
 Walkthrough (Ubuntu 16.04.3):
 [![asciicast](https://asciinema.org/a/153044.png)](https://asciinema.org/a/153044)
 
-## Installation (Pre 2.0.3)
+### Below 2.0.3
  - [Download](https://github.com/PASSYpw/PASSY/releases/latest) a version of PASSY in your preferred format (zip / tar.gz).
  - Unzip it in your web root.
  - Run the following command: `composer install`
