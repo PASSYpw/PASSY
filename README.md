@@ -13,7 +13,7 @@ A password manager written in PHP to serve you over the internet.
  - [Requirements](#requirements)
  - [Installation](#installation)
    - [Latest](#latest)
-   - [Below 2.0.3](#below-2.0.3)
+   - [Below 2.0.3](#below-203)
  - [Contributing](#contributing)
  - [License](#license)
 
