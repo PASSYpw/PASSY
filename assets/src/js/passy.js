@@ -563,7 +563,6 @@ const passy = (function () {
                     me[0].reset();
                     me.find("input.hastext").change();
                     $('#tab_2fa').find('a:last').click();
-                    refresh();
                 }
             })
         });
@@ -916,10 +915,13 @@ const passy = (function () {
 
         $('#page_user_settings_modal_2fa_setup').on('show.bs.modal', function () {
             const me = $(this);
+            // Show fist step
             $('#tab_2fa').find('a:first').tab('show');
+            // Reset all forms
             me.find("form").each(function (i, elem) {
                 elem.reset();
             });
+            // Reset buttons
             $("#btn_2fa_next").show();
             $("#btn_2fa_enable_submit").hide();
             $("#btn_2fa_finish").hide();
@@ -934,7 +936,9 @@ const passy = (function () {
                 }
             });
 
-        })
+        }).on('hide.bs.modal', function () {
+            refresh();
+        });
     } // END registerPageListeners()
 
 
