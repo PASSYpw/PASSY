@@ -40,9 +40,8 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 	<meta name="msapplication-TileColor" content="#ff5722">
 	<meta name="msapplication-TileImage" content="mstile-144x144.png">
 	<title><?= $customizationConfig["title"] ?></title>
-	<link href="assets/css/bootstrap.min.css" rel="stylesheet">
+    <link href="node_modules/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
 	<link href="assets/css/material-icons.min.css" rel="stylesheet">
-	<link href="node_modules/@passypw/wavesjs/dist/waves.css" rel="stylesheet">
 	<link href="assets/css/application.css" rel="stylesheet">
 </head>
 <body>
@@ -188,7 +187,8 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 			<div class="col-sm-6 col-xs-12">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 140.72912 185" height="50px">
 					<g fill-rule="evenodd">
-						<path d="M0 0v120l34.640625-20V60L69.28125 80l34.64258-20L0 0zm34.640625 145L0 165l34.640625 20v-40z" fill="#191919"></path>
+						<path d="M0 0v120l34.640625-20V60L69.28125 80l34.64258-20L0 0zm34.640625 145L0 165l34.640625 20v-40z"
+						      fill="#191919"></path>
 						<path d="M0 122.5v40l140.72913-81.25-34.64101-20z" fill="#323232"></path>
 					</g>
 				</svg>
@@ -212,7 +212,7 @@ if ($generalConfig["redirect_ssl"] && isset($_SERVER["HTTPS"]) && $_SERVER['HTTP
 </div>
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/@passypw/wavesjs/dist/waves.js"></script>
-<script src="assets/js/bootstrap.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="assets/js/passy.js"></script>
 <?php
 if ($generalConfig["recaptcha"]["enabled"]) {

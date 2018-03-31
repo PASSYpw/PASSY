@@ -88,14 +88,12 @@
 					<select name="format" id="page_user_settings_form_export_select_format" title="Format (required)">
 						<option value="passy">PASSY</option>
 						<option value="csv">CSV</option>
-						<option value="keepass" disabled>KeePass (not implemented)</option>
-						<option value="text" disabled>Plaintext</option>
 					</select>
 					<span class="text-danger">*</span>
 					<br/>
 					<input type="checkbox" id="page_user_settings_form_export_checkbox_pass"
 					       title="Export with Password" name="with-pass">
-					<label for="page_user_settings_form_export_checkbox_pass">Export with Password</label>
+					<label for="page_user_settings_form_export_checkbox_pass">Encrypt with password</label>
 					<div class="text">
 						<input type="password" id="page_user_settings_form_import_export_pass" class="form-control"
 						       title="Password, by default you master password" name="pass" autocomplete="off"/>
@@ -117,7 +115,7 @@
 					<br/>
 					<input type="checkbox" id="page_user_settings_form_import_checkbox_pass"
 					       title="Import with Password" name="with-pass">
-					<label for="page_user_settings_form_import_checkbox_pass">Import with Password</label>
+					<label for="page_user_settings_form_import_checkbox_pass">Import encrypted with password</label>
 					<div class="text">
 						<input type="password" class="form-control" title="Password, by default you master password"
 						       name="pass"

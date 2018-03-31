@@ -18,67 +18,72 @@
  */
 
 html {
-	height: 100%;
+    height: 100%;
 }
 
 body {
-	position: relative;
-	margin: 0;
-	padding-bottom: 200px;
-	min-height: 100%;
-	font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
-	overflow-x: hidden;
-	background-color: $colorBackground;
-	color: $colorText;
+    position: relative;
+    margin: 0;
+    padding-bottom: 200px;
+    min-height: 100%;
+    font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    background-color: $colorBackground;
+    color: $colorText;
 }
 
 .footer {
-	position: absolute;
-	right: 0;
-	bottom: 0;
-	left: 0;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+}
+
+.modal-open .footer {
+    padding-right: $scrollbarWidth;
 }
 
 .jumbotron {
-	background-color: $colorForeground;
-	border-radius: 0 !important;
-	@include depth(1);
+    background-color: $colorForeground;
+    border-radius: 0 !important;
+    @include depth(1);
 }
 
 @media (max-width: 768px) {
-	.jumbotron {
-		box-shadow: none !important;
-	}
+    .jumbotron {
+        box-shadow: none !important;
+    }
 
-	body {
-		background-color: $colorForeground;
-	}
+    body {
+        background-color: $colorForeground;
+    }
 }
 
 .jumbotron p {
-	font-size: 14px;
+    font-size: 14px;
 }
 
 .content {
-	padding-top: 120px;
-	opacity: 1;
-	transition: opacity 300ms ease;
+    padding-top: 120px;
+    opacity: 1;
+    transition: opacity 300ms ease;
 }
 
 .content-hidden {
-	opacity: 0;
-	transition: opacity 300ms ease 1s;
+    opacity: 0;
+    transition: opacity 300ms ease 1s;
 }
 
 .force-select {
-	-webkit-touch-callout: default;
-	-webkit-user-select: auto;
-	-moz-user-select: all;
-	-ms-user-select: all;
-	user-select: all;
-	cursor: auto;
+    -webkit-touch-callout: default;
+    -webkit-user-select: auto;
+    -moz-user-select: all;
+    -ms-user-select: all;
+    user-select: all;
+    cursor: auto;
 }
 
 .row-margin {
-	margin-top: 10px;
+    margin-top: 10px;
 }

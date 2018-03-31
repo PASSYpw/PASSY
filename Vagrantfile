@@ -20,7 +20,7 @@ Vagrant.configure("2") do |config|
     apt-get upgrade -y
     apt-get install -y nginx php7.0-fpm php7.0-json php7.0-curl php7.0-mysql mariadb-server
     ln -s /vagrant /var/www/passy
-    cp /vagrant/example_nginx.conf /etc/nginx/sites-enabled/default
+    cp /vagrant/examples/nginx_site.conf /etc/nginx/sites-enabled/default
     service nginx restart
     mysql -uroot -e "CREATE DATABASE IF NOT EXISTS passy;"
     mysql -uroot -e "CREATE USER 'passy'@'%' IDENTIFIED BY '';"

@@ -61,9 +61,10 @@
 	background-color: transparent !important;
 	border-radius: 100%;
 	border-bottom: none !important;
-	width: 54px;
-	height: 54px;
-	padding: 15px;
+	width: 44px;
+	height: 44px;
+	padding: 10px;
+	margin: 5px;
 }
 
 .navbar-right > li > a:active, .navbar-right > li > a:active:hover,
@@ -121,4 +122,8 @@
 
 .tab-pane {
 	padding: 20px 20px;
+}
+
+.modal-open .navbar-fixed-top {
+	padding-right: $scrollbarWidth;
 }
