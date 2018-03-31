@@ -25,6 +25,11 @@ class TwoFactor
         $this->google2fa = new Google2FA();
     }
 
+    /**
+     * Generates secret key for Two-Factor-Authentication. This function does not save anything.
+     * @param $displayName
+     * @return Response
+     */
     function _generateSecretKey($displayName)
     {
         $privateKey = $this->google2fa->generateSecretKey(TwoFactor::$KEYLENGTH);
@@ -35,6 +40,15 @@ class TwoFactor
         ));
     }
 
+    /**
+     * Enables Two-Factor-Authentication for the specified userId
+     * @param $userId
+     * @param $masterPassword
+     * @param $secretKey
+     * @param $enteredCode
+     * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     */
     function _enable2FA($userId, $masterPassword, $secretKey, $enteredCode)
     {
         if (!$this->google2fa->verifyKey($secretKey, $enteredCode)) {

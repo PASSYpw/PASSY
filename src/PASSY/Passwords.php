@@ -34,6 +34,7 @@ class Passwords
      * @param $userId
      * @param $masterPassword
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
      */
     function _create($username, $password, $description, $userId, $masterPassword)
     {
@@ -60,6 +61,7 @@ class Passwords
      * @param $description
      * @param $masterPassword
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
      */
     function _edit($passwordId, $username, $password, $description, $masterPassword)
     {
@@ -84,6 +86,8 @@ class Passwords
      * @param string $importPassword
      * @param string $type
      * @return null|Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      */
     function _import($data, $userId, $masterPassword, $withPassword, $importPassword, $type = "passy")
     {
@@ -133,6 +137,8 @@ class Passwords
      * @param bool $withPassword
      * @param string $exportPassword
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      */
     function _exportAll($userId, $masterPassword, $withPassword, $exportPassword)
     {
@@ -147,37 +153,21 @@ class Passwords
         if ($succeeded) {
             if ($result->num_rows > 0) {
                 while ($row = $result->fetch_assoc()) {
-                    $username = $row["USERNAME"];
-                    $description = $row["DESCRIPTION"];
-                    $date = $row["DATE"];
-                    $archived = false;
-                    $archived_date = "";
-                    if ($row["ARCHIVED_DATE"] != null) {
-                        $archived = true;
-                        $archived_date = $row["ARCHIVED_DATE"];
-                    }
                     $decryptedPassword = Crypto::decryptWithPassword($row['PASSWORD'], $masterPassword);
 
-                    if ($archived) {
-                        array_push($data, array(
-                            "username" => $username,
-                            "description" => $description,
-                            "date" => $date,
-                            "archived" => $archived,
-                            "date_archived" => $archived_date,
-                            "pass" => $decryptedPassword
+                    $entry = array(
+                        "username" => $row["USERNAME"],
+                        "description" => $row["DESCRIPTION"],
+                        "date" => $row["DATE"],
+                        "archived" => $row["ARCHIVED_DATE"] != null,
+                        "pass" => $decryptedPassword
 
-                        ));
-                    } else {
-                        array_push($data, array(
-                            "username" => $username,
-                            "description" => $description,
-                            "date" => $date,
-                            "archived" => $archived,
-                            "pass" => $decryptedPassword
+                    );
 
-                        ));
-                    }
+                    if ($entry["archived"])
+                        $entry["date_archived"] = $row["ARCHIVED_DATE"];;
+
+                    array_push($data, $entry);
                 }
             }
             return new Response(true, $withPassword ? Crypto::encryptWithPassword(json_encode($data), $exportPassword) : $data);
@@ -191,6 +181,8 @@ class Passwords
      * @param $passwordId
      * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      */
     function _query($passwordId, $masterPassword = null)
     {
@@ -256,6 +248,8 @@ class Passwords
      * @param $userId
      * @param mixed $masterPassword used to decrypt passwords. If null it won't decrypt.
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      */
     function _queryAll($userId, $masterPassword = null)
     {
@@ -327,6 +321,8 @@ class Passwords
      * @param $oldMasterPassword
      * @param $newMasterPassword
      * @return Response
+     * @throws \Defuse\Crypto\Exception\EnvironmentIsBrokenException
+     * @throws \Defuse\Crypto\Exception\WrongKeyOrModifiedCiphertextException
      */
     function _reencryptPasswords($userId, $oldMasterPassword, $newMasterPassword)
     {

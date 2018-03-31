@@ -63,11 +63,13 @@ class UserManager
                 $row = $result->fetch_assoc();
                 $hashedPassword = hash("SHA512", $password . $row["SALT"]);
                 if ($hashedPassword == $row['PASSWORD']) {
+                    // Save important data in session
                     $_SESSION["username"] = $username;
                     $_SESSION["master_password"] = $password;
                     $_SESSION["userId"] = $row['USERID'];
                     $_SESSION["ip"] = $_SERVER["REMOTE_ADDR"];
                     $_SESSION["session_expiration"] = 300; // 5 mins
+
                     $this->trackActivity();
                     PASSY::$tasks->run(); // Run tasks every time, someone logs in successfully.
                     return new Response(true, array());
@@ -118,7 +120,6 @@ class UserManager
      */
     function _status()
     {
-
         if ($this->getSessionExpirationTime() != 0)
             $ttl = $this->getSessionExpirationTime() - (time() - $this->getLastActivity());
         else

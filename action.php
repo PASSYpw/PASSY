@@ -70,10 +70,8 @@ $action = @$_POST["a"];
 header("Content-Type: application/json; charset=UTF-8");
 
 // Report exceptions to error log and print error message
-set_exception_handler(function ($exception) {
-    error_log($exception);
-    $response = new Response(false, "server_error");
-    die($response->getJSONResponse());
+set_exception_handler(function ($e) {
+    Util::handleException($e);
 });
 
 $userManager->checkSessionExpiration();
@@ -181,165 +179,170 @@ if (array_key_exists($action, $unauthenticatedActions) && $unauthenticatedAction
             break;
     }
 } else if (array_key_exists($action, $authenticatedActions) && $authenticatedActions[$action]) {
-    if ($userManager->isAuthenticated()) {
-        $userManager->trackActivity();
-        switch ($action) {
-            case "password/create":
-                $username = $_POST["username"];
-                $password = $_POST["password"];
-                $description = $_POST["description"];
-                $result = $passwords->_create($username, $password, $description, $userManager->getUserID(), $userManager->getMasterPassword());
-                die($result->getJSONResponse());
-                break;
-            case "password/edit":
-                $passwordId = $_POST["id"];
-                $username = $_POST["username"];
-                $password = $_POST["password"];
-                $description = $_POST["description"];
-                $result = $passwords->_edit($passwordId, $username, $password, $description, $userManager->getMasterPassword());
-                die($result->getJSONResponse());
-                break;
+    try {
 
-            case "misc/import":
-                $withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
-                $exportPassword = $userManager->getMasterPassword();
-                if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
-                $content = $_FILES['parse-file']['tmp_name'];
-                if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
-                    $result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
+        if ($userManager->isAuthenticated()) {
+            $userManager->trackActivity();
+            switch ($action) {
+                case "password/create":
+                    $username = $_POST["username"];
+                    $password = $_POST["password"];
+                    $description = $_POST["description"];
+                    $result = $passwords->_create($username, $password, $description, $userManager->getUserID(), $userManager->getMasterPassword());
                     die($result->getJSONResponse());
-                } elseif (Util::endsWith($_FILES['parse-file']['name'], ".csv")) {
-                    $result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword, "CSV");
+                    break;
+                case "password/edit":
+                    $passwordId = $_POST["id"];
+                    $username = $_POST["username"];
+                    $password = $_POST["password"];
+                    $description = $_POST["description"];
+                    $result = $passwords->_edit($passwordId, $username, $password, $description, $userManager->getMasterPassword());
                     die($result->getJSONResponse());
-                } else {
-                    $result = new Response(false, "not_supported_format");
-                    die($result->getJSONResponse());
-                }
+                    break;
 
-                break;
-
-            case "misc/export":
-                $withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
-                $exportPassword = $userManager->getMasterPassword();
-                if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
-                $result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
-                $json = $result->getJSONResponse();
-                header('Content-Description: File Transfer');
-                header('Content-Type: application/octet-stream');
-                header('Content-Disposition: attachment; filename=PASSY-Export-' . time() . ".passy-json");
-                header('Expires: 0');
-                header('Cache-Control: must-revalidate');
-                header('Pragma: public');
-                header('Content-Length: ' . strlen($json));
-                die($json);
-                break;
-            case "password/query":
-                $passwordId = $_POST["id"];
-                $result = $passwords->_query($passwordId, $userManager->getMasterPassword());
-                die($result->getJSONResponse());
-                break;
-
-            case "password/queryAll":
-                $result = $passwords->_queryAll($userManager->getUserID());
-                die($result->getJSONResponse());
-                break;
-
-            case "password/archive":
-                $passwordId = $_POST["id"];
-                $result = $passwords->_archive($passwordId);
-                die($result->getJSONResponse());
-                break;
-
-            case "password/restore":
-                $passwordId = $_POST["id"];
-                $result = $passwords->_restore($passwordId);
-                die($result->getJSONResponse());
-                break;
-
-            case "password/delete":
-                $passwordId = $_POST["id"];
-                $result = $passwords->_delete($passwordId);
-                die($result->getJSONResponse());
-                break;
-
-            case "iplog/queryAll":
-                $result = $ipLog->_queryAll($userManager->getUserID());
-                die($result->getJSONResponse());
-                break;
-
-            case "user/changeUsername":
-                $password = $_POST["password"];
-                $newUsername = $_POST["new_username"];
-                if (!$userManager->checkPassword($password)) {
-                    $response = new Response(false, "invalid_credentials");
-                    die($response->getJSONResponse());
-                }
-                $result = $userManager->_changeUsername($userManager->getUserID(), $newUsername);
-                die($result->getJSONResponse());
-                break;
-
-            case "user/changePassword":
-                $password = $_POST["password"];
-                $newPassword = $_POST["new_password"];
-                $newPassword2 = $_POST["new_password2"];
-                if (!$userManager->checkPassword($password)) {
-                    $response = new Response(false, "invalid_credentials");
-                    die($response->getJSONResponse());
-                }
-                if ($newPassword != $newPassword2) {
-                    $response = new Response(false, "passwords_not_matching");
-                    die($response->getJSONResponse());
-                }
-
-                $result = $userManager->_changePassword($userManager->getUserID(), $userManager->getMasterPassword(), $newPassword);
-                die($result->getJSONResponse());
-                break;
-
-            case "user/2faGenerateKey":
-                if ($twoFactor->isEnabled($_SESSION["userId"])) {
-                    $response = new Response(false, "2fa_enabled");
-                    die($response->getJSONResponse());
-                }
-                die($twoFactor->_generateSecretKey($_SESSION["username"])->getJSONResponse());
-                break;
-
-            case "user/2faEnable":
-                if ($twoFactor->isEnabled($_SESSION["userId"])) {
-                    $response = new Response(false, "2fa_enabled");
-                    die($response->getJSONResponse());
-                }
-                $privateKey = $_POST["2faPrivateKey"];
-                $code = $_POST["2faCode"];
-                $result = $twoFactor->_enable2FA($_SESSION["userId"], $_SESSION["master_password"], $privateKey, $code);
-                die($result->getJSONResponse());
-                break;
-
-            case "user/2faDisable":
-                if ($twoFactor->isEnabled($_SESSION["userId"])) {
-                    $twoFactorCode = $_POST["2faCode"];
-                    $twoFactorCode = trim($twoFactorCode);
-                    if (strlen($twoFactorCode) == 6) {
-                        $result = $twoFactor->_checkCode($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode);
-                        if ($result->wasSuccess()) {
-                            $result = $twoFactor->_disable2FA($_SESSION["userId"]);
-                            die($result->getJSONResponse());
-                        }
-                    } else if (strlen($twoFactorCode) == TwoFactor::$KEYLENGTH) {
-                        if ($twoFactor->checkPrivateKey($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode)) {
-                            $result = $twoFactor->_disable2FA($_SESSION["userId"]);
-                            die($result->getJSONResponse());
-                        }
+                case "misc/import":
+                    $withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
+                    $exportPassword = $userManager->getMasterPassword();
+                    if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
+                    $content = $_FILES['parse-file']['tmp_name'];
+                    if (Util::endsWith($_FILES['parse-file']['name'], ".passy-json")) {
+                        $result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
+                        die($result->getJSONResponse());
+                    } elseif (Util::endsWith($_FILES['parse-file']['name'], ".csv")) {
+                        $result = $passwords->_import(file_get_contents($content), $userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword, "CSV");
+                        die($result->getJSONResponse());
+                    } else {
+                        $result = new Response(false, "not_supported_format");
+                        die($result->getJSONResponse());
                     }
-                    $result = new Response(false, "invalid_code");
+
+                    break;
+
+                case "misc/export":
+                    $withPassword = isset($_POST["with-pass"]) && $_POST["with-pass"] == "on";
+                    $exportPassword = $userManager->getMasterPassword();
+                    if (isset($_POST["pass"]) && strlen($_POST["pass"]) != 0) $exportPassword = $_POST["pass"];
+                    $result = $passwords->_exportAll($userManager->getUserID(), $userManager->getMasterPassword(), $withPassword, $exportPassword);
+                    $json = $result->getJSONResponse();
+                    header('Content-Description: File Transfer');
+                    header('Content-Type: application/octet-stream');
+                    header('Content-Disposition: attachment; filename=PASSY-Export-' . time() . ".passy-json");
+                    header('Expires: 0');
+                    header('Cache-Control: must-revalidate');
+                    header('Pragma: public');
+                    header('Content-Length: ' . strlen($json));
+                    die($json);
+                    break;
+                case "password/query":
+                    $passwordId = $_POST["id"];
+                    $result = $passwords->_query($passwordId, $userManager->getMasterPassword());
                     die($result->getJSONResponse());
-                }
-                $response = new Response(true, array());
-                die($response->getJSONResponse());
-                break;
+                    break;
+
+                case "password/queryAll":
+                    $result = $passwords->_queryAll($userManager->getUserID());
+                    die($result->getJSONResponse());
+                    break;
+
+                case "password/archive":
+                    $passwordId = $_POST["id"];
+                    $result = $passwords->_archive($passwordId);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "password/restore":
+                    $passwordId = $_POST["id"];
+                    $result = $passwords->_restore($passwordId);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "password/delete":
+                    $passwordId = $_POST["id"];
+                    $result = $passwords->_delete($passwordId);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "iplog/queryAll":
+                    $result = $ipLog->_queryAll($userManager->getUserID());
+                    die($result->getJSONResponse());
+                    break;
+
+                case "user/changeUsername":
+                    $password = $_POST["password"];
+                    $newUsername = $_POST["new_username"];
+                    if (!$userManager->checkPassword($password)) {
+                        $response = new Response(false, "invalid_credentials");
+                        die($response->getJSONResponse());
+                    }
+                    $result = $userManager->_changeUsername($userManager->getUserID(), $newUsername);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "user/changePassword":
+                    $password = $_POST["password"];
+                    $newPassword = $_POST["new_password"];
+                    $newPassword2 = $_POST["new_password2"];
+                    if (!$userManager->checkPassword($password)) {
+                        $response = new Response(false, "invalid_credentials");
+                        die($response->getJSONResponse());
+                    }
+                    if ($newPassword != $newPassword2) {
+                        $response = new Response(false, "passwords_not_matching");
+                        die($response->getJSONResponse());
+                    }
+
+                    $result = $userManager->_changePassword($userManager->getUserID(), $userManager->getMasterPassword(), $newPassword);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "user/2faGenerateKey":
+                    if ($twoFactor->isEnabled($_SESSION["userId"])) {
+                        $response = new Response(false, "2fa_enabled");
+                        die($response->getJSONResponse());
+                    }
+                    die($twoFactor->_generateSecretKey($_SESSION["username"])->getJSONResponse());
+                    break;
+
+                case "user/2faEnable":
+                    if ($twoFactor->isEnabled($_SESSION["userId"])) {
+                        $response = new Response(false, "2fa_enabled");
+                        die($response->getJSONResponse());
+                    }
+                    $privateKey = $_POST["2faPrivateKey"];
+                    $code = $_POST["2faCode"];
+                    $result = $twoFactor->_enable2FA($_SESSION["userId"], $_SESSION["master_password"], $privateKey, $code);
+                    die($result->getJSONResponse());
+                    break;
+
+                case "user/2faDisable":
+                    if ($twoFactor->isEnabled($_SESSION["userId"])) {
+                        $twoFactorCode = $_POST["2faCode"];
+                        $twoFactorCode = trim($twoFactorCode);
+                        if (strlen($twoFactorCode) == 6) {
+                            $result = $twoFactor->_checkCode($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode);
+                            if ($result->wasSuccess()) {
+                                $result = $twoFactor->_disable2FA($_SESSION["userId"]);
+                                die($result->getJSONResponse());
+                            }
+                        } else if (strlen($twoFactorCode) == TwoFactor::$KEYLENGTH) {
+                            if ($twoFactor->checkPrivateKey($_SESSION["userId"], $_SESSION["master_password"], $twoFactorCode)) {
+                                $result = $twoFactor->_disable2FA($_SESSION["userId"]);
+                                die($result->getJSONResponse());
+                            }
+                        }
+                        $result = new Response(false, "invalid_code");
+                        die($result->getJSONResponse());
+                    }
+                    $response = new Response(true, array());
+                    die($response->getJSONResponse());
+                    break;
+            }
+        } else {
+            $response = new Response(false, "not_authenticated");
+            die($response->getJSONResponse());
         }
-    } else {
-        $response = new Response(false, "not_authenticated");
-        die($response->getJSONResponse());
+    } catch (Exception $e) {
+        Util::handleException($e);
     }
 }
 
