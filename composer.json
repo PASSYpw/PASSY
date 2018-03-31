@@ -1,33 +1,33 @@
 {
-	"name": "passy.pw/passy",
-	"description": "A password manager written in PHP to serve you over the internet.",
-	"repositories": [
-		{
-			"type": "vcs",
-			"url": "https://github.com/PASSYpw/PASSY"
-		}
-	],
-	"support": {
-		"issues": "https://github.com/PASSYpw/PASSY/issues"
-	},
-	"license": "Apache-2.0",
-	"authors": [
-		{
-			"name": "Scrumplex",
-			"email": "contact@scrumplex.net"
-		},
-		{
-			"name": "Liz3",
-			"email": "info@liz3.de"
-		}
-	],
-	"minimum-stability": "stable",
-	"require": {
-		"php": ">=7.0.10",
-		"google/recaptcha": "1.1.2",
-		"defuse/php-encryption": "2.0.3",
-		"league/csv": "^9.0",
-		"pragmarx/google2fa": "v1.0.1",
-		"bacon/bacon-qr-code": "1.0.1"
-	}
+    "name": "passy.pw/passy",
+    "description": "A password manager written in PHP to serve you over the internet.",
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/PASSYpw/PASSY"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/PASSYpw/PASSY/issues"
+    },
+    "license": "Apache-2.0",
+    "authors": [
+        {
+            "name": "Scrumplex",
+            "email": "contact@scrumplex.net"
+        },
+        {
+            "name": "Liz3",
+            "email": "info@liz3.de"
+        }
+    ],
+    "minimum-stability": "stable",
+    "require": {
+        "php": ">=7.0.10",
+        "google/recaptcha": "1.1.2",
+        "defuse/php-encryption": "2.0.3",
+        "league/csv": "^9.0",
+        "pragmarx/google2fa": "v1.0.1",
+        "bacon/bacon-qr-code": "1.0.1"
+    }
 }

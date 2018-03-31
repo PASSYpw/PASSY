@@ -12,34 +12,34 @@ namespace PASSY;
  */
 class PASSY
 {
-	/**
-	 * @var Database
-	 */
-	public static $db;
+    /**
+     * @var Database
+     */
+    public static $db;
 
-	/**
-	 * @var IPLog
-	 */
-	public static $ipLog;
+    /**
+     * @var IPLog
+     */
+    public static $ipLog;
 
-	/**
-	 * @var Passwords
-	 */
-	public static $passwords;
+    /**
+     * @var Passwords
+     */
+    public static $passwords;
 
-	/**
-	 * @var Tasks
-	 */
-	public static $tasks;
+    /**
+     * @var Tasks
+     */
+    public static $tasks;
 
-	/**
-	 * @var TwoFactor
-	 */
-	public static $twoFactor;
+    /**
+     * @var TwoFactor
+     */
+    public static $twoFactor;
 
-	/**
-	 * @var UserManager
-	 */
-	public static $userManager;
+    /**
+     * @var UserManager
+     */
+    public static $userManager;
 
 }

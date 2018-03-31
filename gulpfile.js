@@ -30,58 +30,58 @@ const uglify = require('gulp-uglify');
 const babel = require('gulp-babel');
 
 gulp.task('css-prod', function (cb) {
-	pump([
-			gulp.src('assets/src/scss/application.scss'),
-			sourcemaps.init(),
-			postcss([
-				require('autoprefixer'),
-				require('postcss-csso')
-			], {
-				syntax: require('postcss-scss')
-			}),
-			sass({outputStyle: 'compressed'}),
-			sourcemaps.write(),
-			gulp.dest('assets/css')
-		],
-		cb);
+    pump([
+            gulp.src('assets/src/scss/application.scss'),
+            sourcemaps.init(),
+            postcss([
+                require('autoprefixer'),
+                require('postcss-csso')
+            ], {
+                syntax: require('postcss-scss')
+            }),
+            sass({outputStyle: 'compressed'}),
+            sourcemaps.write(),
+            gulp.dest('assets/css')
+        ],
+        cb);
 
 });
 
 gulp.task('js-prod', function (cb) {
-	pump([
-			gulp.src('assets/src/js/*.js'),
-			sourcemaps.init(),
-			babel({
-				presets: ['env']
-			}),
-			uglify(),
-			sourcemaps.write(),
-			gulp.dest('assets/js')
-		],
-		cb);
+    pump([
+            gulp.src('assets/src/js/*.js'),
+            sourcemaps.init(),
+            babel({
+                presets: ['env']
+            }),
+            uglify(),
+            sourcemaps.write(),
+            gulp.dest('assets/js')
+        ],
+        cb);
 
 });
 
 gulp.task('css-dev', function (cb) {
-	pump([
-			gulp.src('assets/src/scss/application.scss'),
-			sourcemaps.init(),
-			sass(),
-			sourcemaps.write(),
-			gulp.dest('assets/css')
-		],
-		cb);
+    pump([
+            gulp.src('assets/src/scss/application.scss'),
+            sourcemaps.init(),
+            sass(),
+            sourcemaps.write(),
+            gulp.dest('assets/css')
+        ],
+        cb);
 
 });
 
 gulp.task('js-dev', function (cb) {
-	pump([
-			gulp.src('assets/src/js/*.js'),
-			sourcemaps.init(),
-			sourcemaps.write(),
-			gulp.dest('assets/js')
-		],
-		cb);
+    pump([
+            gulp.src('assets/src/js/*.js'),
+            sourcemaps.init(),
+            sourcemaps.write(),
+            gulp.dest('assets/js')
+        ],
+        cb);
 
 });
 

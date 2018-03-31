@@ -18,123 +18,123 @@
  */
 
 .progress {
-	border: none;
-	border-radius: 0;
-	box-shadow: none;
-	background: transparent;
+    border: none;
+    border-radius: 0;
+    box-shadow: none;
+    background: transparent;
 }
 
 .progress-bar {
-	background-color: $colorPrimary;
+    background-color: $colorPrimary;
 }
 
 .progress-bar-success {
-	background-color: $colorSuccess;
+    background-color: $colorSuccess;
 }
 
 .progress-bar-info {
-	background-color: $colorInfo;
+    background-color: $colorInfo;
 }
 
 .progress-bar-warning {
-	background-color: $colorWarning;
+    background-color: $colorWarning;
 }
 
 .progress-bar-danger {
-	background-color: $colorDanger;
+    background-color: $colorDanger;
 }
 
 .progress-bar {
-	transition: width 600ms $easeInOutQuart;
+    transition: width 600ms $easeInOutQuart;
 }
 
 .spinner {
-	animation: spinnerRotate $durationSpinner linear infinite;
+    animation: spinnerRotate $durationSpinner linear infinite;
 }
 
 .spinner .path {
-	stroke-dasharray: $offsetSpinnerStroke;
-	stroke-dashoffset: 0;
-	stroke: $colorText;
-	transform-origin: center center;
-	animation: spinnerDash $durationSpinner $easeInOutSine infinite;
+    stroke-dasharray: $offsetSpinnerStroke;
+    stroke-dashoffset: 0;
+    stroke: $colorText;
+    transform-origin: center center;
+    animation: spinnerDash $durationSpinner $easeInOutSine infinite;
 }
 
 .spinner.primary .path {
-	stroke: $colorAccent;
+    stroke: $colorAccent;
 }
 
 .load-spinner {
-	position: fixed;
-	left: 50%;
-	color: $colorForeground;
-	border-radius: 100%;
-	height: 40px;
-	width: 40px;
-	padding: 10px;
-	transform: translate(-50%, -100%) scale(0);
-	transition: transform 200ms $easeOutQuart;
-	@include depth(2);
+    position: fixed;
+    left: 50%;
+    color: $colorForeground;
+    border-radius: 100%;
+    height: 40px;
+    width: 40px;
+    padding: 10px;
+    transform: translate(-50%, -100%) scale(0);
+    transition: transform 200ms $easeOutQuart;
+    @include depth(2);
 }
 
 .load-spinner.shown {
-	transform: translate(-50%, 0) scale(1);
+    transform: translate(-50%, 0) scale(1);
 }
 
 .material-icons {
-	vertical-align: middle;
-	font-size: 24px;
-	direction: ltr;
+    vertical-align: middle;
+    font-size: 24px;
+    direction: ltr;
 }
 
 .table > tbody > tr:after {
-	content: '';
-	display: inline-block;
-	height: 64px;
-	width: 0;
+    content: '';
+    display: inline-block;
+    height: 64px;
+    width: 0;
 }
 
 .table td, .table th {
-	vertical-align: middle !important;
-	border-top: 1px solid $colorDivider !important;
-	font-weight: normal !important;
+    vertical-align: middle !important;
+    border-top: 1px solid $colorDivider !important;
+    font-weight: normal !important;
 }
 
 .table th {
-	color: rgba($colorText, .75);
+    color: rgba($colorText, .75);
 }
 
 .table td.number {
-	text-align: right;
+    text-align: right;
 }
 
 .table > thead > tr {
-	height: 56px;
+    height: 56px;
 }
 
 .table > tbody:empty {
-	position: relative;
+    position: relative;
 }
 
 .table > tbody:empty::after {
-	content: 'Empty';
-	position: absolute;
-	left: 50%;
-	transform: translateX(-50%);
-	text-align: center;
-	color: rgba($colorText, .75);
+    content: 'Empty';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    text-align: center;
+    color: rgba($colorText, .75);
 }
 
 @media screen and (max-width: 767px) {
-	.table-responsive {
-		border: none;
-	}
+    .table-responsive {
+        border: none;
+    }
 }
 
 .g-recaptcha {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 
 .margin-center {
-	margin: 0 auto;
+    margin: 0 auto;
 }

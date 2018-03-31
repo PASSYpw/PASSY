@@ -11,13 +11,13 @@ namespace PASSY;
 
 class Validate
 {
-	static function validateLoginPassword($password)
-	{
-		return strlen($password) >= 8;
-	}
+    static function validateLoginPassword($password)
+    {
+        return strlen($password) >= 8;
+    }
 
-	static function validateLoginUsername($username)
-	{
-		return strlen($username) >= 3;
-	}
+    static function validateLoginUsername($username)
+    {
+        return strlen($username) >= 3;
+    }
 }

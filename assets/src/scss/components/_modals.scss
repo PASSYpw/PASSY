@@ -18,46 +18,46 @@
  */
 
 .modal.fade, .modal.in, .modal.fade .modal-dialog, .modal.in .modal-dialog {
-	transform: none;
-	transition: opacity 100ms linear;
+    transform: none;
+    transition: opacity 100ms linear;
 }
 
 .modal-backdrop.in {
-	opacity: 0.2;
+    opacity: 0.2;
 }
 
 .modal-header {
-	background-color: $colorForeground;
-	border-bottom: none;
-	padding: 24px 24px 0 24px;
-	border-radius: 2px;
+    background-color: $colorForeground;
+    border-bottom: none;
+    padding: 24px 24px 0 24px;
+    border-radius: 2px;
 }
 
 .modal-title {
-	color: $colorText;
+    color: $colorText;
 }
 
 .modal-body {
-	padding: 20px 24px 24px 24px;
+    padding: 20px 24px 24px 24px;
 }
 
 .modal-body > p {
-	color: lighten($colorText, 20%);
+    color: lighten($colorText, 20%);
 }
 
 .modal-footer {
-	border-top: none;
-	padding: 8px 8px 8px 24px;
+    border-top: none;
+    padding: 8px 8px 8px 24px;
 }
 
 .modal-footer > .btn-flat {
-	padding-left: 8px;
-	padding-right: 8px;
-	margin: 0 0 0 8px !important;
+    padding-left: 8px;
+    padding-right: 8px;
+    margin: 0 0 0 8px !important;
 }
 
 .modal-content {
-	border-radius: 2px;
-	border: none;
-	@include depth(4);
+    border-radius: 2px;
+    border: none;
+    @include depth(4);
 }

@@ -1,59 +1,59 @@
 {
-	"name": "@passypw/passy",
-	"version": "2.0.4",
-	"description": "A password manager written in PHP to serve you over the internet.",
-	"main": "index.php",
-	"dependencies": {
-		"@passypw/wavesjs": "^2.0.0",
-		"bootstrap": "3.3.7",
-		"jquery": "^3.2.1"
-	},
-	"devDependencies": {
-		"autoprefixer": "^7.1.4",
-		"awesome-sass-easing": "^1.1.2",
-		"babel-core": "^6.26.0",
-		"babel-preset-env": "^1.6.1",
-		"gulp": "^3.9.1",
-		"gulp-babel": "^7.0.0",
-		"gulp-postcss": "^7.0.0",
-		"gulp-sass": "^3.1.0",
-		"gulp-sourcemaps": "^2.6.1",
-		"gulp-uglify": "^3.0.0",
-		"postcss-cli": "^4.1.1",
-		"postcss-csso": "^2.0.0",
-		"postcss-scss": "^1.0.2",
-		"pump": "^1.0.2"
-	},
-	"scripts": {
-		"install": "composer install"
-	},
-	"config": {
-		"unsafe-perm": true
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/PASSYpw/PASSY.git"
-	},
-	"keywords": [
-		"PASSY",
-		"password",
-		"manager"
-	],
-	"author": {
-		"name": "Scrumplex",
-		"email": "contact@scrumplex.net",
-		"url": "https://scrumplex.net"
-	},
-	"contributors": [
-		{
-			"name": "Liz3",
-			"email": "info@liz3.de",
-			"url": "https://liz3.de"
-		}
-	],
-	"license": "GPL-3.0",
-	"bugs": {
-		"url": "https://github.com/PASSYpw/PASSY/issues"
-	},
-	"homepage": "https://github.com/PASSYpw/PASSY#readme"
+    "name": "@passypw/passy",
+    "version": "2.0.4",
+    "description": "A password manager written in PHP to serve you over the internet.",
+    "main": "index.php",
+    "dependencies": {
+        "@passypw/wavesjs": "^2.0.0",
+        "bootstrap": "3.3.7",
+        "jquery": "^3.2.1"
+    },
+    "devDependencies": {
+        "autoprefixer": "^7.1.4",
+        "awesome-sass-easing": "^1.1.2",
+        "babel-core": "^6.26.0",
+        "babel-preset-env": "^1.6.1",
+        "gulp": "^3.9.1",
+        "gulp-babel": "^7.0.0",
+        "gulp-postcss": "^7.0.0",
+        "gulp-sass": "^3.1.0",
+        "gulp-sourcemaps": "^2.6.1",
+        "gulp-uglify": "^3.0.0",
+        "postcss-cli": "^4.1.1",
+        "postcss-csso": "^2.0.0",
+        "postcss-scss": "^1.0.2",
+        "pump": "^1.0.2"
+    },
+    "scripts": {
+        "install": "composer install"
+    },
+    "config": {
+        "unsafe-perm": true
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/PASSYpw/PASSY.git"
+    },
+    "keywords": [
+        "PASSY",
+        "password",
+        "manager"
+    ],
+    "author": {
+        "name": "Scrumplex",
+        "email": "contact@scrumplex.net",
+        "url": "https://scrumplex.net"
+    },
+    "contributors": [
+        {
+            "name": "Liz3",
+            "email": "info@liz3.de",
+            "url": "https://liz3.de"
+        }
+    ],
+    "license": "GPL-3.0",
+    "bugs": {
+        "url": "https://github.com/PASSYpw/PASSY/issues"
+    },
+    "homepage": "https://github.com/PASSYpw/PASSY#readme"
 }

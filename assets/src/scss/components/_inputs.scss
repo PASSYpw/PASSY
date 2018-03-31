@@ -18,72 +18,72 @@
  */
 
 label {
-	font-weight: normal;
+    font-weight: normal;
 }
 
 .text {
-	padding-top: 15px;
+    padding-top: 15px;
 }
 
 .text:last-of-type {
-	padding-bottom: 15px;
+    padding-bottom: 15px;
 }
 
 .text .form-control {
-	height: 24px;
-	display: block;
-	padding: 0;
-	border: none;
-	border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
-	border-radius: 0;
-	box-shadow: none;
-	line-height: 24px;
-	font-size: 14px;
-	margin: 5px 0 0;
+    height: 24px;
+    display: block;
+    padding: 0;
+    border: none;
+    border-bottom: solid rgba(0, 0, 0, 0.12) 2px;
+    border-radius: 0;
+    box-shadow: none;
+    line-height: 24px;
+    font-size: 14px;
+    margin: 5px 0 0;
 }
 
 .text > label {
-	color: $colorSecondaryText;
-	font-size: 14px;
-	position: absolute;
-	pointer-events: none;
-	transform-origin: bottom left;
-	transform: translateY(-24px);
-	transition: all 200ms $easeOutQuart;
+    color: $colorSecondaryText;
+    font-size: 14px;
+    position: absolute;
+    pointer-events: none;
+    transform-origin: bottom left;
+    transform: translateY(-24px);
+    transition: all 200ms $easeOutQuart;
 }
 
 .text > .form-control:focus ~ label, .text > .form-control.hastext ~ label {
-	transform: scale(.8) translateY(-53px);
-	color: $colorAccent;
+    transform: scale(.8) translateY(-53px);
+    color: $colorAccent;
 }
 
 .text > .form-control:focus {
-	box-shadow: none;
-	border-bottom-color: $colorAccent;
+    box-shadow: none;
+    border-bottom-color: $colorAccent;
 }
 
 .text > .form-control[disabled], .form-control[readonly], fieldset[disabled] .form-control {
-	background-color: transparent;
-	opacity: 0.5;
+    background-color: transparent;
+    opacity: 0.5;
 }
 
 .text.hasbtn > .btn-input {
-	display: block;
-	background-color: transparent;
-	border: none;
-	outline: none;
-	float: right;
-	transform-origin: bottom left;
-	border-radius: 100%;
-	padding: 2px;
-	transform: translateY(-28px);
-	transition: background 300ms linear;
+    display: block;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    float: right;
+    transform-origin: bottom left;
+    border-radius: 100%;
+    padding: 2px;
+    transform: translateY(-28px);
+    transition: background 300ms linear;
 }
 
 .text.hasbtn > .btn-input:active {
-	background-color: mix(transparent, $colorText, 70%) !important;
+    background-color: mix(transparent, $colorText, 70%) !important;
 }
 
 .text.hasbtn > .form-control {
-	padding-right: 30px;
+    padding-right: 30px;
 }

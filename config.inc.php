@@ -2,39 +2,39 @@
 
 $mysqlConfig = array(
 
-	"host" => "localhost",
-	"user" => "passy",
-	"password" => "",
-	"db" => "passy"
+    "host" => "localhost",
+    "user" => "passy",
+    "password" => "",
+    "db" => "passy"
 
 );
 
 $customizationConfig = array(
-	"title" => "PASSY" // Will be shown in titlebar and footer.
+    "title" => "PASSY" // Will be shown in titlebar and footer.
 );
 
 $generalConfig = array(
 
-	"redirect_ssl" => false, // Redirects from HTTP to HTTPS. May not work on every setup.
+    "redirect_ssl" => false, // Redirects from HTTP to HTTPS. May not work on every setup.
 
-	"security" => array(
-		"lock_session_to_ip" => true // If your IP changes you will be logged out. This is necessary if there is a MITM and someone steals your cookie.
-	),
+    "security" => array(
+        "lock_session_to_ip" => true // If your IP changes you will be logged out. This is necessary if there is a MITM and someone steals your cookie.
+    ),
 
-	"registration" => array(
+    "registration" => array(
 
-		"enabled" => true // Enable / Disable registration.
+        "enabled" => true // Enable / Disable registration.
 
-	),
-	"login_history" => array(
+    ),
+    "login_history" => array(
 
-		"enabled" => true // Logs IP and User-Agent on every login.
+        "enabled" => true // Logs IP and User-Agent on every login.
 
-	),
-	"recaptcha" => array(
-		"enabled" => false, // Prevent spam registrations
-		"website_key" => "",
-		"private_key" => ""
-	)
+    ),
+    "recaptcha" => array(
+        "enabled" => false, // Prevent spam registrations
+        "website_key" => "",
+        "private_key" => ""
+    )
 
 );
